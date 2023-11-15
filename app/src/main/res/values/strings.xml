@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Quaver</string>
+    <string name="login_with_spotify">Login with Spotify</string>
+    <string name="welcome">Welcome</string>
 </resources>
