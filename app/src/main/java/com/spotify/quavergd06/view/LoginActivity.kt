@@ -1,18 +1,17 @@
-package com.spotify.quavergd06
+package com.spotify.quavergd06.view
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-
 import android.view.View
-
+import androidx.appcompat.app.AppCompatActivity
+import com.spotify.quavergd06.R
+import com.spotify.quavergd06.databinding.ActivityLoginBinding
+import com.spotify.quavergd06.view.home.HomeActivity
 import com.spotify.sdk.android.auth.AuthorizationClient
 import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
-
-import com.spotify.quavergd06.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
 
@@ -34,6 +33,18 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val preferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val storedToken = preferences.getString("access_token", null)
+
+        if (storedToken != null) {
+            // Access token is available, start the HomeActivity
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+
+            // Finish the LoginActivity to prevent the user from navigating back to it
+            finish()
+            return
+        }
 
         supportActionBar?.hide()
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -48,7 +59,11 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun getAuthenticationRequestToken(): AuthorizationRequest {
-        return AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, redirectUri.toString())
+        return AuthorizationRequest.Builder(
+            CLIENT_ID,
+            AuthorizationResponse.Type.TOKEN,
+            redirectUri.toString()
+        )
             .setShowDialog(false)
             .setScopes(arrayOf("user-read-email"))
             .setCampaign("your-campaign-token")
@@ -64,11 +79,17 @@ class LoginActivity : AppCompatActivity() {
             mAccessToken = response.accessToken
 
             persistToken()
+
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+
+            // Finish the LoginActivity to prevent the user from navigating back to it
+            finish()
         }
     }
 
     private fun persistToken() {
-        val preferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val preferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
         preferences.edit().putString("access_token", mAccessToken).apply()
     }
 }

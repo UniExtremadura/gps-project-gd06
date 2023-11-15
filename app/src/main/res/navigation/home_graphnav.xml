@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_graphnav"
+    app:startDestination="@id/momentFragment">
+
+    <fragment
+        android:id="@+id/momentFragment"
+        android:name="com.spotify.quavergd06.view.home.MomentFragment"
+        android:label="fragment_moment"
+        tools:layout="@layout/fragment_moment" />
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.spotify.quavergd06.view.home.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/statsFragment"
+        android:name="com.spotify.quavergd06.view.home.StatsFragment"
+        android:label="fragment_stats"
+        tools:layout="@layout/fragment_stats" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.spotify.quavergd06.view.home.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+</navigation>
