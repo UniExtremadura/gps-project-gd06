@@ -1,5 +1,6 @@
 package com.spotify.quavergd06
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -33,9 +34,12 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+
         supportActionBar?.hide()
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
     }
 
     fun onRequestTokenClicked(view: View?) {
@@ -58,6 +62,13 @@ class LoginActivity : AppCompatActivity() {
 
         if (requestCode == AUTH_TOKEN_REQUEST_CODE) {
             mAccessToken = response.accessToken
+
+            persistToken()
         }
+    }
+
+    private fun persistToken() {
+        val preferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        preferences.edit().putString("access_token", mAccessToken).apply()
     }
 }

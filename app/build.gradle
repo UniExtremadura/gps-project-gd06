@@ -54,4 +54,5 @@ dependencies {
 
     implementation 'com.spotify.android:auth:2.0.1'
     implementation 'com.google.code.gson:gson:2.10.1'
+
 }
