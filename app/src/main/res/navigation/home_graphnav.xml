@@ -9,7 +9,11 @@
         android:id="@+id/momentFragment"
         android:name="com.spotify.quavergd06.view.home.MomentFragment"
         android:label="fragment_moment"
-        tools:layout="@layout/fragment_moment" />
+        tools:layout="@layout/fragment_moment" >
+        <action
+            android:id="@+id/action_momentFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.spotify.quavergd06.view.home.ProfileFragment"
@@ -25,4 +29,14 @@
         android:name="com.spotify.quavergd06.view.home.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.spotify.quavergd06.view.home.MapFragment"
+        android:label="MapFragment"
+        tools:layout="@layout/fragment_map">
+        <action
+            android:id="@+id/action_mapFragment_to_momentFragment"
+            app:destination="@id/momentFragment" />
+    </fragment>
+
 </navigation>

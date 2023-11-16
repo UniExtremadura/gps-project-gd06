@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.spotify.quavergd06.R
 
 import com.spotify.quavergd06.databinding.FragmentMomentBinding
 import com.spotify.quavergd06.model.Moment
@@ -40,6 +43,13 @@ class MomentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMomentBinding.inflate(inflater, container, false)
+
+        val button = _binding!!.buttonToMap
+        button.setOnClickListener {
+            navigateToMapFragment()
+        }
+
+
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,6 +68,10 @@ class MomentFragment : Fragment() {
         android.util.Log.d("DiscoverFragment", "setUpRecyclerView")
     }
 
+    private fun navigateToMapFragment() {
+        // Encuentra el NavController y navega a la acción definida en el gráfico de navegación
+        findNavController().navigate(R.id.action_momentFragment_to_mapFragment)
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null // avoid memory leaks
