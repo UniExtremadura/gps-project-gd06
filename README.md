@@ -1,2 +1,2 @@
-# gps-project-gd06
-Proyecto de estadísticas de Spotify ASEE y GPS.
+# Quaver
+Android app about moments and spotify stats

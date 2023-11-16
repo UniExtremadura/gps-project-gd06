@@ -36,6 +36,7 @@ android {
     viewBinding {
         enable = true
     }
+
 }
 
 ext {
@@ -55,7 +56,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     implementation 'androidx.browser:browser:1.0.0'
-
     implementation 'com.spotify.android:auth:2.0.1'
     implementation 'com.google.code.gson:gson:2.10.1'
 
@@ -70,5 +70,8 @@ dependencies {
 
     // Jetpack Compose Integration
     implementation "androidx.navigation:navigation-compose:$nav_version"
+
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+
 
 }
