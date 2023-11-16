@@ -10,8 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.spotify.quavergd06.R
+
 import com.spotify.quavergd06.api.getNetworkService
 import com.spotify.quavergd06.api.setKey
 import com.spotify.quavergd06.data.api.ArtistItem
@@ -23,15 +22,24 @@ import kotlinx.coroutines.launch
 
 
 class TopArtistsFragment : Fragment() {
-
     private var _binding: FragmentTopGridBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var adapter: ArtistAdapter
     private var _artists: List<Artist> = emptyList()
+    private var timePeriod: String = "short_term" // Default time period
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    companion object {
+        private const val ARG_TIME_PERIOD = "arg_time_period"
+
+        // Factory method to create a new instance of the fragment with a specified time period
+        fun newInstance(timePeriod: String): TopArtistsFragment {
+            val fragment = TopArtistsFragment()
+            val args = Bundle()
+            args.putString(ARG_TIME_PERIOD, timePeriod)
+            fragment.arguments = args
+            return fragment
+        }
     }
 
     override fun onCreateView(
@@ -44,13 +52,17 @@ class TopArtistsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        arguments?.let {
+            timePeriod = it.getString(ARG_TIME_PERIOD, "short_term")
+        }
+
         setUpRecyclerView()
 
-        // Realizar una búsqueda de artistas en Spotify
+        // Fetch data based on the specified time period
         lifecycleScope.launch {
             try {
                 setKey(obtenerSpotifyApiKey(requireContext())!!)
-                _artists = fetchArtists().map(ArtistItem::toArtist)
+                _artists = fetchArtists(timePeriod).map(ArtistItem::toArtist)
                 adapter.updateData(_artists)
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
@@ -58,13 +70,13 @@ class TopArtistsFragment : Fragment() {
         }
     }
 
-    private suspend fun fetchArtists(): List<ArtistItem> {
+    private suspend fun fetchArtists(timePeriod: String): List<ArtistItem> {
         var apiArtists = listOf<ArtistItem>()
         try {
-            apiArtists = getNetworkService().loadTopArtist().body()?.artistItems ?: emptyList()
+            apiArtists = getNetworkService().loadTopArtist(timePeriod).body()?.artistItems
+                ?: emptyList()
         } catch (cause: Throwable) {
             Log.d("PreviewTopFragment", "fetchArtists: ${apiArtists.size}")
-            //throw APIException("Unable to fetch data from API", cause)
         }
         return apiArtists
     }
@@ -91,5 +103,4 @@ class TopArtistsFragment : Fragment() {
         _binding = null
         lifecycleScope.cancel()
     }
-
 }

@@ -62,7 +62,7 @@ class PreviewTopFragment : Fragment() {
     private suspend fun fetchArtists(): List<ArtistItem> {
         var apiArtists = listOf<ArtistItem>()
         try {
-            apiArtists = getNetworkService().loadTopArtist().body()?.artistItems ?: emptyList()
+            apiArtists = getNetworkService().loadTopArtist("medium_term").body()?.artistItems ?: emptyList()
         } catch (cause: Throwable) {
             Log.d("PreviewTopFragment", "fetchArtists: ${apiArtists.size}")
             //throw APIException("Unable to fetch data from API", cause)

@@ -21,8 +21,8 @@
         android:label="fragment_stats"
         tools:layout="@layout/fragment_stats" >
         <action
-            android:id="@+id/action_statsFragment_to_topArtistsFragment"
-            app:destination="@id/topArtistsFragment" />
+            android:id="@+id/action_statsFragment_to_topArtistsViewPagerFragment"
+            app:destination="@id/topArtistsViewPagerFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -33,4 +33,8 @@
         android:id="@+id/topArtistsFragment"
         android:name="com.spotify.quavergd06.view.home.TopArtistsFragment"
         android:label="TopArtistsFragment" />
+    <fragment
+        android:id="@+id/topArtistsViewPagerFragment"
+        android:name="com.spotify.quavergd06.view.home.TopArtistsViewPagerFragment"
+        android:label="TopArtistsViewPagerFragment" />
 </navigation>

@@ -8,6 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Query
 
 private const val BASE_URL = "https://api.spotify.com/v1/"
 
@@ -45,7 +46,10 @@ interface SpotifyApiService {
     // Endpoint para buscar artistas en Spotify
     @Headers("Content-Type: application/json")
     @GET("me/top/artists")
-    suspend fun loadTopArtist(): Response<ArtistResponse>
+    suspend fun loadTopArtist(
+        @Query("time_range") timeRange: String,
+        @Query("limit") limit: Int = 50
+    ): Response<ArtistResponse>
 }
 
 interface APICallback {

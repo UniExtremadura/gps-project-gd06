@@ -43,7 +43,7 @@ class StatsFragment : Fragment() {
     }
 
     private fun navigateToTopArtistFragment() {
-        findNavController().navigate(R.id.action_statsFragment_to_topArtistsFragment)
+        findNavController().navigate(R.id.action_statsFragment_to_topArtistsViewPagerFragment)
     }
 
 
