@@ -9,11 +9,7 @@ import androidx.fragment.app.Fragment
 import com.spotify.quavergd06.R
 import com.spotify.quavergd06.databinding.FragmentStatsBinding
 
-/**
- * A simple [Fragment] subclass.
- * Use the [StatsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class StatsFragment : Fragment() {
 
     private var _binding: FragmentStatsBinding? = null
@@ -49,5 +45,6 @@ class StatsFragment : Fragment() {
     private fun navigateToTopArtistFragment() {
         findNavController().navigate(R.id.action_statsFragment_to_topArtistsFragment)
     }
+
 
 }

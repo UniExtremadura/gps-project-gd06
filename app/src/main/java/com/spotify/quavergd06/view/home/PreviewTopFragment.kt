@@ -2,6 +2,7 @@ package com.spotify.quavergd06.view.home
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import com.spotify.quavergd06.data.api.ArtistItem
 import com.spotify.quavergd06.data.model.Artist
 import com.spotify.quavergd06.data.toArtist
 import com.spotify.quavergd06.databinding.FragmentTopPreviewBinding
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 
@@ -49,7 +51,7 @@ class PreviewTopFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 setKey(obtenerSpotifyApiKey(requireContext())!!)
-                _artists = fetchShows().filterNotNull().map(ArtistItem::toArtist)
+                _artists = fetchArtists().map(ArtistItem::toArtist)
                 adapter.updateData(_artists)
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
@@ -57,12 +59,13 @@ class PreviewTopFragment : Fragment() {
         }
     }
 
-    private suspend fun fetchShows(): List<ArtistItem> {
+    private suspend fun fetchArtists(): List<ArtistItem> {
         var apiArtists = listOf<ArtistItem>()
         try {
             apiArtists = getNetworkService().loadTopArtist().body()?.artistItems ?: emptyList()
         } catch (cause: Throwable) {
-            throw APIException("Unable to fetch data from API", cause)
+            Log.d("PreviewTopFragment", "fetchArtists: ${apiArtists.size}")
+            //throw APIException("Unable to fetch data from API", cause)
         }
         return apiArtists
     }
@@ -74,7 +77,6 @@ class PreviewTopFragment : Fragment() {
         )
         with(binding) {
             recyclerViewTopPreview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,  false)
-            //
             recyclerViewTopPreview.adapter = adapter
         }
         android.util.Log.d("ArtistFragment", "setUpRecyclerView")
@@ -85,4 +87,9 @@ class PreviewTopFragment : Fragment() {
         return sharedPreferences.getString("access_token", null)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        lifecycleScope.cancel()
+    }
 }
