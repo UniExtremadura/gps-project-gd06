@@ -19,10 +19,18 @@
         android:id="@+id/statsFragment"
         android:name="com.spotify.quavergd06.view.home.StatsFragment"
         android:label="fragment_stats"
-        tools:layout="@layout/fragment_stats" />
+        tools:layout="@layout/fragment_stats" >
+        <action
+            android:id="@+id/action_statsFragment_to_topArtistsFragment"
+            app:destination="@id/topArtistsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.spotify.quavergd06.view.home.SettingsFragment"
         android:label="fragment_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/topArtistsFragment"
+        android:name="com.spotify.quavergd06.view.home.TopArtistsFragment"
+        android:label="TopArtistsFragment" />
 </navigation>
