@@ -15,25 +15,22 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.Manifest
-import android.content.ClipData.Item
 import android.content.Context
 import android.content.pm.PackageManager
 import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
 import com.spotify.quavergd06.R
 import com.spotify.quavergd06.databinding.FragmentMomentEditBinding
-import androidx.appcompat.widget.SearchView
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.spotify.quavergd06.api.getNetworkService
 import com.spotify.quavergd06.api.setKey
-import com.spotify.quavergd06.data.api.ArtistItem
 import com.spotify.quavergd06.data.api.Items
-import com.spotify.quavergd06.data.api.Tracks
-import com.spotify.quavergd06.data.toArtist
 import kotlinx.coroutines.launch
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 
 class MomentEditFragment : Fragment() {
 
@@ -127,6 +124,10 @@ class MomentEditFragment : Fragment() {
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as? Bitmap
             binding.detailImage.setImageBitmap(imageBitmap)
+
+            obtenerUbicacion().let { (latitud, longitud) ->
+                binding.detailLocation.text = "$latitud, $longitud"
+            }
         }
     }
 
@@ -146,6 +147,46 @@ class MomentEditFragment : Fragment() {
         return apiTrackNames
     }
 
+    private fun obtenerUbicacion(): Pair<Double, Double> {
+        // Obtén una instancia del LocationManager
+        val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        // Variables para almacenar latitud y longitud
+        var latitud: Double = 0.0
+        var longitud: Double = 0.0
+
+        // Verifica si se tienen permisos de ubicación
+        if (requireActivity().checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+
+            // Obtiene la última ubicación conocida (puede ser nula)
+            val lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+
+            // Verifica si se obtuvo la última ubicación conocida
+            if (lastKnownLocation != null) {
+                latitud = lastKnownLocation.latitude
+                longitud = lastKnownLocation.longitude
+            } else {
+                // Si la última ubicación conocida es nula, solicita actualizaciones de ubicación
+                val locationListener = object : LocationListener {
+                    override fun onLocationChanged(location: Location) {
+                        latitud = location.latitude
+                        longitud = location.longitude
+
+                        // Detener las actualizaciones de ubicación después de obtener la primera ubicación
+                        locationManager.removeUpdates(this)
+                    }
+                }
+                // Solicita actualizaciones de ubicación
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, locationListener)
+            }
+        } else {
+            // Si no se tienen permisos, solicítalos al usuario
+            requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 1)
+        }
+
+        // Retorna un objeto Pair con las coordenadas
+        return Pair(latitud, longitud)
+    }
     companion object {
         private const val CAMERA_REQUEST_CODE = 123
         private const val CAMERA_PERMISSION_REQUEST_CODE = 456
