@@ -28,7 +28,7 @@ class TopArtistsViewPagerFragment : Fragment() {
     private fun setUpViewPager() {
         val adapter = TopArtistGridPagerAdapter(childFragmentManager)
         binding.topArtistViewPager.adapter = adapter
-        binding.topArtistTabLayout.setupWithViewPager(binding.topArtistViewPager)
+        //binding.topArtistTabLayout.setupWithViewPager(binding.top_artist_view_pager)
     }
 
     override fun onDestroyView() {

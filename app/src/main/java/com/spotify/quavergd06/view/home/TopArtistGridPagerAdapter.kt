@@ -6,7 +6,7 @@ import com.spotify.quavergd06.view.home.TopArtistsFragment
 class TopArtistGridPagerAdapter(fragmentManager: FragmentManager) :
     FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    override fun getCount(): Int = 3 // Three tabs for 4 weeks, 6 months, and all time
+    override fun getCount(): Int = 3
 
     override fun getItem(position: Int): Fragment {
         return when (position) {

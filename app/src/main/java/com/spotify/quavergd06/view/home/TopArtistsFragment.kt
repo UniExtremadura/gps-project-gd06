@@ -25,7 +25,7 @@ class TopArtistsFragment : Fragment() {
     private var _binding: FragmentTopGridBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: ArtistAdapter
+    //private lateinit var adapter: Adapter
     private var _artists: List<Artist> = emptyList()
     private var timePeriod: String = "short_term" // Default time period
 
@@ -62,35 +62,35 @@ class TopArtistsFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 setKey(obtenerSpotifyApiKey(requireContext())!!)
-                _artists = fetchArtists(timePeriod).map(ArtistItem::toArtist)
-                adapter.updateData(_artists)
+                //_artists = fetchArtists(timePeriod).map(ArtistItem::toArtist)
+                //adapter.updateData(_artists)
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    private suspend fun fetchArtists(timePeriod: String): List<ArtistItem> {
-        var apiArtists = listOf<ArtistItem>()
-        try {
-            apiArtists = getNetworkService().loadTopArtist(timePeriod).body()?.artistItems
-                ?: emptyList()
-        } catch (cause: Throwable) {
-            Log.d("PreviewTopFragment", "fetchArtists: ${apiArtists.size}")
-        }
-        return apiArtists
-    }
+    /* private suspend fun fetchArtists(timePeriod: String): List<ArtistItem> {
+         var apiArtists = listOf<ArtistItem>()
+         try {
+             apiArtists = getNetworkService().loadTopArtist(timePeriod).body()?.artistItems
+                 ?: emptyList()
+         } catch (cause: Throwable) {
+             Log.d("PreviewTopFragment", "fetchArtists: ${apiArtists.size}")
+         }
+         return apiArtists
+     }*/
 
     private fun setUpRecyclerView() {
-        adapter = ArtistAdapter(
-            artists = _artists,
-            context = this.context
-        )
-        with(binding) {
-            topShowGrid.layoutManager = GridLayoutManager(context, 2)
-            topShowGrid.adapter = adapter
-        }
-        android.util.Log.d("ArtistFragment", "setUpRecyclerView")
+//        adapter = ArtistAdapter(
+//            artists = _artists,
+//            context = this.context
+//        )
+//        with(binding) {
+//            topShowGrid.layoutManager = GridLayoutManager(context, 2)
+//            topShowGrid.adapter = adapter
+//        }
+//        android.util.Log.d("ArtistFragment", "setUpRecyclerView")
     }
 
     private fun obtenerSpotifyApiKey(context: Context): String? {

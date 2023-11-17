@@ -33,7 +33,8 @@ class StatsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        loadFragment(R.id.fragmentTopArtists, PreviewTopFragment())
+        loadFragment(R.id.fragmentTopArtists, PreviewTopFragment(ArtistFetchable()))
+        loadFragment(R.id.fragmentTopTracks, PreviewTopFragment(TrackFetchable()))
     }
 
     private fun loadFragment(containerId: Int, fragment: Fragment) {

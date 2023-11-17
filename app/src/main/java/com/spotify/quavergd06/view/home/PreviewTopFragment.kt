@@ -17,19 +17,43 @@ import com.spotify.quavergd06.api.APIException
 import com.spotify.quavergd06.api.getNetworkService
 import com.spotify.quavergd06.api.setKey
 import com.spotify.quavergd06.data.api.ArtistItem
+import com.spotify.quavergd06.data.api.TrackItem
 import com.spotify.quavergd06.data.model.Artist
+import com.spotify.quavergd06.data.model.StatsItem
+import com.spotify.quavergd06.data.model.Track
 import com.spotify.quavergd06.data.toArtist
+import com.spotify.quavergd06.data.toStatsItem
+import com.spotify.quavergd06.data.toTrack
 import com.spotify.quavergd06.databinding.FragmentTopPreviewBinding
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 
-class PreviewTopFragment : Fragment() {
+interface Fetchable {
+    suspend fun fetch(): List<StatsItem>
+}
+
+class ArtistFetchable : Fetchable {
+    override suspend fun fetch(): List<StatsItem> {
+        val apiArtists = getNetworkService().loadTopArtists("medium_term").body()?.artistItems ?: emptyList()
+        return apiArtists.map(ArtistItem::toArtist).map(Artist::toStatsItem)
+    }
+}
+
+class TrackFetchable : Fetchable {
+    override suspend fun fetch(): List<StatsItem> {
+        val apiTracks = getNetworkService().loadTopTracks("medium_term").body()?.trackItems ?: emptyList()
+        return apiTracks.map(TrackItem::toTrack).map(Track::toStatsItem)
+    }
+}
+
+
+class PreviewTopFragment(private val fetchable: Fetchable) : Fragment() {
     private var _binding: FragmentTopPreviewBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: ArtistAdapter
-    private var _artists: List<Artist> = emptyList()
+    private lateinit var adapter: StatsItemAdapter
+    private var items: List<StatsItem> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,28 +75,18 @@ class PreviewTopFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 setKey(obtenerSpotifyApiKey(requireContext())!!)
-                _artists = fetchArtists().map(ArtistItem::toArtist)
-                adapter.updateData(_artists)
+                items = fetchable.fetch()
+                adapter.updateData(items)
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    private suspend fun fetchArtists(): List<ArtistItem> {
-        var apiArtists = listOf<ArtistItem>()
-        try {
-            apiArtists = getNetworkService().loadTopArtist("medium_term").body()?.artistItems ?: emptyList()
-        } catch (cause: Throwable) {
-            Log.d("PreviewTopFragment", "fetchArtists: ${apiArtists.size}")
-            //throw APIException("Unable to fetch data from API", cause)
-        }
-        return apiArtists
-    }
 
     private fun setUpRecyclerView() {
-        adapter = ArtistAdapter(
-            artists = _artists,
+        adapter = StatsItemAdapter(
+            statsItems = items,
             context = this.context
         )
         with(binding) {
