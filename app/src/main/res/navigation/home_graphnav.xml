@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_statsFragment_to_topArtistsViewPagerFragment"
             app:destination="@id/topArtistsViewPagerFragment" />
+        <action
+            android:id="@+id/action_statsFragment_to_topTracksViewPagerFragment"
+            app:destination="@id/topTracksViewPagerFragment" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -61,4 +64,9 @@
         android:id="@+id/topArtistsViewPagerFragment"
         android:name="com.spotify.quavergd06.view.home.TopArtistsViewPagerFragment"
         android:label="TopArtistsViewPagerFragment" />
+    <fragment
+        android:id="@+id/topTracksViewPagerFragment"
+        android:name="com.spotify.quavergd06.view.home.TopTracksViewPagerFragment"
+        android:label="fragment_top_tracks_view_pager"
+        tools:layout="@layout/fragment_top_tracks_view_pager" />
 </navigation>
