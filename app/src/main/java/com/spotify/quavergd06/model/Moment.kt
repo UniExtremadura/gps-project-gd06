@@ -8,5 +8,7 @@ data class Moment(
     val date: Date? = null,
     val description: String = "",
     val image: Int,
+    val latitude: Double,
+    val longitude: Double
 ) : Serializable
 

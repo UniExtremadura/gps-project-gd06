@@ -6,18 +6,25 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <WebView
-        android:id="@+id/osmWebView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+    <Button
+        android:id="@+id/buttonToMoment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="301dp"
+        android:layout_y="667dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/osmMapView"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_bias="0.949"
+        app:layout_constraintVertical_bias="0.976" />
 
-        <Button
-            android:id="@+id/buttonToMoment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_x="301dp"
-            android:layout_y="667dp"
-            android:text="Button" />
-    </WebView>
+    <org.osmdroid.views.MapView
+        android:id="@+id/osmMapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="0dp"></org.osmdroid.views.MapView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
