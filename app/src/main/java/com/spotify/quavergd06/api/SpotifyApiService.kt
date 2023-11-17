@@ -1,6 +1,7 @@
 package com.spotify.quavergd06.api
 
 import com.example.example.ArtistResponse
+import com.spotify.quavergd06.data.api.Tracks
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
@@ -50,6 +51,10 @@ interface SpotifyApiService {
         @Query("time_range") timeRange: String,
         @Query("limit") limit: Int = 50
     ): Response<ArtistResponse>
+
+    @Headers("Content-Type: application/json")
+    @GET("me/top/tracks?limit=20&offset=0")
+    suspend fun loadTracks(): Response<Tracks>
 }
 
 interface APICallback {

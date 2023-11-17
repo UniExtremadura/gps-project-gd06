@@ -16,7 +16,7 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import com.spotify.quavergd06.data.dummyMoments
+import com.spotify.quavergd06.data.dummy.dummyMoments
 import com.spotify.quavergd06.model.Moment
 
 class MapFragment : Fragment() {

@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.devtools.ksp'
 }
 
 android {
@@ -41,7 +42,10 @@ android {
 
 ext {
     nav_version = "2.5.3"
+    room_version = "2.5.0"
 }
+
+apply plugin: 'kotlin-android'
 
 dependencies {
 
@@ -85,6 +89,18 @@ dependencies {
 
     implementation 'com.squareup.picasso:picasso:2.71828'
 
+    def room_version = "2.5.0"
 
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+// To use Kotlin Symbol Processing (KSP)
+    ksp "androidx.room:room-compiler:$room_version"
+
+// optional - Kotlin Extensions and Coroutines support for Room
+    implementation "androidx.room:room-ktx:$room_version"
+
+// optional - Test helpers
+    testImplementation "androidx.room:room-testing:$room_version"
 
 }

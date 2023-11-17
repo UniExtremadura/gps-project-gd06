@@ -11,7 +11,7 @@ import com.spotify.quavergd06.R
 
 import com.spotify.quavergd06.databinding.FragmentMomentBinding
 import com.spotify.quavergd06.model.Moment
-import com.spotify.quavergd06.data.dummyMoments
+import com.spotify.quavergd06.data.dummy.dummyMoments
 
 class MomentFragment : Fragment() {
 

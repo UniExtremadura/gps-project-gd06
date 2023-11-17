@@ -15,12 +15,25 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.Manifest
+import android.content.ClipData.Item
+import android.content.Context
 import android.content.pm.PackageManager
 import android.provider.MediaStore
 import androidx.core.app.ActivityCompat
 import com.spotify.quavergd06.R
 import com.spotify.quavergd06.databinding.FragmentMomentEditBinding
-
+import androidx.appcompat.widget.SearchView
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
+import com.spotify.quavergd06.api.getNetworkService
+import com.spotify.quavergd06.api.setKey
+import com.spotify.quavergd06.data.api.ArtistItem
+import com.spotify.quavergd06.data.api.Items
+import com.spotify.quavergd06.data.api.Tracks
+import com.spotify.quavergd06.data.toArtist
+import kotlinx.coroutines.launch
 
 class MomentEditFragment : Fragment() {
 
@@ -38,18 +51,32 @@ class MomentEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val autoCompleteTextView = binding.detailSongTitle
+
+
+        lifecycleScope.launch {
+            try {
+                setKey(obtenerSpotifyApiKey(requireContext())!!)
+                var opciones = fetchTracks()
+                val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, opciones)
+                autoCompleteTextView.setAdapter(adapter)
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+            }
+        }
+
+
         val moment = arguments?.getSerializable("moment") as? Moment
         //TODO: Adecuar la carga según el origen de los datos
         if (moment != null) {
             moment?.let {
                 // Configurar la vista con los detalles del Momento
                 binding.detailImage.setImageResource(it.image)
-                binding.detailSongTitle.setText(it.songTitle)
+                autoCompleteTextView.setText(it.songTitle)
                 binding.detailLocation.text = it.location
-
                 val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val formattedDate = dateFormat.format(it.date)
-                binding.detailDate.text = formattedDate// ...
+                binding.detailDate.text = formattedDate
 
                 binding.detailTitle.setText(it.title)
                 // Configurar otros elementos según sea necesario
@@ -57,15 +84,19 @@ class MomentEditFragment : Fragment() {
         } else {
             openCamera()
         }
-
-
     }
+
     override fun onResume() {
         super.onResume()
 
         // Ocultar BottomNavigationView
         val navBar: BottomNavigationView? = activity?.findViewById(R.id.bottom_navigation)
         navBar?.visibility = View.GONE
+    }
+
+    private fun obtenerSpotifyApiKey(context: Context): String? {
+        val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("access_token", null)
     }
 
     private fun openCamera() {
@@ -82,12 +113,15 @@ class MomentEditFragment : Fragment() {
                 arrayOf(Manifest.permission.CAMERA),
                 CAMERA_PERMISSION_REQUEST_CODE
             )
+            //reload fragment
+
         } else {
             // Abrir la cámara
             val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             startActivityForResult(intent, CAMERA_REQUEST_CODE)
         }
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
@@ -96,12 +130,27 @@ class MomentEditFragment : Fragment() {
         }
     }
 
-    // ...
+    private suspend fun fetchTracks(): List<String> {
+        var apiTracks = listOf <Items>()
+        var apiTrackNames = listOf<String>()
+        try {
+            apiTracks = getNetworkService().loadTracks().body()?.items ?: emptyList()
+        } catch (cause: Throwable) {
+            //throw APIException("Unable to fetch data from API", cause)
+        }
+        for (item in apiTracks) {
+            if (item.type.equals("track")) {
+                apiTrackNames += item.name.toString()
+            }
+        }
+        return apiTrackNames
+    }
 
     companion object {
         private const val CAMERA_REQUEST_CODE = 123
         private const val CAMERA_PERMISSION_REQUEST_CODE = 456
     }
+
     override fun onPause() {
         super.onPause()
 
@@ -109,6 +158,7 @@ class MomentEditFragment : Fragment() {
         val navBar: BottomNavigationView? = activity?.findViewById(R.id.bottom_navigation)
         navBar?.visibility = View.VISIBLE
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
