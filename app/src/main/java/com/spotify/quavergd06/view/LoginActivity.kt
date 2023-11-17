@@ -81,7 +81,7 @@ class LoginActivity : AppCompatActivity() {
     private fun getAuthenticationRequestToken(): AuthorizationRequest {
         return AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, redirectUri.toString())
             .setShowDialog(false)
-            .setScopes(arrayOf("user-read-email"))
+            .setScopes(arrayOf("user-read-email", "user-top-read"))
             .setCampaign("your-campaign-token")
             .build()
     }
@@ -109,8 +109,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun persistToken() {
-            val preferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-            preferences.edit().putString("access_token", mAccessToken).apply()
+        val preferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        preferences.edit().putString("access_token", mAccessToken).apply()
     }
 
 }

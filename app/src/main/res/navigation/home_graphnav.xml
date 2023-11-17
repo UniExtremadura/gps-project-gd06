@@ -26,7 +26,11 @@
         android:id="@+id/statsFragment"
         android:name="com.spotify.quavergd06.view.home.StatsFragment"
         android:label="fragment_stats"
-        tools:layout="@layout/fragment_stats" />
+        tools:layout="@layout/fragment_stats" >
+        <action
+            android:id="@+id/action_statsFragment_to_topArtistsViewPagerFragment"
+            app:destination="@id/topArtistsViewPagerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.spotify.quavergd06.view.home.SettingsFragment"
@@ -49,4 +53,12 @@
         android:name="com.spotify.quavergd06.view.home.MomentDetailFragment"
         android:label="MomentDetailFragment" />
 
+    <fragment
+        android:id="@+id/topArtistsFragment"
+        android:name="com.spotify.quavergd06.view.home.TopArtistsFragment"
+        android:label="TopArtistsFragment" />
+    <fragment
+        android:id="@+id/topArtistsViewPagerFragment"
+        android:name="com.spotify.quavergd06.view.home.TopArtistsViewPagerFragment"
+        android:label="TopArtistsViewPagerFragment" />
 </navigation>

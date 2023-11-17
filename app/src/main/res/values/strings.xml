@@ -7,4 +7,12 @@
     <string name="welcome">Welcome</string>
     <string name="moment_image_description">Moment Image</string>
     <string name="moment_title_text">Title</string>
+    <string name="top_genres_previsualization_title">Top Genres:</string>
+    <string name="top_artists_previsualization_title">Top Artists:</string>
+    <string name="top_tracks_previsualization_title">Top Tracks:</string>
+    <string name="history_previsualization_title">History:</string>
+    <string name="more">More...</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
