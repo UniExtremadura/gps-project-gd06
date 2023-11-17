@@ -61,4 +61,8 @@
         android:id="@+id/topArtistsViewPagerFragment"
         android:name="com.spotify.quavergd06.view.home.TopArtistsViewPagerFragment"
         android:label="TopArtistsViewPagerFragment" />
+    <fragment
+        android:id="@+id/momentEditFragment"
+        android:name="com.spotify.quavergd06.view.home.MomentEditFragment"
+        android:label="MomentEditFragment" />
 </navigation>

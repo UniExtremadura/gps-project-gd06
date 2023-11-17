@@ -15,9 +15,9 @@
 
         <!-- Camera -->
         <item
-            android:title="Camera"
-            android:id="@+id/cameraFragment"
-            android:icon="@drawable/baseline_circle_24"/>
+            android:title="Add Moment"
+            android:id="@+id/momentEditFragment"
+            android:icon="@drawable/baseline_add_box_24"/>
 
         <!-- Profile -->
         <item
