@@ -6,8 +6,10 @@ import java.util.Date
 data class Moment(
     val title: String = "",
     val date: Date? = null,
-    val description: String = "",
+    val songID: String = "",
+    val songTitle: String = "",
     val image: Int,
+    val location: String = "",
     val latitude: Double,
     val longitude: Double
 ) : Serializable

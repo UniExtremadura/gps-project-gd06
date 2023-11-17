@@ -8,23 +8,29 @@ import com.spotify.quavergd06.R
 val dummyMoments: List<Moment> = listOf(
     Moment(
         "Mi primer Momento",
-        Date(2003, 12, 15),
-        "Este es mi primer momento",
+        Date(2023 - 1900, 11, 15),
+        "spotify:track:your_track_id_1", // Reemplaza "your_track_id_1" con el ID de la canción real
+        "Nombre de la canción 1", // Reemplaza con el nombre de la canción real
         R.drawable.image_mobile_phone,
-        39.4747451,-6.3712429  // Coordenadas de ejemplo para el primer momento
+        "Ubicación 1", // Reemplaza con la ubicación real
+        39.4747451, -6.3712429
     ),
     Moment(
         "Mi segundo Momento",
-        Date(2002, 7, 20),
-        "Este es mi segundo momento",
+        Date(2023 - 1900, 6, 20),
+        "spotify:track:your_track_id_2",
+        "Nombre de la canción 2",
         R.drawable.landscape,
-        39.4734895,-6.3833371  // Coordenadas de ejemplo para el segundo momento
+        "Ubicación 2",
+        39.4734895, -6.3833371
     ),
     Moment(
         "Mi tercer Momento",
-        Date(2002, 8, 13),
-        "Este es mi tercer momento",
+        Date(2023 - 1900, 7, 13),
+        "spotify:track:your_track_id_3",
+        "Nombre de la canción 3",
         R.drawable.microsoft,
-        39.4788312,-6.3435945  // Coordenadas de ejemplo para el tercer momento
+        "Ubicación 3",
+        39.4788312, -6.3435945
     )
 )

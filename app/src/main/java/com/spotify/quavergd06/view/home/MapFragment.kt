@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +17,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import com.spotify.quavergd06.data.dummyMoments
+import com.spotify.quavergd06.model.Moment
 
 class MapFragment : Fragment() {
 
@@ -27,7 +27,7 @@ class MapFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val view = inflater.inflate(R.layout.fragment_map, container, false)
 
         mapView = view.findViewById(R.id.osmMapView)
@@ -61,7 +61,6 @@ class MapFragment : Fragment() {
             val marker = Marker(mapView)
             marker.position = GeoPoint(moment.latitude, moment.longitude)
             marker.title = moment.title
-            marker.snippet = moment.description
 
             // Carga la imagen del recurso y redimensiona
             val originalBitmap = BitmapFactory.decodeResource(resources, moment.image)
@@ -73,13 +72,31 @@ class MapFragment : Fragment() {
             // Ajusta el punto de anclaje al centro inferior de la imagen del marcador
             marker.setAnchor(0.5f, 1.0f)
 
+            // Agrega un OnMarkerClickListener al marcador
+            marker.setOnMarkerClickListener { marker, mapView ->
+                // Navega al MomentDetailFragment y pasa el momento como argumento
+                showMomentDetailFragment(moment)
+                true
+            }
+
             // Agrega el marcador al mapa
             mapView.overlays.add(marker)
         }
 
 
+
     }
 
+    private fun showMomentDetailFragment(moment: Moment) {
+        // Navega al MomentDetailFragment y pasa el momento como argumento
+        val momentDetailFragment = MomentDetailFragment()
+        val bundle = Bundle()
+        bundle.putSerializable("moment", moment)
+        momentDetailFragment.arguments = bundle
+
+        // Usa findNavController() para navegar al fragmento
+        findNavController().navigate(R.id.momentDetailFragment, bundle)
+    }
     private fun navigateToMomentFragment() {
         // Encuentra el NavController y navega a la acción definida en el gráfico de navegación
         findNavController().navigate(R.id.action_mapFragment_to_momentFragment)

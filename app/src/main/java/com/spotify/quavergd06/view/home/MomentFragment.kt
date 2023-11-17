@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
-
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,11 +13,6 @@ import com.spotify.quavergd06.databinding.FragmentMomentBinding
 import com.spotify.quavergd06.model.Moment
 import com.spotify.quavergd06.data.dummyMoments
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MomentFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MomentFragment : Fragment() {
 
     private lateinit var listener: OnMomentClickListener
@@ -55,6 +47,11 @@ class MomentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
+        listener = object : OnMomentClickListener {
+            override fun onMomentClick(moment: Moment) {
+                showMomentDetailFragment(moment)
+            }
+        }
     }
     private fun setUpRecyclerView() {
         adapter = MomentAdapter(moments, onClick = {
@@ -72,6 +69,18 @@ class MomentFragment : Fragment() {
         // Encuentra el NavController y navega a la acción definida en el gráfico de navegación
         findNavController().navigate(R.id.action_momentFragment_to_mapFragment)
     }
+
+    private fun showMomentDetailFragment(moment: Moment) {
+        // Navega al MomentDetailFragment y pasa el momento como argumento
+        val momentDetailFragment = MomentDetailFragment()
+        val bundle = Bundle()
+        bundle.putSerializable("moment", moment)
+        momentDetailFragment.arguments = bundle
+
+        // Usa findNavController() para navegar al fragmento
+        findNavController().navigate(R.id.momentDetailFragment, bundle)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null // avoid memory leaks

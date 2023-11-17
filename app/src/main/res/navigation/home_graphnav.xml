@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_momentFragment_to_mapFragment"
             app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_momentFragment_to_momentDetailFragment"
+            app:destination="@id/momentDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -37,6 +40,13 @@
         <action
             android:id="@+id/action_mapFragment_to_momentFragment"
             app:destination="@id/momentFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_momentDetailFragment"
+            app:destination="@id/momentDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/momentDetailFragment"
+        android:name="com.spotify.quavergd06.view.home.MomentDetailFragment"
+        android:label="MomentDetailFragment" />
 
 </navigation>
