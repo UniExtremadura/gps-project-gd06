@@ -2,13 +2,14 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="377dp"
-        android:layout_height="457dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
@@ -34,6 +35,32 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <!-- Cambié el RelativeLayout por ConstraintLayout -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cameraOverlay"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="#80000000"
+                android:clickable="true"
+                app:layout_constraintBottom_toBottomOf="@+id/detailImage"
+                app:layout_constraintEnd_toEndOf="@+id/detailImage"
+                app:layout_constraintStart_toStartOf="@+id/detailImage"
+                app:layout_constraintTop_toTopOf="@+id/detailImage">
+
+                <ImageView
+                    android:layout_width="63dp"
+                    android:layout_height="47dp"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/baseline_photo_camera_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
             <ImageView
                 android:id="@+id/iconSpotify"
                 android:layout_width="24dp"
@@ -44,7 +71,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@id/detailSongTitle" />
 
-            <TextView
+            <EditText
                 android:id="@+id/detailSongTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -116,7 +143,7 @@
                 app:layout_constraintTop_toTopOf="@id/detailTitle"
                 app:tint="@color/green_spotify" />
 
-            <TextView
+            <EditText
                 android:id="@+id/detailTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -130,28 +157,28 @@
                 app:layout_constraintTop_toBottomOf="@+id/detailLocation" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/buttonEdit"
+                android:id="@+id/buttonSave"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 app:backgroundTint="@color/green_spotify"
-                app:layout_constraintBottom_toBottomOf="@+id/buttonDelete"
+                app:layout_constraintBottom_toBottomOf="@+id/buttonCancel"
                 app:layout_constraintEnd_toEndOf="@+id/detailTitle"
-                app:layout_constraintTop_toTopOf="@+id/buttonDelete"
-                app:srcCompat="@drawable/baseline_edit_24" />
+                app:layout_constraintTop_toTopOf="@+id/buttonCancel"
+                app:srcCompat="@drawable/baseline_save_24" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/buttonDelete"
+                android:id="@+id/buttonCancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="29dp"
                 android:layout_marginBottom="24dp"
                 android:clickable="true"
-                app:backgroundTint="@color/green_spotify"
+                app:backgroundTint="@color/red_cancel_close"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/iconTitle"
                 app:layout_constraintTop_toBottomOf="@+id/detailTitle"
-                app:srcCompat="@drawable/baseline_delete_outline_24" />
+                app:srcCompat="@drawable/baseline_close_24" />
 
 
             <!-- Agrega otros elementos según sea necesario -->
