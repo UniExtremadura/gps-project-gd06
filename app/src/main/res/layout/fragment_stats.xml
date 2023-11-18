@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="16dp"
         android:background="#FFFFFF"
         android:gravity="center_vertical"
         android:padding="8dp"
@@ -18,29 +19,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/moreTopGenres"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:focusable="true"
-        android:padding="8dp"
-        android:text="@string/more"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/titleTopGenres"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.934"
-        app:layout_constraintStart_toEndOf="@+id/titleTopGenres" />
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentTopGenres"
         android:layout_width="381dp"
         android:layout_height="50dp"
         android:layout_marginTop="12dp"
-        app:layout_constraintEnd_toEndOf="@+id/moreTopGenres"
         app:layout_constraintHeight_percent="0.25"
-        app:layout_constraintHorizontal_bias="0.428"
         app:layout_constraintStart_toStartOf="@+id/titleTopGenres"
         app:layout_constraintTop_toBottomOf="@+id/titleTopGenres" />
 
@@ -61,6 +45,7 @@
         android:id="@+id/moreTopArtists"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
         android:focusable="true"
         android:padding="8dp"
@@ -68,9 +53,7 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/titleTopArtists"
-        app:layout_constraintEnd_toEndOf="@+id/moreTopGenres"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/moreTopGenres" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentTopArtists"
@@ -107,9 +90,8 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/titleTopTracks"
-        app:layout_constraintEnd_toEndOf="@+id/moreTopGenres"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/moreTopGenres" />
+        app:layout_constraintEnd_toEndOf="@+id/moreTopArtists"
+        app:layout_constraintStart_toStartOf="@+id/moreTopArtists" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentTopTracks"
@@ -146,9 +128,8 @@
         android:textColor="?android:attr/textColorPrimary"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/titleHistory"
-        app:layout_constraintEnd_toEndOf="@+id/moreTopGenres"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/moreTopGenres" />
+        app:layout_constraintEnd_toEndOf="@+id/moreTopArtists"
+        app:layout_constraintStart_toStartOf="@+id/moreTopArtists" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentHistory"
