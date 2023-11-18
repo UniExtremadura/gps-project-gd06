@@ -31,12 +31,16 @@ import kotlinx.coroutines.launch
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import androidx.core.graphics.drawable.toBitmap
+import androidx.navigation.fragment.findNavController
+import com.spotify.quavergd06.database.QuaverDatabase
 
 class MomentEditFragment : Fragment() {
 
     private var _binding: FragmentMomentEditBinding? = null
     private val binding get() = _binding!!
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+    private lateinit var db: QuaverDatabase
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,9 +51,13 @@ class MomentEditFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        db = QuaverDatabase.getInstance(requireContext())!!
         val autoCompleteTextView = binding.detailSongTitle
 
+        binding.buttonSave.setOnClickListener {
+            persistMoment()
+            findNavController().navigateUp()
+        }
 
         lifecycleScope.launch {
             try {
@@ -185,6 +193,37 @@ class MomentEditFragment : Fragment() {
 
         // Retorna un objeto Pair con las coordenadas
         return Pair(latitud, longitud)
+    }
+
+    private fun persistMoment() {
+        val latLong = extractLatLongFromLocation(binding.detailLocation.text.toString())
+        val (_latitude, _longitude) = latLong!!
+        with(binding) {
+            lifecycleScope.launch {
+                val moment = Moment(
+                    momentId = null,
+                    title = detailTitle.text.toString(),
+                    date = dateFormat.parse(detailDate.text.toString()),
+                    songTitle = detailSongTitle.text.toString(),
+                    image = R.drawable.ic_launcher_foreground,
+                    location = "",
+                    latitude = _latitude,
+                    longitude = _longitude,
+                    imageBitmap = detailImage.drawable.toBitmap()
+                )
+                db.momentDAO().insertMoment(moment)
+            }
+        }
+    }
+
+    fun extractLatLongFromLocation(location: String): Pair<Double, Double>? {
+        val latLongRegex = """(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)""".toRegex()
+        val matchResult = latLongRegex.find(location)
+
+        return matchResult?.let {
+            val (latitude, _, longitude, _) = it.destructured
+            Pair(latitude.toDouble(), longitude.toDouble())
+        }
     }
     companion object {
         private const val CAMERA_REQUEST_CODE = 123
