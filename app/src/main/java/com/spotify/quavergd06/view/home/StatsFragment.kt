@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.fragment.app.Fragment
 import com.spotify.quavergd06.R
+import com.spotify.quavergd06.data.fetchables.ArtistFetchable
+import com.spotify.quavergd06.data.fetchables.TrackFetchable
 import com.spotify.quavergd06.databinding.FragmentStatsBinding
-import kotlin.math.log
 
 
 class StatsFragment : Fragment() {
