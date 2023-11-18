@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.spotify.quavergd06">
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -18,7 +20,8 @@
         <service
             android:name=".api.SpotifyApiService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true"
+            tools:ignore="Instantiatable"></service>
 
         <activity
             android:name=".view.home.HomeActivity"

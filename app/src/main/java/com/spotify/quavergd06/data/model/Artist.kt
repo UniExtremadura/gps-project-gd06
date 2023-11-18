@@ -1,6 +1,5 @@
 package com.spotify.quavergd06.data.model
 
-import android.media.Image
 
 data class Artist(
     val id: String,
