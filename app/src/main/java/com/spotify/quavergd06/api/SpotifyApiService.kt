@@ -1,7 +1,8 @@
 package com.spotify.quavergd06.api
 
-import com.example.example.ArtistResponse
 import com.spotify.quavergd06.data.api.Tracks
+import com.spotify.quavergd06.data.api.ArtistResponse
+import com.spotify.quavergd06.data.api.TrackResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
@@ -47,14 +48,23 @@ interface SpotifyApiService {
     // Endpoint para buscar artistas en Spotify
     @Headers("Content-Type: application/json")
     @GET("me/top/artists")
-    suspend fun loadTopArtist(
+    suspend fun loadTopArtists(
         @Query("time_range") timeRange: String,
         @Query("limit") limit: Int = 50
     ): Response<ArtistResponse>
 
     @Headers("Content-Type: application/json")
+    @GET("me/top/tracks")
+    suspend fun loadTopTracks(
+        @Query("time_range") timeRange: String,
+        @Query("limit") limit: Int = 50
+    ): Response<TrackResponse>
+
+
+    @Headers("Content-Type: application/json")
     @GET("me/top/tracks?limit=20&offset=0")
     suspend fun loadTracks(): Response<Tracks>
+    // Endpoint para buscar canciones en Spotify
 }
 
 interface APICallback {

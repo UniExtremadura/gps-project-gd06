@@ -3,8 +3,8 @@ package com.spotify.quavergd06.data.api
 import com.google.gson.annotations.SerializedName
 
 
-data class ExternalUrls (
+data class ExternalIds (
 
-    @SerializedName("spotify" ) var spotify : String? = null
+    @SerializedName("isrc" ) var isrc : String? = null
 
 )

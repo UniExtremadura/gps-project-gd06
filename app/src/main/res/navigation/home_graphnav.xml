@@ -28,8 +28,9 @@
         android:label="fragment_stats"
         tools:layout="@layout/fragment_stats" >
         <action
-            android:id="@+id/action_statsFragment_to_topArtistsViewPagerFragment"
-            app:destination="@id/topArtistsViewPagerFragment" />
+            android:id="@+id/action_statsFragment_to_topItemViewPagerFragment"
+            app:destination="@id/topItemViewPagerFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -54,15 +55,17 @@
         android:label="MomentDetailFragment" />
 
     <fragment
-        android:id="@+id/topArtistsFragment"
-        android:name="com.spotify.quavergd06.view.home.TopArtistsFragment"
-        android:label="TopArtistsFragment" />
+        android:id="@+id/topItemFragment"
+        android:name="com.spotify.quavergd06.view.home.TopGridFragment"
+        android:label="TopItemFragment" />
     <fragment
-        android:id="@+id/topArtistsViewPagerFragment"
-        android:name="com.spotify.quavergd06.view.home.TopArtistsViewPagerFragment"
-        android:label="TopArtistsViewPagerFragment" />
+        android:id="@+id/topItemViewPagerFragment"
+        android:name="com.spotify.quavergd06.view.home.TopItemViewPagerFragment"
+        android:label="TopItemViewPagerFragment" />
     <fragment
         android:id="@+id/momentEditFragment"
         android:name="com.spotify.quavergd06.view.home.MomentEditFragment"
         android:label="MomentEditFragment" />
+
+
 </navigation>
