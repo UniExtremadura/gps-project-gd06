@@ -36,7 +36,7 @@ class MomentEditFragment : Fragment() {
 
     private var _binding: FragmentMomentEditBinding? = null
     private val binding get() = _binding!!
-
+    private val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -71,7 +71,6 @@ class MomentEditFragment : Fragment() {
                 binding.detailImage.setImageResource(it.image)
                 autoCompleteTextView.setText(it.songTitle)
                 binding.detailLocation.text = it.location
-                val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 val formattedDate = dateFormat.format(it.date)
                 binding.detailDate.text = formattedDate
 
@@ -124,7 +123,7 @@ class MomentEditFragment : Fragment() {
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as? Bitmap
             binding.detailImage.setImageBitmap(imageBitmap)
-
+            binding.detailDate.text = dateFormat.format(java.util.Date())
             obtenerUbicacion().let { (latitud, longitud) ->
                 binding.detailLocation.text = "$latitud, $longitud"
             }
