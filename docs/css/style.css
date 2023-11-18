@@ -389,13 +389,12 @@ a:focus {
 }
 
 .service_section .box .img-box {
-  height: 65px;
+  height: 200px;
 }
 
 .service_section .box .img-box img {
   height: 100%;
-  -webkit-filter: brightness(0);
-          filter: brightness(0);
+
   -webkit-transition: all 0.3s;
   transition: all 0.3s;
 }
