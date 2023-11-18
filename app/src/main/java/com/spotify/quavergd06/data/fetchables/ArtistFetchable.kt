@@ -12,4 +12,8 @@ class ArtistFetchable : Fetchable {
         val apiArtists = getNetworkService().loadTopArtists("medium_term").body()?.artistItems ?: emptyList()
         return apiArtists.map(ArtistItem::toArtist).map(Artist::toStatsItem)
     }
+    override suspend fun fetch(timePeriod: String): List<StatsItem> {
+        val apiArtists = getNetworkService().loadTopArtists(timePeriod).body()?.artistItems ?: emptyList()
+        return apiArtists.map(ArtistItem::toArtist).map(Artist::toStatsItem)
+    }
 }

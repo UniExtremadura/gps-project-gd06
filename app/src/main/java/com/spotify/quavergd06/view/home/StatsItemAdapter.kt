@@ -20,8 +20,8 @@ class StatsItemAdapter(
             with(binding) {
                 topItemTitle.text = item.name
                 Picasso.get().load(item.imageUrls?.get(2)).into(topItemImg)
-                Log.d("ArtistAdapter", "Artist name: ${item.name}")
-                Log.d("ArtistAdapter", "Artist image: ${item.imageUrls?.get(2)}")
+                Log.d("StatsItemAdapter", "Name: ${item.name}")
+                Log.d("StatsItemAdapter", "Images: ${item.imageUrls}")
             }
         }
     }

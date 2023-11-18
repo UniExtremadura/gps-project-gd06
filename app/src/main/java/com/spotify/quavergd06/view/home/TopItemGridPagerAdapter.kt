@@ -1,18 +1,19 @@
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.spotify.quavergd06.view.home.TopArtistsFragment
+import com.spotify.quavergd06.data.fetchables.Fetchable
+import com.spotify.quavergd06.view.home.TopGridFragment
 
-class TopArtistGridPagerAdapter(fragmentManager: FragmentManager) :
+class TopItemGridPagerAdapter(fragmentManager: FragmentManager, private val fetchable: Fetchable) :
     FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getCount(): Int = 3
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
-            0 -> TopArtistsFragment.newInstance("short_term") // 4 weeks
-            1 -> TopArtistsFragment.newInstance("medium_term") // 6 months
-            2 -> TopArtistsFragment.newInstance("long_term") // All time
+            0 -> TopGridFragment.newInstance("short_term", fetchable) // 4 weeks
+            1 -> TopGridFragment.newInstance("medium_term", fetchable) // 6 months
+            2 -> TopGridFragment.newInstance("long_term", fetchable) // All time
             else -> throw IllegalArgumentException("Invalid position: $position")
         }
     }

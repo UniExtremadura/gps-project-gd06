@@ -12,4 +12,8 @@ class TrackFetchable : Fetchable {
         val apiTracks = getNetworkService().loadTopTracks("medium_term").body()?.trackItems ?: emptyList()
         return apiTracks.map(TrackItem::toTrack).map(Track::toStatsItem)
     }
+    override suspend fun fetch(timePeriod: String): List<StatsItem> {
+        val apiTracks = getNetworkService().loadTopTracks(timePeriod).body()?.trackItems ?: emptyList()
+        return apiTracks.map(TrackItem::toTrack).map(Track::toStatsItem)
+    }
 }

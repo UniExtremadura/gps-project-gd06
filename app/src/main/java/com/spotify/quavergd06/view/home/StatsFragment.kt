@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.fragment.app.Fragment
 import com.spotify.quavergd06.R
 import com.spotify.quavergd06.data.fetchables.ArtistFetchable
+import com.spotify.quavergd06.data.fetchables.Fetchable
 import com.spotify.quavergd06.data.fetchables.TrackFetchable
 import com.spotify.quavergd06.databinding.FragmentStatsBinding
 
@@ -44,26 +45,27 @@ class StatsFragment : Fragment() {
             .commit()
     }
 
-    private fun setButtons(){
+    private fun setButtons() {
         val buttonTopArtistsMore = _binding!!.moreTopArtists
         buttonTopArtistsMore.setOnClickListener {
-            navigateToTopArtistFragment()
+            val fetchable = ArtistFetchable()
+            Log.d("StatsFragment", "ArtistFetchable instance: $fetchable")
+            navigateToTopItemFragment(TopItemViewPagerFragment.newInstance("short_term", fetchable))
         }
 
         val buttonTopTracksMore = _binding!!.moreTopTracks
         buttonTopTracksMore.setOnClickListener {
-            navigateToTopTracksFragment()
+            val fetchable = TrackFetchable()
+            Log.d("StatsFragment", "TrackFetchable instance: $fetchable")
+            navigateToTopItemFragment(TopItemViewPagerFragment.newInstance("short_term", fetchable))
         }
     }
 
-    private fun navigateToTopArtistFragment() {
-        Log.d("StatsFragment", "navigateToTopArtistFragment")
-        findNavController().navigate(R.id.action_statsFragment_to_topArtistsViewPagerFragment)
+
+    private fun navigateToTopItemFragment(fragment: Fragment) {
+        Log.d("StatsFragment", "navigateToTopItemViewPagerFragment")
+        findNavController().navigate(R.id.action_statsFragment_to_topItemViewPagerFragment, fragment.arguments)
     }
 
-    private fun navigateToTopTracksFragment() {
-        Log.d("StatsFragment", "navigateToTopTracksFragment")
-        findNavController().navigate(R.id.action_statsFragment_to_topTracksViewPagerFragment)
-    }
 
 }

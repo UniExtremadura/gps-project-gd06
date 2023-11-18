@@ -11,30 +11,31 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 
-import com.spotify.quavergd06.api.getNetworkService
 import com.spotify.quavergd06.api.setKey
-import com.spotify.quavergd06.data.api.ArtistItem
+import com.spotify.quavergd06.data.fetchables.Fetchable
 import com.spotify.quavergd06.data.model.Artist
-import com.spotify.quavergd06.data.toArtist
+import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.databinding.FragmentTopGridBinding
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 
-class TopArtistsFragment : Fragment() {
+class TopGridFragment(private val fetchable: Fetchable) : Fragment() {
     private var _binding: FragmentTopGridBinding? = null
     private val binding get() = _binding!!
 
     //private lateinit var adapter: Adapter
-    private var _artists: List<Artist> = emptyList()
+    private var items: List<StatsItem> = emptyList()
     private var timePeriod: String = "short_term" // Default time period
+    private var adapter = StatsItemAdapter(items, this.context)
 
     companion object {
         private const val ARG_TIME_PERIOD = "arg_time_period"
 
         // Factory method to create a new instance of the fragment with a specified time period
-        fun newInstance(timePeriod: String): TopArtistsFragment {
-            val fragment = TopArtistsFragment()
+        fun newInstance(timePeriod: String, fetchable: Fetchable): TopGridFragment {
+            Log.d("TopGridFragment", "newInstance")
+            val fragment = TopGridFragment(fetchable)
             val args = Bundle()
             args.putString(ARG_TIME_PERIOD, timePeriod)
             fragment.arguments = args
@@ -62,35 +63,24 @@ class TopArtistsFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 setKey(obtenerSpotifyApiKey(requireContext())!!)
-                //_artists = fetchArtists(timePeriod).map(ArtistItem::toArtist)
-                //adapter.updateData(_artists)
+                items = fetchable.fetch(timePeriod)
+                adapter.updateData(items)
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
             }
         }
     }
 
-    /* private suspend fun fetchArtists(timePeriod: String): List<ArtistItem> {
-         var apiArtists = listOf<ArtistItem>()
-         try {
-             apiArtists = getNetworkService().loadTopArtist(timePeriod).body()?.artistItems
-                 ?: emptyList()
-         } catch (cause: Throwable) {
-             Log.d("PreviewTopFragment", "fetchArtists: ${apiArtists.size}")
-         }
-         return apiArtists
-     }*/
-
     private fun setUpRecyclerView() {
-//        adapter = ArtistAdapter(
-//            artists = _artists,
-//            context = this.context
-//        )
-//        with(binding) {
-//            topShowGrid.layoutManager = GridLayoutManager(context, 2)
-//            topShowGrid.adapter = adapter
-//        }
-//        android.util.Log.d("ArtistFragment", "setUpRecyclerView")
+        adapter = StatsItemAdapter(
+            statsItems = items,
+            context = this.context
+        )
+        with(binding) {
+            topShowGrid.layoutManager = GridLayoutManager(context, 2)
+            topShowGrid.adapter = adapter
+        }
+        android.util.Log.d("ArtistFragment", "setUpRecyclerView")
     }
 
     private fun obtenerSpotifyApiKey(context: Context): String? {
