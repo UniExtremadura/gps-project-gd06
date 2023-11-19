@@ -7,7 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.spotify.quavergd06.R
 import com.spotify.quavergd06.data.fetchables.Fetchable
+import com.spotify.quavergd06.data.model.Artist
+import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.databinding.FragmentTopItemViewPagerBinding
 
 class TopItemViewPagerFragment : Fragment() {
@@ -16,16 +20,6 @@ class TopItemViewPagerFragment : Fragment() {
 
     private var term: String? = null
     private var fetchable: Fetchable? = null
-
-    companion object {
-        fun newInstance(term: String, fetchable: Fetchable) =
-            TopItemViewPagerFragment().apply {
-                arguments = Bundle().apply {
-                    putString("term", term)
-                    putSerializable("fetchable", fetchable)
-                }
-            }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +50,11 @@ class TopItemViewPagerFragment : Fragment() {
 
     private fun setUpViewPager() {
         fetchable?.let { notNullFetchable ->
-            val adapter = TopItemGridPagerAdapter(childFragmentManager, notNullFetchable)
+            val adapter = TopItemGridPagerAdapter(childFragmentManager, notNullFetchable) { statsItem ->
+                onPreviewItemClick(
+                    statsItem
+                )
+            }
             binding.topItemViewPager.adapter = adapter
             binding.topItemTabLayout.setupWithViewPager(binding.topItemViewPager)
         } ?: Log.e("TopItemViewPagerFragment", "fetchable is null")
@@ -66,4 +64,23 @@ class TopItemViewPagerFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    private fun onPreviewItemClick(statsItem: StatsItem){
+        if (statsItem.artist == null) {
+            findNavController().navigate(R.id.action_topItemViewPagerFragment_to_artistInfoFragment, ArtistInfoFragment.newInstance(statsItem).arguments)
+        } else {
+            findNavController().navigate(R.id.action_topItemViewPagerFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(statsItem).arguments)
+        }
+    }
+
+    companion object {
+        fun newInstance(term: String, fetchable: Fetchable) =
+            TopItemViewPagerFragment().apply {
+                arguments = Bundle().apply {
+                    putString("term", term)
+                    putSerializable("fetchable", fetchable)
+                }
+            }
+    }
+
 }
