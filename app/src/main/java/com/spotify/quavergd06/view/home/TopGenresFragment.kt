@@ -2,6 +2,7 @@ package com.spotify.quavergd06.view.home
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,10 +19,13 @@ import com.spotify.quavergd06.data.model.Artist
 import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.data.toArtist
 import com.spotify.quavergd06.data.toStatsItem
+import com.spotify.quavergd06.databinding.FragmentTopGenresBinding
 import kotlinx.coroutines.launch
 
 
 class TopGenresFragment : Fragment() {
+    private var _binding: FragmentTopGenresBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var adapter: GenresAdapter
     private var artists = emptyList<Artist>()
@@ -37,7 +41,8 @@ class TopGenresFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_top_genres, container, false)
+        _binding = FragmentTopGenresBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,9 +62,9 @@ class TopGenresFragment : Fragment() {
 
                 android.util.Log.d("TopGenresFragment", "Top Genres: $topGenres")
 
-                //adapter.updateData(items)
+                adapter.updateData(topGenres)
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+                Log.d("TopGenresFragment", "Error: ${e.message}")
             }
         }
     }
@@ -70,15 +75,15 @@ class TopGenresFragment : Fragment() {
     }
 
     private fun setUpRecyclerView() {
-//        adapter = GenresAdapter(
-//            statsItems = items,
-//            context = this.context
-//        )
-//        with(binding) {
-//            recyclerViewTopPreview.layoutManager = LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,  false)
-//            recyclerViewTopPreview.adapter = adapter
-//        }
-        android.util.Log.d("ArtistFragment", "setUpRecyclerView")
+        adapter = GenresAdapter(
+            genres = genres,
+            context = this.context
+        )
+        with(binding) {
+            topGenresRecyclerView.layoutManager = LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,  false)
+            topGenresRecyclerView.adapter = adapter
+        }
+        android.util.Log.d("TopGenresFragment", "setUpRecyclerView")
     }
 
     private fun getGenresFromArtistList(artists: List<Artist>): List<String> {
