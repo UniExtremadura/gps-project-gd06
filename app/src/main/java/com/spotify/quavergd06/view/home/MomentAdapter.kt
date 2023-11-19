@@ -24,6 +24,8 @@ class MomentAdapter(
             }
         }
     }
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowViewHolder {
         val binding =
             FragmentMomentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -36,9 +38,8 @@ class MomentAdapter(
         holder.bind(moments[position], moments.size)
     }
 
-    fun swap(newMoments: List<Moment>) {
-        moments = newMoments
-        notifyDataSetChanged()
-    }
+
+
+    
 
 }

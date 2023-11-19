@@ -154,12 +154,9 @@
                 app:srcCompat="@drawable/baseline_delete_outline_24" />
 
 
-            <!-- Agrega otros elementos según sea necesario -->
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Otros elementos del ConstraintLayout exterior -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

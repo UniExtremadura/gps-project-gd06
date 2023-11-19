@@ -52,6 +52,7 @@ class MomentDetailFragment : Fragment() {
         navBar?.visibility = View.GONE
     }
 
+
     override fun onPause() {
         super.onPause()
 
@@ -63,4 +64,5 @@ class MomentDetailFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 }
