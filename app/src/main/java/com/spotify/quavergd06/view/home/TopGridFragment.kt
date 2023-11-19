@@ -10,7 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.spotify.quavergd06.R
 
 import com.spotify.quavergd06.api.setKey
 import com.spotify.quavergd06.data.fetchables.Fetchable
@@ -21,7 +23,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 
-class TopGridFragment(private val fetchable: Fetchable, private val onPreviewItemClick: (StatsItem) -> Unit) : Fragment() {
+class TopGridFragment(private val fetchable: Fetchable,  private val onClick: (StatsItem) -> Unit) : Fragment() {
     private var _binding: FragmentTopGridBinding? = null
     private val binding get() = _binding!!
 
@@ -29,20 +31,6 @@ class TopGridFragment(private val fetchable: Fetchable, private val onPreviewIte
     private var items: List<StatsItem> = emptyList()
     private var timePeriod: String = "short_term" // Default time period
     private lateinit var adapter : StatsItemAdapter
-
-    companion object {
-        private const val ARG_TIME_PERIOD = "arg_time_period"
-
-        // Factory method to create a new instance of the fragment with a specified time period
-        fun newInstance(timePeriod: String, fetchable: Fetchable, onPreviewItemClick: (StatsItem) -> Unit): TopGridFragment {
-            Log.d("TopGridFragment", "newInstance")
-            val fragment = TopGridFragment(fetchable, onPreviewItemClick)
-            val args = Bundle()
-            args.putString(ARG_TIME_PERIOD, timePeriod)
-            fragment.arguments = args
-            return fragment
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,9 +64,7 @@ class TopGridFragment(private val fetchable: Fetchable, private val onPreviewIte
         adapter = StatsItemAdapter(
             statsItems = items,
             context = this.context,
-            onClick = {statsItem ->
-                onPreviewItemClick(statsItem)
-            }
+            onClick = {statsItem -> onClick(statsItem) }
         )
         with(binding) {
             topShowGrid.layoutManager = GridLayoutManager(context, 2)
@@ -96,5 +82,19 @@ class TopGridFragment(private val fetchable: Fetchable, private val onPreviewIte
         super.onDestroyView()
         _binding = null
         lifecycleScope.cancel()
+    }
+
+    companion object {
+        private const val ARG_TIME_PERIOD = "arg_time_period"
+
+        // Factory method to create a new instance of the fragment with a specified time period
+        fun newInstance(timePeriod: String, fetchable: Fetchable,  onClick: (StatsItem) -> Unit): TopGridFragment {
+            Log.d("TopGridFragment", "newInstance")
+            val fragment = TopGridFragment(fetchable, onClick)
+            val args = Bundle()
+            args.putString(ARG_TIME_PERIOD, timePeriod)
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

@@ -67,7 +67,14 @@
     <fragment
         android:id="@+id/topItemViewPagerFragment"
         android:name="com.spotify.quavergd06.view.home.TopItemViewPagerFragment"
-        android:label="TopItemViewPagerFragment" />
+        android:label="TopItemViewPagerFragment" >
+        <action
+            android:id="@+id/action_topItemViewPagerFragment_to_trackInfoFragment"
+            app:destination="@id/trackInfoFragment" />
+        <action
+            android:id="@+id/action_topItemViewPagerFragment_to_artistInfoFragment"
+            app:destination="@id/artistInfoFragment" />
+    </fragment>
     <fragment
         android:id="@+id/momentEditFragment"
         android:name="com.spotify.quavergd06.view.home.MomentEditFragment"
@@ -80,7 +87,11 @@
     <fragment
         android:id="@+id/trackInfoFragment"
         android:name="com.spotify.quavergd06.view.home.TrackInfoFragment"
-        android:label="TrackInfoFragment" />
+        android:label="TrackInfoFragment" >
+    <action
+        android:id="@+id/action_trackInfoFragment_to_artistInfoFragment"
+        app:destination="@id/artistInfoFragment" />
+    </fragment>
 
 
 </navigation>

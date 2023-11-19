@@ -5,4 +5,13 @@ import java.io.Serializable
 data class StatsItem (
     val name         : String?            = null,
     val imageUrls    : ArrayList<String>? = null,
-) : Serializable
+
+    // Artist
+    val genres       : ArrayList<String>? = arrayListOf(),
+    val popularity   : Int?               = null,
+
+    // Track
+    val album        : String?            = null,
+    val artist       : Artist?            = null,
+
+    ) : Serializable
