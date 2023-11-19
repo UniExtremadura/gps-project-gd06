@@ -25,10 +25,10 @@ class MomentAdapter(
         }
     }
 
-    //    fun swap(newMoments: List<Moment>) {
-//        moments = newMoments
-//        notifyDataSetChanged()
-//    }
+        fun swap(newMoments: List<Moment>) {
+        moments = newMoments
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowViewHolder {
         val binding =
