@@ -1,5 +1,6 @@
 package com.spotify.quavergd06.view.home
 
+import StatsItemAdapter
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -20,22 +21,22 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 
-class TopGridFragment(private val fetchable: Fetchable) : Fragment() {
+class TopGridFragment(private val fetchable: Fetchable, private val onPreviewItemClick: (StatsItem) -> Unit) : Fragment() {
     private var _binding: FragmentTopGridBinding? = null
     private val binding get() = _binding!!
 
     //private lateinit var adapter: Adapter
     private var items: List<StatsItem> = emptyList()
     private var timePeriod: String = "short_term" // Default time period
-    private var adapter = StatsItemAdapter(items, this.context)
+    private lateinit var adapter : StatsItemAdapter
 
     companion object {
         private const val ARG_TIME_PERIOD = "arg_time_period"
 
         // Factory method to create a new instance of the fragment with a specified time period
-        fun newInstance(timePeriod: String, fetchable: Fetchable): TopGridFragment {
+        fun newInstance(timePeriod: String, fetchable: Fetchable, onPreviewItemClick: (StatsItem) -> Unit): TopGridFragment {
             Log.d("TopGridFragment", "newInstance")
-            val fragment = TopGridFragment(fetchable)
+            val fragment = TopGridFragment(fetchable, onPreviewItemClick)
             val args = Bundle()
             args.putString(ARG_TIME_PERIOD, timePeriod)
             fragment.arguments = args
@@ -74,7 +75,10 @@ class TopGridFragment(private val fetchable: Fetchable) : Fragment() {
     private fun setUpRecyclerView() {
         adapter = StatsItemAdapter(
             statsItems = items,
-            context = this.context
+            context = this.context,
+            onClick = {statsItem ->
+                onPreviewItemClick(statsItem)
+            }
         )
         with(binding) {
             topShowGrid.layoutManager = GridLayoutManager(context, 2)

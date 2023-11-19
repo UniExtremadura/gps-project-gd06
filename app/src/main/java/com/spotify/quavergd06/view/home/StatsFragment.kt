@@ -11,6 +11,7 @@ import com.spotify.quavergd06.R
 import com.spotify.quavergd06.data.fetchables.ArtistFetchable
 import com.spotify.quavergd06.data.fetchables.Fetchable
 import com.spotify.quavergd06.data.fetchables.TrackFetchable
+import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.databinding.FragmentStatsBinding
 
 
@@ -36,8 +37,14 @@ class StatsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         loadFragment(R.id.fragmentTopGenres, TopGenresFragment())
-        loadFragment(R.id.fragmentTopArtists, PreviewTopFragment(ArtistFetchable()))
-        loadFragment(R.id.fragmentTopTracks, PreviewTopFragment(TrackFetchable()))
+
+        loadFragment(R.id.fragmentTopArtists, PreviewTopFragment(ArtistFetchable()) { statsItem ->
+            findNavController().navigate(R.id.action_statsFragment_to_artistInfoFragment, ArtistInfoFragment.newInstance(statsItem).arguments)
+        })
+
+        loadFragment(R.id.fragmentTopTracks, PreviewTopFragment(TrackFetchable()) { statsItem ->
+            findNavController().navigate(R.id.action_statsFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(statsItem).arguments)
+        })
     }
 
     private fun loadFragment(containerId: Int, fragment: Fragment) {
@@ -62,11 +69,9 @@ class StatsFragment : Fragment() {
         }
     }
 
-
     private fun navigateToTopItemFragment(fragment: Fragment) {
         Log.d("StatsFragment", "navigateToTopItemViewPagerFragment")
         findNavController().navigate(R.id.action_statsFragment_to_topItemViewPagerFragment, fragment.arguments)
     }
-
 
 }

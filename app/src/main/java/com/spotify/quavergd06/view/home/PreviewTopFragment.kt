@@ -1,5 +1,6 @@
 package com.spotify.quavergd06.view.home
 
+import StatsItemAdapter
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,11 +17,11 @@ import com.spotify.quavergd06.databinding.FragmentTopPreviewBinding
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class PreviewTopFragment(private val fetchable: Fetchable) : Fragment() {
+class PreviewTopFragment(private val fetchable: Fetchable, private val onPreviewItemClick: (StatsItem) -> Unit) : Fragment() {
     private var _binding: FragmentTopPreviewBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter: StatsItemAdapter
+    private var adapter: StatsItemAdapter = StatsItemAdapter(emptyList(), {}, null)
     private var items: List<StatsItem> = emptyList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +46,7 @@ class PreviewTopFragment(private val fetchable: Fetchable) : Fragment() {
                 setKey(obtenerSpotifyApiKey(requireContext())!!)
                 items = fetchable.fetch()
                 adapter.updateData(items)
+
             } catch (e: Exception) {
                 Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
             }
@@ -54,7 +56,10 @@ class PreviewTopFragment(private val fetchable: Fetchable) : Fragment() {
     private fun setUpRecyclerView() {
         adapter = StatsItemAdapter(
             statsItems = items,
-            context = this.context
+            context = this.context,
+            onClick = {statsItem ->
+                onPreviewItemClick(statsItem)
+            }
         )
         with(binding) {
             recyclerViewTopPreview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,  false)
@@ -73,4 +78,6 @@ class PreviewTopFragment(private val fetchable: Fetchable) : Fragment() {
         _binding = null
         lifecycleScope.cancel()
     }
+
+
 }

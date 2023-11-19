@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.spotify.quavergd06.data.fetchables.Fetchable
+import com.spotify.quavergd06.data.model.Artist
+import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.databinding.FragmentTopItemViewPagerBinding
 
 class TopItemViewPagerFragment : Fragment() {
@@ -16,16 +18,6 @@ class TopItemViewPagerFragment : Fragment() {
 
     private var term: String? = null
     private var fetchable: Fetchable? = null
-
-    companion object {
-        fun newInstance(term: String, fetchable: Fetchable) =
-            TopItemViewPagerFragment().apply {
-                arguments = Bundle().apply {
-                    putString("term", term)
-                    putSerializable("fetchable", fetchable)
-                }
-            }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,15 +47,26 @@ class TopItemViewPagerFragment : Fragment() {
     }
 
     private fun setUpViewPager() {
-        fetchable?.let { notNullFetchable ->
-            val adapter = TopItemGridPagerAdapter(childFragmentManager, notNullFetchable)
-            binding.topItemViewPager.adapter = adapter
-            binding.topItemTabLayout.setupWithViewPager(binding.topItemViewPager)
-        } ?: Log.e("TopItemViewPagerFragment", "fetchable is null")
+//        fetchable?.let { notNullFetchable ->
+//            val adapter = TopItemGridPagerAdapter(childFragmentManager, notNullFetchable)
+//            binding.topItemViewPager.adapter = adapter
+//            binding.topItemTabLayout.setupWithViewPager(binding.topItemViewPager)
+//        } ?: Log.e("TopItemViewPagerFragment", "fetchable is null")
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
+    companion object {
+        fun newInstance(term: String, fetchable: Fetchable) =
+            TopItemViewPagerFragment().apply {
+                arguments = Bundle().apply {
+                    putString("term", term)
+                    putSerializable("fetchable", fetchable)
+                }
+            }
+    }
+
 }
