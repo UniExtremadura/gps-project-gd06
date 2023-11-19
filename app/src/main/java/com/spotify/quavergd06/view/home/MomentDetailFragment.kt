@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.spotify.quavergd06.databinding.FragmentMomentDetailBinding
 import com.spotify.quavergd06.model.Moment
 import java.text.SimpleDateFormat
@@ -41,9 +42,21 @@ class MomentDetailFragment : Fragment() {
             binding.detailDate.text = formattedDate// ...
 
             binding.detailTitle.text = it.title
-            // Configurar otros elementos según sea necesario
+            binding.buttonEdit.setOnClickListener {
+                navigateToEditFragment()
+            }
         }
     }
+
+    private fun navigateToEditFragment() {
+        val momentDetailFragment = MomentDetailFragment()
+        val bundle = Bundle()
+        val moment = arguments?.getSerializable("moment") as? Moment
+        bundle.putSerializable("moment", moment)
+        momentDetailFragment.arguments = bundle
+        findNavController().navigate(R.id.action_momentDetailFragment_to_momentEditFragment, bundle)
+    }
+
     override fun onResume() {
         super.onResume()
 
@@ -51,7 +64,6 @@ class MomentDetailFragment : Fragment() {
         val navBar: BottomNavigationView? = activity?.findViewById(R.id.bottom_navigation)
         navBar?.visibility = View.GONE
     }
-
 
     override fun onPause() {
         super.onPause()
@@ -64,5 +76,4 @@ class MomentDetailFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }
