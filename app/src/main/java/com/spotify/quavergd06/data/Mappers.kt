@@ -23,11 +23,17 @@ fun TrackItem.toTrack() = Track(
 )
 
 fun Artist.toStatsItem() = StatsItem(
+    id = id,
     name = name,
-    imageUrls = imageUrls
+    imageUrls = imageUrls,
+    genres = genres,
+    popularity = popularity
 )
 
 fun Track.toStatsItem() = StatsItem(
+    id = id,
     name = name,
-    imageUrls = imageUrls
+    imageUrls = imageUrls,
+    album = album,
+    artist = artist
 )

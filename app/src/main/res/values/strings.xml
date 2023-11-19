@@ -13,6 +13,12 @@
     <string name="history_previsualization_title">History:</string>
     <string name="more">More...</string>
     <string name="top_genres_title">Genre</string>
+    <string name="popularity">Popularity:</string>
+    <string name="genres">Genres:</string>
+    <string name="artist">Artist:</string>
+    <string name="track_title">Title:</string>
+    <string name="album_name">Album:</string>
+    <string name="artist_name">Artist:\n</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

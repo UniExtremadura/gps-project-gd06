@@ -1,5 +1,6 @@
 package com.spotify.quavergd06.data.fetchables
 
+import android.util.Log
 import com.spotify.quavergd06.api.getNetworkService
 import com.spotify.quavergd06.data.api.ArtistItem
 import com.spotify.quavergd06.data.model.Artist
