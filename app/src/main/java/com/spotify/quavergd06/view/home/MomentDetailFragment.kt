@@ -64,10 +64,5 @@ class MomentDetailFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-    private fun navigateToTopItemViewPagerFragment(fragment: Fragment) {
-        childFragmentManager.beginTransaction()
-            .replace(R.id.fragmentTopArtists, fragment)
-            .commit()
-    }
 
 }
