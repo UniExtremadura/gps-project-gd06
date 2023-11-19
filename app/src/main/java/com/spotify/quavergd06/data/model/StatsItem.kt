@@ -3,6 +3,8 @@ package com.spotify.quavergd06.data.model
 import java.io.Serializable
 
 data class StatsItem (
+    val id           : String?            = "33",
+
     val name         : String?            = null,
     val imageUrls    : ArrayList<String>? = null,
 

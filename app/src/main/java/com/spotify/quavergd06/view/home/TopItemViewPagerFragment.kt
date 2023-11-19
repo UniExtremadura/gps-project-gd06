@@ -65,13 +65,10 @@ class TopItemViewPagerFragment : Fragment() {
         _binding = null
     }
 
-    // Crea una función que devuelva un callback de navegación a ArtistInfoFragment o un TrackInfoFragment en función del tipo de StatsItem
     private fun onPreviewItemClick(statsItem: StatsItem){
-        if (statsItem.genres != null && statsItem.genres!!.size >  0) {
-            // If statsItem has a genre, navigate to TopArtistsFragment
+        if (statsItem.artist == null) {
             findNavController().navigate(R.id.action_topItemViewPagerFragment_to_artistInfoFragment, ArtistInfoFragment.newInstance(statsItem).arguments)
         } else {
-            // If statsItem doesn't have a genre, navigate to TopTracksFragment
             findNavController().navigate(R.id.action_topItemViewPagerFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(statsItem).arguments)
         }
     }

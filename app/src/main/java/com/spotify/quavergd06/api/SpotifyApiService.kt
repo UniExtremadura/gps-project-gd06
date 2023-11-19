@@ -1,8 +1,9 @@
 package com.spotify.quavergd06.api
 
+import com.spotify.quavergd06.data.api.ArtistItem
 import com.spotify.quavergd06.data.api.Tracks
-import com.spotify.quavergd06.data.api.ArtistResponse
-import com.spotify.quavergd06.data.api.TrackResponse
+import com.spotify.quavergd06.data.api.TopArtistResponse
+import com.spotify.quavergd06.data.api.TopTrackResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
@@ -10,6 +11,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 private const val BASE_URL = "https://api.spotify.com/v1/"
@@ -51,15 +53,20 @@ interface SpotifyApiService {
     suspend fun loadTopArtists(
         @Query("time_range") timeRange: String,
         @Query("limit") limit: Int = 50
-    ): Response<ArtistResponse>
+    ): Response<TopArtistResponse>
 
     @Headers("Content-Type: application/json")
     @GET("me/top/tracks")
     suspend fun loadTopTracks(
         @Query("time_range") timeRange: String,
         @Query("limit") limit: Int = 50
-    ): Response<TrackResponse>
+    ): Response<TopTrackResponse>
 
+    @Headers("Content-Type: application/json")
+    @GET("artists/{id}")
+    suspend fun loadArtist(
+        @Path("id") id: String
+    ): Response<ArtistItem>
 
     @Headers("Content-Type: application/json")
     @GET("me/top/tracks?limit=20&offset=0")

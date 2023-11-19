@@ -18,6 +18,8 @@ import com.spotify.quavergd06.databinding.FragmentStatsBinding
 class StatsFragment : Fragment() {
 
     private var _binding: FragmentStatsBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -31,7 +33,7 @@ class StatsFragment : Fragment() {
 
         setButtons()
 
-        return _binding!!.root
+        return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -54,14 +56,14 @@ class StatsFragment : Fragment() {
     }
 
     private fun setButtons() {
-        val buttonTopArtistsMore = _binding!!.moreTopArtists
+        val buttonTopArtistsMore = binding.moreTopArtists
         buttonTopArtistsMore.setOnClickListener {
             val fetchable = ArtistFetchable()
             Log.d("StatsFragment", "ArtistFetchable instance: $fetchable")
             navigateToTopItemFragment(TopItemViewPagerFragment.newInstance("short_term", fetchable))
         }
 
-        val buttonTopTracksMore = _binding!!.moreTopTracks
+        val buttonTopTracksMore = binding.moreTopTracks
         buttonTopTracksMore.setOnClickListener {
             val fetchable = TrackFetchable()
             Log.d("StatsFragment", "TrackFetchable instance: $fetchable")
