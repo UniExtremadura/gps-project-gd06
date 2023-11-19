@@ -4,18 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.spotify.quavergd06.R
 
 import com.spotify.quavergd06.databinding.FragmentMomentBinding
 import com.spotify.quavergd06.model.Moment
 import com.spotify.quavergd06.data.dummy.dummyMoments
+import com.spotify.quavergd06.database.QuaverDatabase
+import kotlinx.coroutines.launch
 
 class MomentFragment : Fragment() {
 
     private lateinit var listener: OnMomentClickListener
+    private lateinit var db : QuaverDatabase
     interface OnMomentClickListener {
         fun onMomentClick(moment: Moment)
     }
@@ -24,7 +30,7 @@ class MomentFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var adapter: MomentAdapter
 
-    private val moments = dummyMoments
+    private var moments = emptyList<Moment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,12 +41,19 @@ class MomentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMomentBinding.inflate(inflater, container, false)
-
-        val button = _binding!!.buttonToMap
+        adapter = MomentAdapter(moments, onClick = {
+            listener.onMomentClick(it)
+        }
+        )
+        val button = _binding!!.buttonToMap as FloatingActionButton
         button.setOnClickListener {
             navigateToMapFragment()
         }
-
+        db = QuaverDatabase.getInstance(requireContext())!!
+        lifecycleScope.launch {
+            moments = db.momentDAO().getAllMoments()
+            adapter.updateData(moments)
+        }
 
         return binding.root
     }
@@ -54,10 +67,6 @@ class MomentFragment : Fragment() {
         }
     }
     private fun setUpRecyclerView() {
-        adapter = MomentAdapter(moments, onClick = {
-                listener.onMomentClick(it)
-            }
-        )
         with(binding) {
             momentShowGrid.layoutManager = GridLayoutManager(context, 2)
             momentShowGrid.adapter = adapter

@@ -13,10 +13,9 @@ data class Moment(
     val title: String = "",
     val date: Date? = null,
     val songTitle: String = "",
-    val image: Int,
+    val imageURI: String,
     val location: String = "",
     val latitude: Double,
     val longitude: Double,
-    val imageBitmap: Bitmap? = null
 ) : Serializable
 

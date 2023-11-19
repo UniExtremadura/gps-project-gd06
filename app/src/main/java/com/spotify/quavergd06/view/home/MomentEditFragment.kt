@@ -31,8 +31,10 @@ import kotlinx.coroutines.launch
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.util.Log
 import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.spotify.quavergd06.database.QuaverDatabase
 
 class MomentEditFragment : Fragment() {
@@ -42,6 +44,7 @@ class MomentEditFragment : Fragment() {
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
     private lateinit var db: QuaverDatabase
     private var loadNewContent = false
+    private var momentId: Long? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,7 +64,8 @@ class MomentEditFragment : Fragment() {
         }
 
         binding.buttonSave.setOnClickListener {
-            persistMoment()
+            val imageURI = saveImage(binding.detailImage.drawable.toBitmap())
+            persistMoment(imageURI!!)
             findNavController().navigateUp()
         }
 
@@ -85,8 +89,9 @@ class MomentEditFragment : Fragment() {
         //TODO: Adecuar la carga según el origen de los datos
         if (moment != null) {
             moment?.let {
+                momentId = it.momentId
                 // Configurar la vista con los detalles del Momento
-                binding.detailImage.setImageResource(it.image)
+                loadImageFromUri(it.imageURI)
                 autoCompleteTextView.setText(it.songTitle)
                 binding.detailLocation.text = it.location
                 val formattedDate = dateFormat.format(it.date)
@@ -114,6 +119,14 @@ class MomentEditFragment : Fragment() {
         return sharedPreferences.getString("access_token", null)
     }
 
+    private fun loadImageFromUri(uri: String?) {
+        if (uri != null) {
+            Glide.with(this)
+                .load(uri)
+                .into(binding.detailImage)
+        }
+    }
+
     private fun openCamera() {
         // Verificar si se tienen los permisos necesarios
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
@@ -128,7 +141,7 @@ class MomentEditFragment : Fragment() {
                 arrayOf(Manifest.permission.CAMERA),
                 CAMERA_PERMISSION_REQUEST_CODE
             )
-            //reload fragment
+            openCamera()
 
         } else {
             // Abrir la cámara
@@ -142,7 +155,7 @@ class MomentEditFragment : Fragment() {
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as? Bitmap
             binding.detailImage.setImageBitmap(imageBitmap)
-            if (loadNewContent) {
+            if (arguments?.getSerializable("moment") == null) {
                 loadNewContent = false
                 binding.detailDate.text = dateFormat.format(java.util.Date())
                 obtenerUbicacion().let { (latitud, longitud) ->
@@ -169,63 +182,79 @@ class MomentEditFragment : Fragment() {
     }
 
     private fun obtenerUbicacion(): Pair<Double, Double> {
-        // Obtén una instancia del LocationManager
         val locationManager = requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         // Variables para almacenar latitud y longitud
-        var latitud: Double = 0.0
-        var longitud: Double = 0.0
+        var latitud = 0.0
+        var longitud = 0.0
 
         // Verifica si se tienen permisos de ubicación
-        if (requireActivity().checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+        if (requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            val locationListener = object : LocationListener {
+                override fun onLocationChanged(location: Location) {
+                    latitud = location.latitude
+                    longitud = location.longitude
 
-            // Obtiene la última ubicación conocida (puede ser nula)
-            val lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-
-            // Verifica si se obtuvo la última ubicación conocida
-            if (lastKnownLocation != null) {
-                latitud = lastKnownLocation.latitude
-                longitud = lastKnownLocation.longitude
-            } else {
-                // Si la última ubicación conocida es nula, solicita actualizaciones de ubicación
-                val locationListener = object : LocationListener {
-                    override fun onLocationChanged(location: Location) {
-                        latitud = location.latitude
-                        longitud = location.longitude
-
-                        // Detener las actualizaciones de ubicación después de obtener la primera ubicación
-                        locationManager.removeUpdates(this)
-                    }
+                    // Detener las actualizaciones de ubicación después de obtener la primera ubicación
+                    locationManager.removeUpdates(this)
                 }
-                // Solicita actualizaciones de ubicación
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, locationListener)
             }
+
+            // Intenta obtener la ubicación del proveedor GPS
+            if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0f, locationListener)
+                val lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                if (lastKnownLocation != null) {
+                    latitud = lastKnownLocation.latitude
+                    longitud = lastKnownLocation.longitude
+                }
+            } else if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+                // Si el proveedor GPS no está disponible, intenta obtener la ubicación del proveedor de red
+                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0f, locationListener)
+                val lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                if (lastKnownLocation != null) {
+                    latitud = lastKnownLocation.latitude
+                    longitud = lastKnownLocation.longitude
+                }
+            }
+
+            return Pair(latitud, longitud)
         } else {
             // Si no se tienen permisos, solicítalos al usuario
-            requestPermissions(arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), 1)
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+            return obtenerUbicacion()
         }
-
-        // Retorna un objeto Pair con las coordenadas
-        return Pair(latitud, longitud)
     }
 
-    private fun persistMoment() {
+    private fun saveImage(imageBitmap: Bitmap?): String? {
+        if (imageBitmap != null) {
+            val savedImageURI = MediaStore.Images.Media.insertImage(
+                requireContext().contentResolver,
+                imageBitmap,
+                "Momento",
+                "Momento de Quaver"
+            )
+            return savedImageURI
+        }
+        return null
+    }
+
+    private fun persistMoment(_imageURI: String) {
         val latLong = extractLatLongFromLocation(binding.detailLocation.text.toString())
         val (_latitude, _longitude) = latLong!!
         with(binding) {
             lifecycleScope.launch {
                 val moment = Moment(
-                    momentId = null,
+                    momentId = momentId,
                     title = detailTitle.text.toString(),
                     date = dateFormat.parse(detailDate.text.toString()),
                     songTitle = detailSongTitle.text.toString(),
-                    image = R.drawable.ic_launcher_foreground,
-                    location = "",
+                    imageURI = _imageURI,
+                    location = detailLocation.text.toString(),
                     latitude = _latitude,
                     longitude = _longitude,
-                    imageBitmap = detailImage.drawable.toBitmap()
                 )
-                db.momentDAO().insertMoment(moment)
+                Log.d("Moment",db.momentDAO().insertMoment(moment).toString())
             }
         }
     }

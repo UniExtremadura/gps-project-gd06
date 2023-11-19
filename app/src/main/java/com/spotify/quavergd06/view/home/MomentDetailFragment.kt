@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.spotify.quavergd06.databinding.FragmentMomentDetailBinding
 import com.spotify.quavergd06.model.Moment
 import java.text.SimpleDateFormat
@@ -33,7 +34,9 @@ class MomentDetailFragment : Fragment() {
         val moment = arguments?.getSerializable("moment") as? Moment
         moment?.let {
             // Configurar la vista con los detalles del Momento
-            binding.detailImage.setImageResource(it.image)
+            Glide.with(this)
+                .load(moment.imageURI)
+                .into(binding.detailImage)
             binding.detailSongTitle.text = it.songTitle
             binding.detailLocation.text = it.location
 

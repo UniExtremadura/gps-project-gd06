@@ -3,6 +3,9 @@ package com.spotify.quavergd06.view.home
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.spotify.quavergd06.data.model.Artist
 import com.spotify.quavergd06.model.Moment
 import com.spotify.quavergd06.databinding.FragmentMomentItemBinding
 class MomentAdapter(
@@ -17,15 +20,16 @@ class MomentAdapter(
         fun bind(moment: Moment, totalItems: Int) {
             with(binding) {
                 momentTitle.text = moment.title
-                momentImg.setImageResource(moment.image)
+                Glide.with(root.context)
+                    .load(moment.imageURI)
+                    .apply(RequestOptions().override(900, 900))
+                    .into(momentImg)
                 clItem.setOnClickListener {
                     onClick(moment)
                 }
             }
         }
     }
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowViewHolder {
         val binding =
             FragmentMomentItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -38,8 +42,15 @@ class MomentAdapter(
         holder.bind(moments[position], moments.size)
     }
 
+    fun updateData(moments: List<Moment>) {
+        this.moments = moments
+        notifyDataSetChanged()
+    }
 
 
-    
+    fun swap(newMoments: List<Moment>) {
+        moments = newMoments
+        notifyDataSetChanged()
+    }
 
 }

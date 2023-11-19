@@ -10,7 +10,7 @@ val dummyMoments: List<Moment> = listOf(
         "Mi primer Momento",
         Date(2023 - 1900, 11, 15),
         "Nombre de la canción 1", // Reemplaza con el nombre de la canción real
-        R.drawable.image_mobile_phone,
+        R.drawable.image_mobile_phone.toString(),
         "39.4747451, -6.3712429", // Reemplaza con la ubicación real
         39.4747451, -6.3712429
     ),
@@ -18,7 +18,7 @@ val dummyMoments: List<Moment> = listOf(
         "Mi segundo Momento",
         Date(2023 - 1900, 6, 20),
         "Nombre de la canción 2",
-        R.drawable.landscape,
+        R.drawable.landscape.toString(),
         "39.4734895, -6.3833371",
         39.4734895, -6.3833371
     ),
@@ -26,7 +26,7 @@ val dummyMoments: List<Moment> = listOf(
         "Mi tercer Momento",
         Date(2023 - 1900, 7, 13),
         "Nombre de la canción 3",
-        R.drawable.microsoft,
+        R.drawable.microsoft.toString(),
         "39.4788312, -6.3435945",
         39.4788312, -6.3435945
     )
