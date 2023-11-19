@@ -26,6 +26,7 @@ class TopGenresFragment : Fragment() {
     private lateinit var adapter: GenresAdapter
     private var artists = emptyList<Artist>()
     private var genres = emptyList<String>()
+    private var topGenres = emptyList<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +53,9 @@ class TopGenresFragment : Fragment() {
 
                 android.util.Log.d("TopGenresFragment", "Genres: $genres")
 
+                val topGenres = getTopGenres(genres)
+
+                android.util.Log.d("TopGenresFragment", "Top Genres: $topGenres")
 
                 //adapter.updateData(items)
             } catch (e: Exception) {
@@ -80,6 +84,10 @@ class TopGenresFragment : Fragment() {
     private fun getGenresFromArtistList(artists: List<Artist>): List<String> {
         return artists.flatMap { it.genres }
 
+    }
+
+    private fun getTopGenres(genres: List<String>): List<String> {
+        return genres.groupingBy { it }.eachCount().toList().sortedByDescending { (_, value) -> value }.map { (key, _) -> key }
     }
 
     private fun obtenerSpotifyApiKey(context: Context): String? {
