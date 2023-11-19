@@ -52,11 +52,6 @@ class MomentDetailFragment : Fragment() {
         navBar?.visibility = View.GONE
     }
 
-    private fun navigateToTopItemFragment(fragment: Fragment) {
-        childFragmentManager.beginTransaction()
-            .replace(R.id.fragmentTopArtists, fragment)
-            .commit()
-    }
 
     override fun onPause() {
         super.onPause()
