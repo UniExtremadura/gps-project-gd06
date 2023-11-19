@@ -65,6 +65,10 @@ class MomentEditFragment : Fragment() {
             findNavController().navigateUp()
         }
 
+        binding.buttonCancel.setOnClickListener {
+            findNavController().navigateUp()
+        }
+
         lifecycleScope.launch {
             try {
                 setKey(obtenerSpotifyApiKey(requireContext())!!)
