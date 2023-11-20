@@ -78,11 +78,9 @@ class MomentDetailFragment : Fragment() {
     }
 
     private fun navigateToEditFragment() {
-        val momentDetailFragment = MomentDetailFragment()
         val bundle = Bundle()
         val moment = arguments?.getSerializable("moment") as? Moment
         bundle.putSerializable("moment", moment)
-        momentDetailFragment.arguments = bundle
         findNavController().navigate(R.id.action_momentDetailFragment_to_momentEditFragment, bundle)
     }
 

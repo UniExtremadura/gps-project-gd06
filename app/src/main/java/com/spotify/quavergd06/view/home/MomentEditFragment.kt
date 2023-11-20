@@ -69,8 +69,8 @@ class MomentEditFragment : Fragment() {
 
         binding.buttonSave.setOnClickListener {
             val imageURI = saveImage(binding.detailImage.drawable.toBitmap())
-            persistMoment(imageURI!!)
-            findNavController().navigateUp()
+            val newMoment = persistMoment(imageURI!!)
+            navigateToMomentDetailFragment(newMoment)
         }
 
         binding.buttonCancel.setOnClickListener {
@@ -243,27 +243,26 @@ class MomentEditFragment : Fragment() {
         return null
     }
 
-    private fun persistMoment(_imageURI: String) {
+    private fun persistMoment(_imageURI: String): Moment {
         val latLong = extractLatLongFromLocation(binding.detailLocation.text.toString())
         val (_latitude, _longitude) = latLong!!
-        with(binding) {
-            lifecycleScope.launch {
-                val moment = Moment(
-                    momentId = momentId,
-                    title = detailTitle.text.toString(),
-                    date = dateFormat.parse(detailDate.text.toString()),
-                    songTitle = detailSongTitle.text.toString(),
-                    imageURI = _imageURI,
-                    location = detailLocation.text.toString(),
-                    latitude = _latitude,
-                    longitude = _longitude,
-                )
-                Log.d("Moment",db.momentDAO().insertMoment(moment).toString())
-            }
+        val moment = Moment(
+            momentId = momentId,
+            title = binding.detailTitle.text.toString(),
+            date = dateFormat.parse(binding.detailDate.text.toString()),
+            songTitle = binding.detailSongTitle.text.toString(),
+            imageURI = _imageURI,
+            location = binding.detailLocation.text.toString(),
+            latitude = _latitude,
+            longitude = _longitude,
+        )
+        lifecycleScope.launch {
+            Log.d("Moment",db.momentDAO().insertMoment(moment).toString())
         }
+        return moment
     }
 
-    fun extractLatLongFromLocation(location: String): Pair<Double, Double>? {
+    private fun extractLatLongFromLocation(location: String): Pair<Double, Double>? {
         val latLongRegex = """(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)""".toRegex()
         val matchResult = latLongRegex.find(location)
 
@@ -271,6 +270,12 @@ class MomentEditFragment : Fragment() {
             val (latitude, _, longitude, _) = it.destructured
             Pair(latitude.toDouble(), longitude.toDouble())
         }
+    }
+
+    private fun navigateToMomentDetailFragment(moment: Moment) {
+        val bundle = Bundle()
+        bundle.putSerializable("moment", moment)
+        findNavController().navigate(R.id.action_momentEditFragment_to_momentDetailFragment, bundle)
     }
     companion object {
         private const val CAMERA_REQUEST_CODE = 123
