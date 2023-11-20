@@ -45,6 +45,11 @@ class MomentEditFragment : Fragment() {
     private lateinit var db: QuaverDatabase
     private var loadNewContent = false
     private var momentId: Long? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        db = QuaverDatabase.getInstance(requireContext())
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -55,7 +60,6 @@ class MomentEditFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        db = QuaverDatabase.getInstance(requireContext())!!
         val autoCompleteTextView = binding.detailSongTitle
 
         binding.cameraOverlay.setOnClickListener {

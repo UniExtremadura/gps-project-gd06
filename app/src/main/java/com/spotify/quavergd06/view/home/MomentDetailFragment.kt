@@ -1,10 +1,12 @@
 package com.spotify.quavergd06.view.home
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.spotify.quavergd06.databinding.FragmentMomentDetailBinding
@@ -13,12 +15,22 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.spotify.quavergd06.R
+import com.spotify.quavergd06.database.QuaverDatabase
+import kotlinx.coroutines.launch
 
 
 class MomentDetailFragment : Fragment() {
 
     private var _binding: FragmentMomentDetailBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var db : QuaverDatabase
+
+    private var momentId: Long = 0
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        db = QuaverDatabase.getInstance(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +45,7 @@ class MomentDetailFragment : Fragment() {
 
         val moment = arguments?.getSerializable("moment") as? Moment
         moment?.let {
+            momentId = it.momentId!!
             // Configurar la vista con los detalles del Momento
             Glide.with(this)
                 .load(moment.imageURI)
@@ -48,7 +61,19 @@ class MomentDetailFragment : Fragment() {
             binding.buttonEdit.setOnClickListener {
                 navigateToEditFragment()
             }
+
+            binding.buttonDelete.setOnClickListener {
+                deleteMoment()
+            }
         }
+    }
+
+    private fun deleteMoment() {
+        lifecycleScope.launch {
+            db.momentDAO().deleteMoment(momentId)
+            findNavController().navigateUp()
+        }
+
     }
 
     private fun navigateToEditFragment() {

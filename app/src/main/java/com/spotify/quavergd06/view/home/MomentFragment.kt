@@ -32,8 +32,9 @@ class MomentFragment : Fragment() {
 
     private var moments = emptyList<Moment>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onAttach(context: android.content.Context) {
+        super.onAttach(context)
+        db = QuaverDatabase.getInstance(requireContext())
     }
 
     override fun onCreateView(

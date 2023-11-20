@@ -1,6 +1,7 @@
 package com.spotify.quavergd06.view.home
 
 import android.content.ContentResolver
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -30,6 +31,10 @@ class MapFragment : Fragment() {
     private lateinit var db: QuaverDatabase
     private var moments = emptyList<Moment>()
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        db = QuaverDatabase.getInstance(requireContext())
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,7 +42,6 @@ class MapFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_map, container, false)
         mapView = view.findViewById(R.id.osmMapView)
         configureMapView()
-        db = QuaverDatabase.getInstance(requireContext())!!
         lifecycleScope.launch {
             moments = db.momentDAO().getAllMoments()
             if (moments.isNotEmpty()) {
