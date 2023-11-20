@@ -9,7 +9,7 @@ import java.util.Date
 
 @Entity
 data class Moment(
-    @PrimaryKey(autoGenerate = true) var momentId: Long?,
+    @PrimaryKey(autoGenerate = true) val momentId: Long?,
     val title: String = "",
     val date: Date? = null,
     val songTitle: String = "",
@@ -19,13 +19,3 @@ data class Moment(
     val longitude: Double,
 ) : Serializable
 
-class Converters {
-    @TypeConverter
-    fun fromTimestamp(value: Long?): Date? {
-        return value?.let { Date(it) }
-    }
-    @TypeConverter
-    fun dateToTimestamp(date: Date?): Long? {
-        return date?.time
-    }
-}

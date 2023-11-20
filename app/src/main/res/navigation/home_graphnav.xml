@@ -86,8 +86,8 @@
         android:name="com.spotify.quavergd06.view.home.MomentEditFragment"
         android:label="MomentEditFragment" >
         <action
-            android:id="@+id/action_momentEditFragment_to_momentDetailFragment"
-            app:destination="@id/momentDetailFragment" />
+            android:id="@+id/action_momentEditFragment_to_momentFragment"
+            app:destination="@id/momentFragment" />
     </fragment>
     <fragment
         android:id="@+id/artistInfoFragment"

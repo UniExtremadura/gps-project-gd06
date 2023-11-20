@@ -68,8 +68,8 @@ class MomentEditFragment : Fragment() {
 
         binding.buttonSave.setOnClickListener {
             val imageURI = saveImage(binding.detailImage.drawable.toBitmap())
-            val newMoment = persistMoment(imageURI!!)
-            navigateToMomentDetailFragment(newMoment)
+            persistMoment(imageURI!!)
+            navigateToMomentFragment()
         }
 
         binding.buttonCancel.setOnClickListener {
@@ -240,7 +240,7 @@ class MomentEditFragment : Fragment() {
         return null
     }
 
-    private fun persistMoment(_imageURI: String): Moment {
+    private fun persistMoment(_imageURI: String){
         val latLong = extractLatLongFromLocation(binding.detailLocation.text.toString())
         val (_latitude, _longitude) = latLong!!
         var moment = Moment(
@@ -253,10 +253,9 @@ class MomentEditFragment : Fragment() {
             latitude = _latitude,
             longitude = _longitude,
         )
-        runBlocking {
-            moment.momentId = db.momentDAO().insertMoment(moment)
+        lifecycleScope.launch {
+            db.momentDAO().insertMoment(moment)
         }
-        return moment
     }
 
     private fun extractLatLongFromLocation(location: String): Pair<Double, Double>? {
@@ -269,10 +268,8 @@ class MomentEditFragment : Fragment() {
         }
     }
 
-    private fun navigateToMomentDetailFragment(moment: Moment) {
-        val bundle = Bundle()
-        bundle.putSerializable("moment", moment)
-        findNavController().navigate(R.id.action_momentEditFragment_to_momentDetailFragment, bundle)
+    private fun navigateToMomentFragment() {
+        findNavController().navigate(R.id.action_momentEditFragment_to_momentFragment)
     }
     companion object {
         private const val CAMERA_REQUEST_CODE = 123
