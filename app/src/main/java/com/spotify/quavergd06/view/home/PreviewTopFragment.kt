@@ -3,6 +3,7 @@ package com.spotify.quavergd06.view.home
 import StatsItemAdapter
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,22 +34,25 @@ class PreviewTopFragment(private val fetchable: Fetchable, private val onPreview
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentTopPreviewBinding.inflate(inflater, container, false)
+        Log.d("PreviewTopFragment", "onCreateView")
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
-
+        Log.d("PreviewTopFragment", "onViewCreated")
         // Realizar una búsqueda de artistas en Spotify
         lifecycleScope.launch {
             try {
                 setKey(obtenerSpotifyApiKey(requireContext())!!)
                 items = fetchable.fetch()
+                Log.d("PreviewTopFragment", "items: $items")
                 adapter.updateData(items)
 
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+                Log.d("PreviewTopFragment", "Error: ${e.message}")
             }
         }
     }

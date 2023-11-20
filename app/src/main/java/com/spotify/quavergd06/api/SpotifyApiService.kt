@@ -1,6 +1,7 @@
 package com.spotify.quavergd06.api
 
 import com.spotify.quavergd06.data.api.ArtistItem
+import com.spotify.quavergd06.data.api.HistoryResponse
 import com.spotify.quavergd06.data.api.Tracks
 import com.spotify.quavergd06.data.api.TopArtistResponse
 import com.spotify.quavergd06.data.api.TopTrackResponse
@@ -52,14 +53,14 @@ interface SpotifyApiService {
     @GET("me/top/artists")
     suspend fun loadTopArtists(
         @Query("time_range") timeRange: String,
-        @Query("limit") limit: Int = 50
+        @Query("limit") limit: Int = 30
     ): Response<TopArtistResponse>
 
     @Headers("Content-Type: application/json")
     @GET("me/top/tracks")
     suspend fun loadTopTracks(
         @Query("time_range") timeRange: String,
-        @Query("limit") limit: Int = 50
+        @Query("limit") limit: Int = 30
     ): Response<TopTrackResponse>
 
     @Headers("Content-Type: application/json")
@@ -67,6 +68,12 @@ interface SpotifyApiService {
     suspend fun loadArtist(
         @Path("id") id: String
     ): Response<ArtistItem>
+
+    @Headers("Content-Type: application/json")
+    @GET("me/player/recently-played")
+    suspend fun loadHistory(
+        @Query("after") limit: Int = 10
+    ): Response<HistoryResponse>
 
     @Headers("Content-Type: application/json")
     @GET("me/top/tracks?limit=20&offset=0")

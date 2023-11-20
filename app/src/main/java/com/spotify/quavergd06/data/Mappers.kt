@@ -1,6 +1,7 @@
 package com.spotify.quavergd06.data
 
 import com.spotify.quavergd06.data.api.ArtistItem
+import com.spotify.quavergd06.data.api.ItemsHistory
 import com.spotify.quavergd06.data.api.TrackItem
 import com.spotify.quavergd06.data.model.Artist
 import com.spotify.quavergd06.data.model.StatsItem
@@ -37,3 +38,4 @@ fun Track.toStatsItem() = StatsItem(
     album = album,
     artist = artist
 )
+
