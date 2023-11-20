@@ -36,6 +36,9 @@
         <action
             android:id="@+id/action_statsFragment_to_artistInfoFragment"
             app:destination="@id/artistInfoFragment" />
+        <action
+            android:id="@+id/action_statsFragment_to_historyListFragment"
+            app:destination="@id/historyListFragment" />
 
     </fragment>
     <fragment
@@ -94,6 +97,14 @@
     <action
         android:id="@+id/action_trackInfoFragment_to_artistInfoFragment"
         app:destination="@id/artistInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/historyListFragment"
+        android:name="com.spotify.quavergd06.view.home.HistoryListFragment"
+        android:label="HistoryListFragment" >
+        <action
+            android:id="@+id/action_historyListFragment_to_trackInfoFragment"
+            app:destination="@id/trackInfoFragment" />
     </fragment>
 
 

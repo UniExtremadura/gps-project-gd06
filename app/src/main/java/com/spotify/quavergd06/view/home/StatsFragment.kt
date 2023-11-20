@@ -74,6 +74,13 @@ class StatsFragment : Fragment() {
             Log.d("StatsFragment", "TrackFetchable instance: $fetchable")
             navigateToTopItemFragment(TopItemViewPagerFragment.newInstance("short_term", fetchable))
         }
+
+        val buttonTopHistory = binding.moreHistory
+        buttonTopHistory.setOnClickListener {
+            val fetchable = HistoryFetchable()
+            Log.d("StatsFragment", "HistoryFetchable instance: $fetchable")
+            findNavController().navigate(R.id.action_statsFragment_to_historyListFragment)
+        }
     }
 
     private fun navigateToTopItemFragment(fragment: Fragment) {
