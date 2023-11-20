@@ -1,80 +1,79 @@
 package com.spotify.quavergd06.view.home
 
-import StatsItemAdapter
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.spotify.quavergd06.R
 import com.spotify.quavergd06.api.setKey
-import com.spotify.quavergd06.data.fetchables.Fetchable
+import com.spotify.quavergd06.data.fetchables.HistoryFetchable
 import com.spotify.quavergd06.data.model.StatsItem
-import com.spotify.quavergd06.databinding.FragmentTopPreviewBinding
+import com.spotify.quavergd06.databinding.FragmentTopGridBinding
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class PreviewTopFragment(private val fetchable: Fetchable, private val onPreviewItemClick: (StatsItem) -> Unit) : Fragment() {
-    private var _binding: FragmentTopPreviewBinding? = null
+class HistoryFragment() : Fragment() {
+    private var _binding: FragmentTopGridBinding? = null
     private val binding get() = _binding!!
 
-    private var adapter: StatsItemAdapter = StatsItemAdapter(emptyList(), {}, null)
     private var items: List<StatsItem> = emptyList()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private lateinit var adapter : HistoryListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentTopPreviewBinding.inflate(inflater, container, false)
-        Log.d("PreviewTopFragment", "onCreateView")
-
+        _binding = FragmentTopGridBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setUpRecyclerView()
-        Log.d("PreviewTopFragment", "onViewCreated")
-        // Realizar una búsqueda de artistas en Spotify
+
         lifecycleScope.launch {
             try {
                 setKey(obtenerSpotifyApiKey(requireContext())!!)
-                items = fetchable.fetch()
-                Log.d("PreviewTopFragment", "items: $items")
+                items = HistoryFetchable().fetch()
                 adapter.updateData(items)
-
             } catch (e: Exception) {
-                Log.d("PreviewTopFragment", "Error: ${e.message}")
+                Log.d("HistoryFragment", "Error: ${e.message}")
             }
         }
+
     }
 
+
     private fun setUpRecyclerView() {
-        adapter = StatsItemAdapter(
+        adapter = HistoryListAdapter(
             statsItems = items,
             context = this.context,
-            onClick = {statsItem ->
-                onPreviewItemClick(statsItem)
-            }
+            onClick = {statsItem -> onClick(statsItem) }
         )
         with(binding) {
-            recyclerViewTopPreview.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL,  false)
-            recyclerViewTopPreview.adapter = adapter
+            topItemRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            topItemRecyclerView.adapter = adapter
+
         }
-        android.util.Log.d("ArtistFragment", "setUpRecyclerView")
+
+        android.util.Log.d("HistoryFragment", "setUpRecyclerView")
     }
 
     private fun obtenerSpotifyApiKey(context: Context): String? {
         val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         return sharedPreferences.getString("access_token", null)
+    }
+
+    private fun onClick(statsItem: StatsItem) {
+        Log.d("HistoryFragment", "onClick")
+        findNavController().navigate(R.id.action_historyListFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(statsItem).arguments)
     }
 
     override fun onDestroyView() {

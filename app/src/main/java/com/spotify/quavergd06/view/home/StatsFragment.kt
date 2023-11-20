@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.spotify.quavergd06.R
 import com.spotify.quavergd06.data.fetchables.ArtistFetchable
 import com.spotify.quavergd06.data.fetchables.Fetchable
+import com.spotify.quavergd06.data.fetchables.HistoryFetchable
 import com.spotify.quavergd06.data.fetchables.TrackFetchable
 import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.databinding.FragmentStatsBinding
@@ -47,6 +48,10 @@ class StatsFragment : Fragment() {
         loadFragment(R.id.fragmentTopTracks, PreviewTopFragment(TrackFetchable()) { statsItem ->
             findNavController().navigate(R.id.action_statsFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(statsItem).arguments)
         })
+
+        loadFragment(R.id.fragmentHistory, PreviewTopFragment(HistoryFetchable()) { statsItem ->
+            findNavController().navigate(R.id.action_statsFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(statsItem).arguments)
+        })
     }
 
     private fun loadFragment(containerId: Int, fragment: Fragment) {
@@ -68,6 +73,13 @@ class StatsFragment : Fragment() {
             val fetchable = TrackFetchable()
             Log.d("StatsFragment", "TrackFetchable instance: $fetchable")
             navigateToTopItemFragment(TopItemViewPagerFragment.newInstance("short_term", fetchable))
+        }
+
+        val buttonTopHistory = binding.moreHistory
+        buttonTopHistory.setOnClickListener {
+            val fetchable = HistoryFetchable()
+            Log.d("StatsFragment", "HistoryFetchable instance: $fetchable")
+            findNavController().navigate(R.id.action_statsFragment_to_historyListFragment)
         }
     }
 

@@ -55,7 +55,7 @@ class TopGridFragment(private val fetchable: Fetchable,  private val onClick: (S
                 items = fetchable.fetch(timePeriod)
                 adapter.updateData(items)
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
+                Log.d("TopGridFragment", "Error: ${e.message}")
             }
         }
     }
@@ -67,10 +67,10 @@ class TopGridFragment(private val fetchable: Fetchable,  private val onClick: (S
             onClick = {statsItem -> onClick(statsItem) }
         )
         with(binding) {
-            topShowGrid.layoutManager = GridLayoutManager(context, 2)
-            topShowGrid.adapter = adapter
+            topItemRecyclerView.layoutManager = GridLayoutManager(context, 2)
+            topItemRecyclerView.adapter = adapter
         }
-        android.util.Log.d("ArtistFragment", "setUpRecyclerView")
+        Log.d("TopGridFragment", "setUpRecyclerView")
     }
 
     private fun obtenerSpotifyApiKey(context: Context): String? {
