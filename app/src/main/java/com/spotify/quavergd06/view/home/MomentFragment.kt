@@ -14,7 +14,6 @@ import com.spotify.quavergd06.R
 
 import com.spotify.quavergd06.databinding.FragmentMomentBinding
 import com.spotify.quavergd06.model.Moment
-import com.spotify.quavergd06.data.dummy.dummyMoments
 import com.spotify.quavergd06.database.QuaverDatabase
 import kotlinx.coroutines.launch
 
@@ -46,26 +45,37 @@ class MomentFragment : Fragment() {
             listener.onMomentClick(it)
         }
         )
-        val button = _binding!!.buttonToMap as FloatingActionButton
-        button.setOnClickListener {
-            navigateToMapFragment()
-        }
         db = QuaverDatabase.getInstance(requireContext())!!
         lifecycleScope.launch {
             moments = db.momentDAO().getAllMoments()
             adapter.updateData(moments)
         }
-
         return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val button = binding.buttonToMap as FloatingActionButton
+        button.setOnClickListener {
+            navigateToMapFragment()
+        }
         setUpRecyclerView()
         listener = object : OnMomentClickListener {
             override fun onMomentClick(moment: Moment) {
                 showMomentDetailFragment(moment)
             }
         }
+        binding.searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                filterMoments(query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                filterMoments(newText)
+                return false
+            }
+        })
+
     }
     private fun setUpRecyclerView() {
         with(binding) {
@@ -89,6 +99,13 @@ class MomentFragment : Fragment() {
 
         // Usa findNavController() para navegar al fragmento
         findNavController().navigate(R.id.momentDetailFragment, bundle)
+    }
+
+    private fun filterMoments(query: String?) {
+        val filteredMoments = moments.filter {
+            it.title.contains(query.orEmpty(), ignoreCase = true)
+        }
+        adapter.updateData(filteredMoments)
     }
 
     override fun onDestroyView() {

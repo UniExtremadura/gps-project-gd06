@@ -36,6 +36,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.spotify.quavergd06.database.QuaverDatabase
+import kotlinx.coroutines.runBlocking
 
 class MomentEditFragment : Fragment() {
 
@@ -43,7 +44,6 @@ class MomentEditFragment : Fragment() {
     private val binding get() = _binding!!
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
     private lateinit var db: QuaverDatabase
-    private var loadNewContent = false
     private var momentId: Long? = null
 
     override fun onAttach(context: Context) {
@@ -63,7 +63,6 @@ class MomentEditFragment : Fragment() {
         val autoCompleteTextView = binding.detailSongTitle
 
         binding.cameraOverlay.setOnClickListener {
-            loadNewContent = false
             openCamera()
         }
 
@@ -105,7 +104,6 @@ class MomentEditFragment : Fragment() {
                 // Configurar otros elementos según sea necesario
             }
         } else {
-            loadNewContent = true
             openCamera()
         }
     }
@@ -160,7 +158,6 @@ class MomentEditFragment : Fragment() {
             val imageBitmap = data?.extras?.get("data") as? Bitmap
             binding.detailImage.setImageBitmap(imageBitmap)
             if (arguments?.getSerializable("moment") == null) {
-                loadNewContent = false
                 binding.detailDate.text = dateFormat.format(java.util.Date())
                 obtenerUbicacion().let { (latitud, longitud) ->
                     binding.detailLocation.text = "$latitud, $longitud"
@@ -246,7 +243,7 @@ class MomentEditFragment : Fragment() {
     private fun persistMoment(_imageURI: String): Moment {
         val latLong = extractLatLongFromLocation(binding.detailLocation.text.toString())
         val (_latitude, _longitude) = latLong!!
-        val moment = Moment(
+        var moment = Moment(
             momentId = momentId,
             title = binding.detailTitle.text.toString(),
             date = dateFormat.parse(binding.detailDate.text.toString()),
@@ -256,8 +253,8 @@ class MomentEditFragment : Fragment() {
             latitude = _latitude,
             longitude = _longitude,
         )
-        lifecycleScope.launch {
-            Log.d("Moment",db.momentDAO().insertMoment(moment).toString())
+        runBlocking {
+            moment.momentId = db.momentDAO().insertMoment(moment)
         }
         return moment
     }
