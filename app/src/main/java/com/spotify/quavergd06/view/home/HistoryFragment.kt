@@ -6,23 +6,24 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.spotify.quavergd06.R
 import com.spotify.quavergd06.api.setKey
-import com.spotify.quavergd06.data.fetchables.Fetchable
+import com.spotify.quavergd06.data.fetchables.HistoryFetchable
 import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.databinding.FragmentTopGridBinding
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class HistoryListFragment() : Fragment() {
+class HistoryFragment() : Fragment() {
     private var _binding: FragmentTopGridBinding? = null
     private val binding get() = _binding!!
 
-    //private lateinit var adapter: Adapter
     private var items: List<StatsItem> = emptyList()
+    private lateinit var adapter : HistoryListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,36 +37,43 @@ class HistoryListFragment() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setUpRecyclerView()
+
+        lifecycleScope.launch {
+            try {
+                setKey(obtenerSpotifyApiKey(requireContext())!!)
+                items = HistoryFetchable().fetch()
+                adapter.updateData(items)
+            } catch (e: Exception) {
+                Log.d("HistoryFragment", "Error: ${e.message}")
+            }
+        }
+
     }
-    // Fetch data based on the specified time period
-//        lifecycleScope.launch {
-//            try {
-//                setKey(obtenerSpotifyApiKey(requireContext())!!)
-//                items = fetchable.fetch(timePeriod)
-//                adapter.updateData(items)
-//            } catch (e: Exception) {
-//                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
-//            }
-//        }
 
 
     private fun setUpRecyclerView() {
-//        adapter = StatsItemAdapter(
-//            statsItems = items,
-//            context = this.context,
-//            onClick = {statsItem -> onClick(statsItem) }
-//        )
+        adapter = HistoryListAdapter(
+            statsItems = items,
+            context = this.context,
+            onClick = {statsItem -> onClick(statsItem) }
+        )
         with(binding) {
-            topShowGrid.layoutManager = GridLayoutManager(context, 2)
-        }
-        //            topShowGrid.adapter = adapter
+            topItemRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            topItemRecyclerView.adapter = adapter
 
-//        android.util.Log.d("ArtistFragment", "setUpRecyclerView")
+        }
+
+        android.util.Log.d("HistoryFragment", "setUpRecyclerView")
     }
 
     private fun obtenerSpotifyApiKey(context: Context): String? {
         val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         return sharedPreferences.getString("access_token", null)
+    }
+
+    private fun onClick(statsItem: StatsItem) {
+        Log.d("HistoryFragment", "onClick")
+        findNavController().navigate(R.id.action_historyListFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(statsItem).arguments)
     }
 
     override fun onDestroyView() {

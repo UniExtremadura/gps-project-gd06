@@ -72,7 +72,8 @@ interface SpotifyApiService {
     @Headers("Content-Type: application/json")
     @GET("me/player/recently-played")
     suspend fun loadHistory(
-        @Query("after") limit: Int = 10
+        @Query("limit") limit: Int = 10,
+        @Query("before") before: String = System.currentTimeMillis().toString()
     ): Response<HistoryResponse>
 
     @Headers("Content-Type: application/json")
