@@ -9,6 +9,9 @@ import com.spotify.quavergd06.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
+    companion object {
+        const val MY_CHANNEL_ID = "myChannel"
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
