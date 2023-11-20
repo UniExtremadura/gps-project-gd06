@@ -1,5 +1,6 @@
 package com.spotify.quavergd06.view.home
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -53,7 +54,7 @@ class MomentDetailFragment : Fragment() {
             binding.detailSongTitle.text = it.songTitle
             binding.detailLocation.text = it.location
 
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
             val formattedDate = dateFormat.format(it.date)
             binding.detailDate.text = formattedDate// ...
 
@@ -63,7 +64,7 @@ class MomentDetailFragment : Fragment() {
             }
 
             binding.buttonDelete.setOnClickListener {
-                deleteMoment()
+                showDeleteConfirmationDialog()
             }
         }
     }
@@ -83,6 +84,23 @@ class MomentDetailFragment : Fragment() {
         bundle.putSerializable("moment", moment)
         momentDetailFragment.arguments = bundle
         findNavController().navigate(R.id.action_momentDetailFragment_to_momentEditFragment, bundle)
+    }
+
+    private fun showDeleteConfirmationDialog() {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+        alertDialogBuilder.setTitle("Confirmar eliminación")
+        alertDialogBuilder.setMessage("¿Estás seguro de que deseas eliminar este momento?")
+        alertDialogBuilder.setPositiveButton("Sí") { dialog, which ->
+            // Usuario hizo clic en Sí, eliminar el momento
+            deleteMoment()
+        }
+        alertDialogBuilder.setNegativeButton("No") { dialog, which ->
+            // Usuario hizo clic en No, cerrar el cuadro de diálogo sin hacer nada
+            dialog.dismiss()
+        }
+
+        val alertDialog: AlertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
 
     override fun onResume() {
