@@ -26,15 +26,14 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setUpUI()
+
+        NotificationScheduler.setReminder(this, NotificationScheduler::class.java)
         createChannel()
-
-
     }
 
     private fun createChannel() {
         Log.d("NotificationScheduler", "Setting reminder")
 
-        NotificationScheduler.setReminder(this, NotificationScheduler::class.java)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
