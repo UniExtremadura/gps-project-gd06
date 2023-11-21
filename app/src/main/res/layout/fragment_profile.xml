@@ -28,7 +28,7 @@
         android:layout_height="76dp"
         android:layout_marginBottom="100dp"
         android:fontFamily="sans-serif-black"
-        android:text="UNLOG"
+        android:text="@string/logout_button_text"
         android:textColor="@color/black_spotify"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
