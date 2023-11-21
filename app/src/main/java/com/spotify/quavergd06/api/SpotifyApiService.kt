@@ -5,6 +5,7 @@ import com.spotify.quavergd06.data.api.HistoryResponse
 import com.spotify.quavergd06.data.api.Tracks
 import com.spotify.quavergd06.data.api.TopArtistResponse
 import com.spotify.quavergd06.data.api.TopTrackResponse
+import com.spotify.quavergd06.data.api.UserProfileInfoResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Response
@@ -79,7 +80,11 @@ interface SpotifyApiService {
     @Headers("Content-Type: application/json")
     @GET("me/top/tracks?limit=20&offset=0")
     suspend fun loadTracks(): Response<Tracks>
-    // Endpoint para buscar canciones en Spotify
+
+    @Headers("Content-Type: application/json")
+    @GET("me")
+    suspend fun getUserProfile(): Response<UserProfileInfoResponse>
+
 }
 
 interface APICallback {
