@@ -2,12 +2,16 @@ package com.spotify.quavergd06.view.home
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.room.Index
+import androidx.room.util.appendPlaceholders
 import com.spotify.quavergd06.R
 import com.spotify.quavergd06.api.APIException
 import com.spotify.quavergd06.api.getNetworkService
@@ -23,7 +27,7 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-    private var userInfo: UserProfileInfoResponse? = null
+    private var userInfo: UserProfileInfoResponse = UserProfileInfoResponse()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +45,12 @@ class ProfileFragment : Fragment() {
         logoutButton.setOnClickListener {
             // Borrar el token almacenado
             clearUserToken()
+            // Cerrar el fragmento actual
+            requireActivity().finish()
+            // Iniciar LoginActivity
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
 
         return binding.root
@@ -48,24 +58,23 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         lifecycleScope.launch {
             setKey(obtenerSpotifyApiKey(requireContext())!!)
             fetchUserInfo()
+            setupUI()
         }
+    }
 
-            // Obtén la ImageView
-        val pictureImageView = binding.AvatarImageView
-
-        // con picaso muestra la imagen de perfil del usuario que se el drawable spotify_logo.png
-        Picasso.get().load(getUserPicture()).into(pictureImageView)
-
-        // Obtén el TextView
-        val usernameTextView = binding.usernameTextView
-        // Obtén el nombre de usuario utilizando la función getUsername()
-        val username = getUserName()
-        // Establece el nombre de usuario en el TextView
-        usernameTextView.text = username
+    private fun setupUI() {
+        with(binding) {
+        try {
+             Picasso.get().load(userInfo?.images?.get(0)?.url).placeholder(R.drawable.user).into(AvatarImageView)
+            }
+            catch (e: Exception){
+                Picasso.get().load(R.drawable.user).into(AvatarImageView)
+            }
+            usernameTextView.text = userInfo.displayName
+        }
     }
 
 
@@ -75,19 +84,9 @@ class ProfileFragment : Fragment() {
         sharedPreferences.edit().clear().apply()
     }
 
-    private fun getUserName() : String {
-        return userInfo?.displayName ?: "User"
-    }
-
-    private fun getUserPicture(): String {
-        // profile picture o el drawable spotify_logo
-        return userInfo?.images?.get(0)?.url ?: "drawable://spotify_logo"
-    }
-
     private suspend fun fetchUserInfo() {
-
         try {
-            userInfo = getNetworkService().getUserProfile().body()
+            userInfo = getNetworkService().getUserProfile().body() ?: UserProfileInfoResponse()
         } catch (cause: Throwable) {
             throw APIException("Unable to fetch data from API", cause)
         }
