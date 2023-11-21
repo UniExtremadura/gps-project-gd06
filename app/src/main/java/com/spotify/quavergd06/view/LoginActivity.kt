@@ -82,7 +82,7 @@ class LoginActivity : AppCompatActivity() {
     private fun getAuthenticationRequestToken(): AuthorizationRequest {
         return AuthorizationRequest.Builder(CLIENT_ID, AuthorizationResponse.Type.TOKEN, redirectUri.toString())
             .setShowDialog(false)
-            .setScopes(arrayOf("user-read-email", "user-top-read", "user-read-recently-played"))
+            .setScopes(arrayOf("user-read-email", "user-top-read", "user-read-recently-played",  "user-read-private"))
             .setCampaign("your-campaign-token")
             .build()
     }
