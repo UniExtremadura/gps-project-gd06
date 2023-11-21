@@ -12,7 +12,7 @@ interface MomentDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMoment(moment: Moment): Long
 
-    @Query("SELECT * FROM moment")
+    @Query("SELECT * FROM moment ORDER BY date DESC")
     suspend fun getAllMoments(): List<Moment>
 
     //Delete a moment

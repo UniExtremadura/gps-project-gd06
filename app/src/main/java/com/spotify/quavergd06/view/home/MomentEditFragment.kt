@@ -63,6 +63,7 @@ class MomentEditFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val autoCompleteTextView = binding.detailSongTitle
         binding.cameraOverlay.setOnClickListener {
+
             getAllPermissions()
             openCamera()
         }
@@ -108,6 +109,7 @@ class MomentEditFragment : Fragment() {
             }
         } else {
             getAllPermissions()
+
             openCamera()
         }
     }
