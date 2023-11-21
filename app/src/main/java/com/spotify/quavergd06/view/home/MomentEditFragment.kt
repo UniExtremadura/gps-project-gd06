@@ -45,6 +45,7 @@ class MomentEditFragment : Fragment() {
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
     private lateinit var db: QuaverDatabase
     private var momentId: Long? = null
+    var imageURI: String? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -67,7 +68,9 @@ class MomentEditFragment : Fragment() {
         }
 
         binding.buttonSave.setOnClickListener {
-            val imageURI = saveImage(binding.detailImage.drawable.toBitmap())
+            if (imageURI == null){
+                imageURI = saveImage(binding.detailImage.drawable.toBitmap())
+            }
             persistMoment(imageURI!!)
             navigateToMomentFragment()
         }
@@ -92,6 +95,7 @@ class MomentEditFragment : Fragment() {
         //TODO: Adecuar la carga según el origen de los datos
         if (moment != null) {
             moment?.let {
+                imageURI = it.imageURI
                 momentId = it.momentId
                 // Configurar la vista con los detalles del Momento
                 loadImageFromUri(it.imageURI)
