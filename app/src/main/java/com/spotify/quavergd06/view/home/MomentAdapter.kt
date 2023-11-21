@@ -5,12 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.spotify.quavergd06.data.model.Artist
-import com.spotify.quavergd06.model.Moment
+import com.spotify.quavergd06.data.model.Moment
 import com.spotify.quavergd06.databinding.FragmentMomentItemBinding
 class MomentAdapter(
     private var moments: List<Moment>,
-    private val onClick: (moment:Moment) -> Unit
+    private val onClick: (moment: Moment) -> Unit
 ) : RecyclerView.Adapter<MomentAdapter.ShowViewHolder>() {
 
     class ShowViewHolder(

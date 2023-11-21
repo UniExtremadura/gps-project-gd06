@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.spotify.quavergd06.databinding.FragmentMomentDetailBinding
-import com.spotify.quavergd06.model.Moment
+import com.spotify.quavergd06.data.model.Moment
 import java.text.SimpleDateFormat
 import java.util.Locale
 import com.google.android.material.bottomnavigation.BottomNavigationView

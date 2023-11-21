@@ -31,61 +31,68 @@ class NotificationScheduler : BroadcastReceiver() {
     }
 
     companion object {
-
+        var numNotificacionesProgramadas = 0
 
         fun setReminder( context: Context, cls: Class<*>) {
-            Log.d("NotificationScheduler", "Setting reminder")
 
-            val intent = Intent(context, cls)
-            val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+            if (numNotificacionesProgramadas == 0){
+                Log.d("NotificationScheduler", "Setting reminder")
+                numNotificacionesProgramadas += 1
+                Log.d("NotificationScheduler", "Numero de notificaciones pendientes: $numNotificacionesProgramadas")
 
-
-            // Obtener una nueva hora aleatoria del día
-            val hour = Random.nextInt(24)
-            val minute = Random.nextInt(60)
-
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = System.currentTimeMillis()
-            calendar[Calendar.HOUR_OF_DAY] = 0
-            calendar[Calendar.MINUTE] = 15
-
-            //calendar.add(Calendar.MINUTE, 2)
+                val intent = Intent(context, cls)
+                val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
 
 
-            // Verificar si la hora ya ha pasado hoy
-            if (calendar.timeInMillis < System.currentTimeMillis()) {
-                // Si ha pasado, agregar un día a la fecha
-                calendar.add(Calendar.DAY_OF_YEAR, 1)
-            }
+                // Obtener una nueva hora aleatoria del día
+                val hour = Random.nextInt(26)
+                val minute = Random.nextInt(60)
 
-            // Mostrar un Toast con la hora de la próxima notificación
-            val formattedTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(calendar.time)
-            Toast.makeText(context, "Próxima notificación a las $formattedTime", Toast.LENGTH_LONG).show()
-            Log.d("NotificationScheduler", "Próxima notificación a las $formattedTime")
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = System.currentTimeMillis()
+                //calendar[Calendar.HOUR_OF_DAY] = hour + 8
+                //calendar[Calendar.MINUTE] = minute
+
+                calendar.add(Calendar.MINUTE, 1)
+
+
+                // Verificar si la hora ya ha pasado hoy
+                if (calendar.timeInMillis < System.currentTimeMillis()) {
+                    // Si ha pasado, agregar un día a la fecha
+                    calendar.add(Calendar.DAY_OF_YEAR, 1)
+                }
+
+                // Mostrar un Toast con la hora de la próxima notificación
+                val formattedTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(calendar.time)
+                Toast.makeText(context, "Próxima notificación a las $formattedTime", Toast.LENGTH_LONG).show()
+                Log.d("NotificationScheduler", "Próxima notificación a las $formattedTime")
 
 
 
-            // Configurar una alarma exacta para la próxima notificación
-            try {
-                val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+                // Configurar una alarma exacta para la próxima notificación
+                try {
+                    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-                alarmManager.setExact(
-                    AlarmManager.RTC_WAKEUP,
-                    calendar.timeInMillis,
-                    pendingIntent
-                )
+                    alarmManager.setExact(
+                        AlarmManager.RTC_WAKEUP,
+                        calendar.timeInMillis,
+                        pendingIntent
+                    )
 
-            } catch (e: SecurityException) {
-                // Manejar la excepción de seguridad
-                // Puedes mostrar un mensaje al usuario o realizar otras acciones apropiadas
-                Log.d("NotificationScheduler", "Cagamosssss")
-                e.printStackTrace()
+                } catch (e: SecurityException) {
+                    // Manejar la excepción de seguridad
+                    // Puedes mostrar un mensaje al usuario o realizar otras acciones apropiadas
+                    Log.d("NotificationScheduler", "Cagamosssss")
+                    e.printStackTrace()
+                }
             }
         }
     }
 
     private fun showNotification(context: Context) {
         Log.d("NotificationScheduler", "Showing notification")
+        numNotificacionesProgramadas -=1
+        Log.d("NotificationScheduler", "Numero de notificaciones pendientes: $numNotificacionesProgramadas")
 
         val intent = Intent (context, LoginActivity::class.java ).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK

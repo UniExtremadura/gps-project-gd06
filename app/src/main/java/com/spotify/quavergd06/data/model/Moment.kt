@@ -1,4 +1,4 @@
-package com.spotify.quavergd06.model
+package com.spotify.quavergd06.data.model
 
 import android.graphics.Bitmap
 import androidx.room.Entity

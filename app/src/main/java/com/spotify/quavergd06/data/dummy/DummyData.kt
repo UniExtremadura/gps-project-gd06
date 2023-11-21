@@ -1,6 +1,6 @@
 package com.spotify.quavergd06.data.dummy
 
-import com.spotify.quavergd06.model.Moment
+import com.spotify.quavergd06.data.model.Moment
 import java.util.Date
 import com.spotify.quavergd06.R
 

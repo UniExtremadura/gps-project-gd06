@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -22,7 +21,7 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import com.spotify.quavergd06.database.QuaverDatabase
-import com.spotify.quavergd06.model.Moment
+import com.spotify.quavergd06.data.model.Moment
 import kotlinx.coroutines.launch
 
 class MapFragment : Fragment() {

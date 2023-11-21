@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.spotify.quavergd06.model.Moment
+import com.spotify.quavergd06.data.model.Moment
 import java.text.SimpleDateFormat
 import java.util.Locale
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -36,6 +36,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.spotify.quavergd06.database.QuaverDatabase
+import kotlinx.coroutines.runBlocking
 
 class MomentEditFragment : Fragment() {
 
@@ -43,8 +44,8 @@ class MomentEditFragment : Fragment() {
     private val binding get() = _binding!!
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
     private lateinit var db: QuaverDatabase
-    private var loadNewContent = false
     private var momentId: Long? = null
+    var imageURI: String? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -61,16 +62,17 @@ class MomentEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val autoCompleteTextView = binding.detailSongTitle
-
         binding.cameraOverlay.setOnClickListener {
-            loadNewContent = false
+            getAllPermissions()
             openCamera()
         }
 
         binding.buttonSave.setOnClickListener {
-            val imageURI = saveImage(binding.detailImage.drawable.toBitmap())
-            val newMoment = persistMoment(imageURI!!)
-            navigateToMomentDetailFragment(newMoment)
+            if (imageURI == null){
+                imageURI = saveImage(binding.detailImage.drawable.toBitmap())
+            }
+            persistMoment(imageURI!!)
+            navigateToMomentFragment()
         }
 
         binding.buttonCancel.setOnClickListener {
@@ -90,9 +92,9 @@ class MomentEditFragment : Fragment() {
 
 
         val moment = arguments?.getSerializable("moment") as? Moment
-        //TODO: Adecuar la carga según el origen de los datos
         if (moment != null) {
             moment?.let {
+                imageURI = it.imageURI
                 momentId = it.momentId
                 // Configurar la vista con los detalles del Momento
                 loadImageFromUri(it.imageURI)
@@ -105,7 +107,7 @@ class MomentEditFragment : Fragment() {
                 // Configurar otros elementos según sea necesario
             }
         } else {
-            loadNewContent = true
+            getAllPermissions()
             openCamera()
         }
     }
@@ -132,37 +134,80 @@ class MomentEditFragment : Fragment() {
     }
 
     private fun openCamera() {
-        // Verificar si se tienen los permisos necesarios
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
-            ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // Solicitar permisos si no están otorgados
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.CAMERA),
-                CAMERA_PERMISSION_REQUEST_CODE
-            )
-            openCamera()
-
-        } else {
-            // Abrir la cámara
-            val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            startActivityForResult(intent, CAMERA_REQUEST_CODE)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.CAMERA
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                startActivityForResult(intent, CAMERA_REQUEST_CODE)
+            }
         }
     }
 
+    private fun getAllPermissions(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.CAMERA
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(Manifest.permission.CAMERA),
+                    CAMERA_PERMISSION_REQUEST_CODE
+                )
+            }
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                    LOCATION_PERMISSION_REQUEST_CODE
+                )
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("PERMISSION", "Camera permission granted")
+            } else {
+                navigateToMomentFragment()
+            }
+        }
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Log.d("PERMISSION", "Location permission granted")
+            } else {
+                navigateToMomentFragment()
+            }
+        }
+    }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as? Bitmap
             binding.detailImage.setImageBitmap(imageBitmap)
             if (arguments?.getSerializable("moment") == null) {
-                loadNewContent = false
                 binding.detailDate.text = dateFormat.format(java.util.Date())
+                getAllPermissions()
                 obtenerUbicacion().let { (latitud, longitud) ->
+                    if (latitud == 0.0 && longitud == 0.0) {
+                        obtenerUbicacion().let { (latitud, longitud) ->
+                            binding.detailLocation.text = "$latitud, $longitud"
+                        }
+                    }
                     binding.detailLocation.text = "$latitud, $longitud"
                 }
             }
@@ -222,12 +267,9 @@ class MomentEditFragment : Fragment() {
                 }
             }
 
-            return Pair(latitud, longitud)
-        } else {
-            // Si no se tienen permisos, solicítalos al usuario
-            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
-            return obtenerUbicacion()
+
         }
+        return Pair(latitud, longitud)
     }
 
     private fun saveImage(imageBitmap: Bitmap?): String? {
@@ -243,10 +285,10 @@ class MomentEditFragment : Fragment() {
         return null
     }
 
-    private fun persistMoment(_imageURI: String): Moment {
+    private fun persistMoment(_imageURI: String){
         val latLong = extractLatLongFromLocation(binding.detailLocation.text.toString())
         val (_latitude, _longitude) = latLong!!
-        val moment = Moment(
+        var moment = Moment(
             momentId = momentId,
             title = binding.detailTitle.text.toString(),
             date = dateFormat.parse(binding.detailDate.text.toString()),
@@ -257,9 +299,8 @@ class MomentEditFragment : Fragment() {
             longitude = _longitude,
         )
         lifecycleScope.launch {
-            Log.d("Moment",db.momentDAO().insertMoment(moment).toString())
+            db.momentDAO().insertMoment(moment)
         }
-        return moment
     }
 
     private fun extractLatLongFromLocation(location: String): Pair<Double, Double>? {
@@ -272,14 +313,13 @@ class MomentEditFragment : Fragment() {
         }
     }
 
-    private fun navigateToMomentDetailFragment(moment: Moment) {
-        val bundle = Bundle()
-        bundle.putSerializable("moment", moment)
-        findNavController().navigate(R.id.action_momentEditFragment_to_momentDetailFragment, bundle)
+    private fun navigateToMomentFragment() {
+        findNavController().navigate(R.id.action_momentEditFragment_to_momentFragment)
     }
     companion object {
         private const val CAMERA_REQUEST_CODE = 123
         private const val CAMERA_PERMISSION_REQUEST_CODE = 456
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 789
     }
 
     override fun onPause() {

@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.spotify.quavergd06.model.Moment
+import com.spotify.quavergd06.data.model.Moment
 
 @Database(entities = [Moment::class], version = 1)
 @TypeConverters(Converters::class)

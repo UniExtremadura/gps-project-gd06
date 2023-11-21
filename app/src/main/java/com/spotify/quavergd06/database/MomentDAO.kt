@@ -1,12 +1,10 @@
 package com.spotify.quavergd06.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
-import com.spotify.quavergd06.model.Moment
+import com.spotify.quavergd06.data.model.Moment
 
 @Dao
 interface MomentDAO {
