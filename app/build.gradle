@@ -103,4 +103,6 @@ dependencies {
 // optional - Test helpers
     testImplementation "androidx.room:room-testing:$room_version"
 
+    implementation "androidx.preference:preference-ktx:1.1.1"
+
 }

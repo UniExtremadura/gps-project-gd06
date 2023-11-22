@@ -33,7 +33,7 @@ import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
 
 import com.spotify.quavergd06.databinding.ActivityLoginBinding
-import com.spotify.quavergd06.notifications.NotificationScheduler
+import com.spotify.quavergd06.model.ThemeManager
 import com.spotify.quavergd06.view.home.HomeActivity
 
 class LoginActivity : AppCompatActivity() {
