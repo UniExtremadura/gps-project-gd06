@@ -14,12 +14,12 @@ import com.spotify.quavergd06.R
 import com.spotify.quavergd06.api.setKey
 import com.spotify.quavergd06.data.fetchables.HistoryFetchable
 import com.spotify.quavergd06.data.model.StatsItem
-import com.spotify.quavergd06.databinding.FragmentTopGridBinding
+import com.spotify.quavergd06.databinding.FragmentRecyclerViewBinding
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class HistoryFragment() : Fragment() {
-    private var _binding: FragmentTopGridBinding? = null
+    private var _binding: FragmentRecyclerViewBinding? = null
     private val binding get() = _binding!!
 
     private var items: List<StatsItem> = emptyList()
@@ -29,7 +29,7 @@ class HistoryFragment() : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentTopGridBinding.inflate(inflater, container, false)
+        _binding = FragmentRecyclerViewBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -63,7 +63,7 @@ class HistoryFragment() : Fragment() {
 
         }
 
-        android.util.Log.d("HistoryFragment", "setUpRecyclerView")
+        Log.d("HistoryFragment", "setUpRecyclerView")
     }
 
     private fun obtenerSpotifyApiKey(context: Context): String? {
