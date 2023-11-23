@@ -11,11 +11,14 @@ import com.spotify.quavergd06.R
 import com.spotify.quavergd06.data.fetchables.ArtistFetchable
 import com.spotify.quavergd06.data.fetchables.HistoryFetchable
 import com.spotify.quavergd06.data.fetchables.TrackFetchable
+import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.databinding.FragmentPersonalStatsBinding
 import com.spotify.quavergd06.databinding.FragmentStatsBinding
 
-
-class PersonalStatsFragment : Fragment() {
+class PersonalStatsFragment(
+    private val navigate: (Int, Fragment) -> Unit,
+    private val navigateNoArgs: (Int) -> Unit
+) : Fragment() {
     private var _binding: FragmentPersonalStatsBinding? = null
     private val binding get() = _binding!!
 
@@ -34,22 +37,34 @@ class PersonalStatsFragment : Fragment() {
 
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         loadFragment(R.id.fragmentTopGenres, TopGenresFragment())
 
         loadFragment(R.id.fragmentTopArtists, PreviewTopFragment(ArtistFetchable()) { statsItem ->
-            findNavController().navigate(R.id.action_statsFragment_to_artistInfoFragment, ArtistInfoFragment.newInstance(statsItem).arguments)
+            navigate(
+                R.id.action_statsFragment_to_artistInfoFragment,
+                ArtistInfoFragment.newInstance(statsItem)
+            )
         })
 
         loadFragment(R.id.fragmentTopTracks, PreviewTopFragment(TrackFetchable()) { statsItem ->
-            findNavController().navigate(R.id.action_statsFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(statsItem).arguments)
+            navigate(
+                R.id.action_statsFragment_to_trackInfoFragment,
+                TrackInfoFragment.newInstance(statsItem)
+            )
         })
 
         loadFragment(R.id.fragmentHistory, PreviewTopFragment(HistoryFetchable()) { statsItem ->
-            findNavController().navigate(R.id.action_statsFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(statsItem).arguments)
+            navigate(
+                R.id.action_statsFragment_to_trackInfoFragment,
+                TrackInfoFragment.newInstance(statsItem)
+            )
         })
+
+
     }
 
     private fun loadFragment(containerId: Int, fragment: Fragment) {
@@ -61,28 +76,42 @@ class PersonalStatsFragment : Fragment() {
     private fun setButtons() {
         val buttonTopArtistsMore = binding.moreTopArtists
         buttonTopArtistsMore.setOnClickListener {
-            val fetchable = ArtistFetchable()
-            Log.d("StatsFragment", "ArtistFetchable instance: $fetchable")
-            navigateToTopItemFragment(TopItemViewPagerFragment.newInstance("short_term", fetchable))
+            navigate(
+                R.id.action_statsFragment_to_topItemViewPagerFragment,
+                TopItemViewPagerFragment.newInstance("short_term", ArtistFetchable())
+            )
         }
 
         val buttonTopTracksMore = binding.moreTopTracks
-        buttonTopTracksMore.setOnClickListener {
-            val fetchable = TrackFetchable()
-            Log.d("StatsFragment", "TrackFetchable instance: $fetchable")
-            navigateToTopItemFragment(TopItemViewPagerFragment.newInstance("short_term", fetchable))
+        buttonTopTracksMore.setOnClickListener { //findNavController().navigate(R.id.action_statsFragment_to_topItemViewPagerFragment, TopItemViewPagerFragment.newInstance("short_term", TrackFetchable()).arguments)
+            navigate(
+                R.id.action_statsFragment_to_topItemViewPagerFragment,
+                TopItemViewPagerFragment.newInstance("short_term", TrackFetchable())
+            )
         }
 
         val buttonTopHistory = binding.moreHistory
         buttonTopHistory.setOnClickListener {
-            val fetchable = HistoryFetchable()
-            Log.d("StatsFragment", "HistoryFetchable instance: $fetchable")
-            findNavController().navigate(R.id.action_statsFragment_to_historyListFragment)
+            navigateNoArgs(R.id.action_statsFragment_to_historyListFragment)
         }
     }
 
-    private fun navigateToTopItemFragment(fragment: Fragment) {
-        Log.d("StatsFragment", "navigateToTopItemViewPagerFragment")
-        findNavController().navigate(R.id.action_statsFragment_to_topItemViewPagerFragment, fragment.arguments)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
+
+    companion object {
+        fun newInstance(navigate: (Int, Fragment) -> Unit, navigateNoArgs: (Int) -> Unit) =
+            PersonalStatsFragment(navigate, navigateNoArgs)
+
+        fun newInstance() = PersonalStatsFragment(
+            { id, fragment ->
+                fragment.findNavController().navigate(id)
+            },
+            { _ -> }
+        )
+
+    }
+
 }

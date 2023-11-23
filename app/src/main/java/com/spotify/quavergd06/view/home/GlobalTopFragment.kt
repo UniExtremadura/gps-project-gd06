@@ -12,13 +12,17 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.spotify.quavergd06.R
 import com.spotify.quavergd06.api.setKey
+import com.spotify.quavergd06.data.api.TopGlobalTracks
 import com.spotify.quavergd06.data.fetchables.HistoryFetchable
+import com.spotify.quavergd06.data.fetchables.TopGlobalFetchable
 import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.databinding.FragmentRecyclerViewBinding
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class GlobalTopFragment : Fragment() {
+class GlobalTopFragment(
+    private val navigate: (Int, Fragment) -> Unit
+): Fragment() {
     private var _binding: FragmentRecyclerViewBinding? = null
     private val binding get() = _binding!!
 
@@ -41,7 +45,7 @@ class GlobalTopFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 setKey(obtenerSpotifyApiKey(requireContext())!!)
-                items = HistoryFetchable().fetch()
+                items = TopGlobalFetchable().fetch()
                 adapter.updateData(items)
             } catch (e: Exception) {
                 Log.d("GlobalTopFragment", "Error: ${e.message}")
@@ -55,7 +59,7 @@ class GlobalTopFragment : Fragment() {
         adapter = HistoryListAdapter(
             statsItems = items,
             context = this.context,
-            onClick = {statsItem -> onClick(statsItem) }
+            onClick = {statsItem -> navigate(R.id.action_statsFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(statsItem)) }
         )
         with(binding) {
             topItemRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -71,14 +75,17 @@ class GlobalTopFragment : Fragment() {
         return sharedPreferences.getString("access_token", null)
     }
 
-    private fun onClick(statsItem: StatsItem) {
-        Log.d("HistoryFragment", "onClick")
-        findNavController().navigate(R.id.action_historyListFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(statsItem).arguments)
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
         lifecycleScope.cancel()
+    }
+
+
+    companion object {
+        fun newInstance() = GlobalTopFragment { id, fragment ->
+            fragment.findNavController().navigate(id)
+        }
+
     }
 }

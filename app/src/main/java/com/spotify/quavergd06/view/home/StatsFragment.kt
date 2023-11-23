@@ -29,57 +29,30 @@ class StatsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         _binding = FragmentStatsBinding.inflate(inflater, container, false)
-
-        setButtons()
-
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        loadFragment(R.id.fragmentTopGenres, TopGenresFragment())
-
-        loadFragment(R.id.fragmentTopArtists, PreviewTopFragment(ArtistFetchable()) { statsItem ->
-            findNavController().navigate(R.id.action_statsFragment_to_artistInfoFragment, ArtistInfoFragment.newInstance(statsItem).arguments)
-        })
-
-        loadFragment(R.id.fragmentTopTracks, PreviewTopFragment(TrackFetchable()) { statsItem ->
-            findNavController().navigate(R.id.action_statsFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(statsItem).arguments)
-        })
-
-        loadFragment(R.id.fragmentHistory, PreviewTopFragment(HistoryFetchable()) { statsItem ->
-            findNavController().navigate(R.id.action_statsFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(statsItem).arguments)
-        })
+        Log.d("StatsFragment", "setUpViewPager")
+        setUpViewPager()
     }
 
-    private fun loadFragment(containerId: Int, fragment: Fragment) {
-        childFragmentManager.beginTransaction()
-            .replace(containerId, fragment)
-            .commit()
+    fun setUpViewPager() {
+        val adapter = PersonalTopGlobalViewPager(childFragmentManager,
+            { i: Int ,fragment: Fragment -> findNavController().navigate(i, fragment.arguments)},
+            { i: Int -> findNavController().navigate(i)}
+        )
+        binding.topItemViewPager.adapter = adapter
+        binding.personalGlobalTabLayout.setupWithViewPager(binding.topItemViewPager)
     }
 
-    private fun setButtons() {
-        val buttonTopArtistsMore = binding.moreTopArtists
-        buttonTopArtistsMore.setOnClickListener {
-            val fetchable = ArtistFetchable()
-            Log.d("StatsFragment", "ArtistFetchable instance: $fetchable")
-            navigateToTopItemFragment(TopItemViewPagerFragment.newInstance("short_term", fetchable))
-        }
-
-        val buttonTopTracksMore = binding.moreTopTracks
-        buttonTopTracksMore.setOnClickListener {
-            val fetchable = TrackFetchable()
-            Log.d("StatsFragment", "TrackFetchable instance: $fetchable")
-            navigateToTopItemFragment(TopItemViewPagerFragment.newInstance("short_term", fetchable))
-        }
-
-        val buttonTopHistory = binding.moreHistory
-        buttonTopHistory.setOnClickListener {
-            val fetchable = HistoryFetchable()
-            Log.d("StatsFragment", "HistoryFetchable instance: $fetchable")
-            findNavController().navigate(R.id.action_statsFragment_to_historyListFragment)
+    private fun onClick(statsItem: StatsItem){
+        if (statsItem.artist == null) {
+            findNavController().navigate(R.id.action_topItemViewPagerFragment_to_artistInfoFragment, ArtistInfoFragment.newInstance(statsItem).arguments)
+        } else {
+            findNavController().navigate(R.id.action_topItemViewPagerFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(statsItem).arguments)
         }
     }
 
@@ -88,4 +61,12 @@ class StatsFragment : Fragment() {
         findNavController().navigate(R.id.action_statsFragment_to_topItemViewPagerFragment, fragment.arguments)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    companion object {
+        fun newInstance() = StatsFragment()
+    }
 }

@@ -74,10 +74,20 @@ class TrackInfoFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object {
         fun newInstance(statsItem: StatsItem) = TrackInfoFragment().apply {
             arguments = Bundle().apply {
                 putSerializable("statsItem", statsItem)
+            }
+        }
+
+        fun newInstance() = TrackInfoFragment().apply {
+            arguments = Bundle().apply {
             }
         }
     }
