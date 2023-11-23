@@ -33,7 +33,7 @@ import com.spotify.sdk.android.auth.AuthorizationRequest
 import com.spotify.sdk.android.auth.AuthorizationResponse
 
 import com.spotify.quavergd06.databinding.ActivityLoginBinding
-import com.spotify.quavergd06.notifications.NotificationScheduler
+import com.spotify.quavergd06.model.ThemeManager
 import com.spotify.quavergd06.view.home.HomeActivity
 
 class LoginActivity : AppCompatActivity() {
@@ -56,9 +56,10 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        ThemeManager.applyTheme(this)
         val preferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        val storedToken = preferences.getString("access_token", null)
 
+        val storedToken = preferences.getString("access_token", null)
         if (storedToken != null) {
                 // Access token is available, start the HomeActivity
                 val intent = Intent(this, HomeActivity::class.java)
