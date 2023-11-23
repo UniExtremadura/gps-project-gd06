@@ -61,10 +61,19 @@ class ArtistInfoFragment : Fragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     companion object {
         fun newInstance(statsItem: StatsItem) = ArtistInfoFragment().apply {
             arguments = Bundle().apply {
                 putSerializable("statsItem", statsItem)
+            }
+        }
+        fun newInstance() = ArtistInfoFragment().apply {
+            arguments = Bundle().apply {
             }
         }
     }

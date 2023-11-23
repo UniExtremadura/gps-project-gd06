@@ -3,8 +3,9 @@ package com.spotify.quavergd06.api
 import com.spotify.quavergd06.data.api.ArtistItem
 import com.spotify.quavergd06.data.api.HistoryResponse
 import com.spotify.quavergd06.data.api.Tracks
-import com.spotify.quavergd06.data.api.TopArtistResponse
-import com.spotify.quavergd06.data.api.TopTrackResponse
+import com.spotify.quavergd06.data.api.TopArtistsResponse
+import com.spotify.quavergd06.data.api.TopGlobalApiResponse
+import com.spotify.quavergd06.data.api.TopTracksResponse
 import com.spotify.quavergd06.data.api.UserProfileInfoResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -55,14 +56,14 @@ interface SpotifyApiService {
     suspend fun loadTopArtists(
         @Query("time_range") timeRange: String,
         @Query("limit") limit: Int = 30
-    ): Response<TopArtistResponse>
+    ): Response<TopArtistsResponse>
 
     @Headers("Content-Type: application/json")
     @GET("me/top/tracks")
     suspend fun loadTopTracks(
         @Query("time_range") timeRange: String,
         @Query("limit") limit: Int = 30
-    ): Response<TopTrackResponse>
+    ): Response<TopTracksResponse>
 
     @Headers("Content-Type: application/json")
     @GET("artists/{id}")
@@ -76,6 +77,12 @@ interface SpotifyApiService {
         @Query("limit") limit: Int = 10,
         @Query("before") before: String = System.currentTimeMillis().toString()
     ): Response<HistoryResponse>
+
+    @Headers("Content-Type: application/json")
+    @GET("https://api.spotify.com/v1/playlists/37i9dQZEVXbMDoHDwVN2tF")
+    suspend fun loadTopGlobal(
+        @Query("market") market: String = "ES"
+    ): Response<TopGlobalApiResponse>
 
     @Headers("Content-Type: application/json")
     @GET("me/top/tracks?limit=20&offset=0")

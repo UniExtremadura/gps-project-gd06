@@ -20,6 +20,7 @@ import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.data.toArtist
 import com.spotify.quavergd06.data.toStatsItem
 import com.spotify.quavergd06.databinding.FragmentTopGenresBinding
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 
@@ -98,6 +99,16 @@ class TopGenresFragment : Fragment() {
     private fun obtenerSpotifyApiKey(context: Context): String? {
         val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         return sharedPreferences.getString("access_token", null)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+        lifecycleScope.cancel()
+    }
+
+    companion object {
+        fun newInstance() = TopGenresFragment()
     }
 
 }

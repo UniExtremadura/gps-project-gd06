@@ -18,13 +18,13 @@ import com.spotify.quavergd06.api.setKey
 import com.spotify.quavergd06.data.fetchables.Fetchable
 import com.spotify.quavergd06.data.model.Artist
 import com.spotify.quavergd06.data.model.StatsItem
-import com.spotify.quavergd06.databinding.FragmentTopGridBinding
+import com.spotify.quavergd06.databinding.FragmentRecyclerViewBinding
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 
 class TopGridFragment(private val fetchable: Fetchable,  private val onClick: (StatsItem) -> Unit) : Fragment() {
-    private var _binding: FragmentTopGridBinding? = null
+    private var _binding: FragmentRecyclerViewBinding? = null
     private val binding get() = _binding!!
 
     //private lateinit var adapter: Adapter
@@ -36,7 +36,7 @@ class TopGridFragment(private val fetchable: Fetchable,  private val onClick: (S
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentTopGridBinding.inflate(inflater, container, false)
+        _binding = FragmentRecyclerViewBinding.inflate(inflater, container, false)
         return binding.root
     }
 
