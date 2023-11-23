@@ -56,9 +56,10 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        ThemeManager.applyTheme(this)
         val preferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        val storedToken = preferences.getString("access_token", null)
 
+        val storedToken = preferences.getString("access_token", null)
         if (storedToken != null) {
                 // Access token is available, start the HomeActivity
                 val intent = Intent(this, HomeActivity::class.java)
