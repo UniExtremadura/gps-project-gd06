@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
     <ListPreference
+        android:key="language_preference"
+        android:title="Select Language"
+        android:summary="Choose your preferred language"
+        android:dialogTitle="Select Language"
+        android:entries="@array/language_entries"
+        android:entryValues="@array/language_values"
+        android:defaultValue="en" />
+
+    <ListPreference
         android:key="theme_preference"
         android:title="@string/select_theme"
         android:summary="@string/choose_preferred_theme"
@@ -8,5 +17,6 @@
         android:entries="@array/theme_entries"
         android:entryValues="@array/theme_values"
         android:defaultValue="dark_theme" />
+
 
 </PreferenceScreen>
