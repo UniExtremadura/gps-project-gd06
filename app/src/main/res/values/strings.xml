@@ -1,7 +1,33 @@
 <resources>
     <string name="app_name">Quaver</string>
+    <string name="token">Access Token: %1$s</string>
+    <string name="request_token">Request Token</string>
+    <string name="request_code">Request Code</string>
     <string name="login_with_spotify">Login with Spotify</string>
     <string name="welcome">Welcome</string>
+    <string name="moment_image_description">Moment Image</string>
+    <string name="moment_title_text">Title</string>
+    <string name="top_genres_previsualization_title">Top Genres:</string>
+    <string name="top_artists_previsualization_title">Top Artists:</string>
+    <string name="top_tracks_previsualization_title">Top Tracks:</string>
+    <string name="history_previsualization_title">History:</string>
+    <string name="more">More...</string>
+    <string name="top_genres_title">Genre</string>
+    <string name="popularity">Popularity: %s</string>
+    <string name="genres">Genres: %s</string>
+    <string name="artist">Artist: %s</string>
+    <string name="track_title">Title: %s</string>
+    <string name="album_name">Album: %s</string>
+    <string name="artist_name">Artist: %s</string>
+    <string name="logout_button_text">Close session</string>
+    <string name="user_profile_text">Hello there, I am using Quaver!</string>
+    <string name="light_theme">Light</string>
+    <string name="dark_theme">Dark</string>
+    <string name="theme_preference_key">theme_preference</string>
+    <string name="select_theme">Select Theme</string>
+    <string name="choose_preferred_theme">Choose your preferred theme</string>
+    <string name="select_theme_dialog_title">Select theme</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
