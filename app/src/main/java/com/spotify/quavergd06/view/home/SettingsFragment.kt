@@ -1,5 +1,6 @@
 package com.spotify.quavergd06.view.home
 
+import android.content.Context
 import android.os.Bundle
 import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
@@ -8,6 +9,7 @@ import com.spotify.quavergd06.model.ThemeManager
 import java.util.Locale
 import android.content.res.Configuration
 import androidx.core.content.ContentProviderCompat.requireContext
+import com.spotify.quavergd06.model.LocaleManager
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -29,7 +31,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         findPreference<ListPreference>("language_preference")?.setOnPreferenceChangeListener { _, newValue ->
             // Handle language change
-            updateLocale(newValue as String)
+            LocaleManager.updateLocale(requireContext(), newValue as String)
+            activity?.recreate()
+            saveLanguagePreference(newValue as String)
             true
         }
 
@@ -40,16 +44,11 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     }
 
-    private fun updateLocale(languageCode: String) {
-        val locale = Locale(languageCode)
-        Locale.setDefault(locale)
 
-        val config = Configuration(resources.configuration)
-        config.setLocale(locale)
+    private fun saveLanguagePreference(languageCode: String) {
+        val preferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        preferences.edit().putString("language_code", languageCode).apply()
 
-        requireContext().resources.updateConfiguration(config, requireContext().resources.displayMetrics)
-
-        activity?.recreate()
     }
 
 }
