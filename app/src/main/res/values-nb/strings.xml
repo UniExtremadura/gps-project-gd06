@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Quaver</string>
+    <string name="token">Tilgangstoken: %1$s</string>
+    <string name="request_token">Be om token</string>
+    <string name="request_code">Be om kode</string>
+    <string name="login_with_spotify">Logg inn med Spotify</string>
+    <string name="welcome">Velkommen</string>
+    <string name="moment_image_description">Øyeblikksbilde</string>
+    <string name="moment_title_text">Tittel</string>
+    <string name="top_genres_previsualization_title">Topp sjangre:</string>
+    <string name="top_artists_previsualization_title">Topp artister:</string>
+    <string name="top_tracks_previsualization_title">Topp spor:</string>
+    <string name="history_previsualization_title">Historie:</string>
+    <string name="more">Mer...</string>
+    <string name="top_genres_title">Sjanger</string>
+    <string name="popularity">Popularitet: %s</string>
+    <string name="genres">Sjangre: %s</string>
+    <string name="artist">Artist: %s</string>
+    <string name="track_title">Tittel: %s</string>
+    <string name="album_name">Album: %s</string>
+    <string name="artist_name">Artist: %s</string>
+    <string name="logout_button_text">Logg ut</string>
+    <string name="user_profile_text">Hei der! Jeg bruker Quaver.</string>
+    <string name="light_theme">Lyst</string>
+    <string name="dark_theme">Mørkt</string>
+    <string name="theme_preference_key">tema_preferanse</string>
+    <string name="select_theme">Velg tema</string>
+    <string name="choose_preferred_theme">Velg ditt foretrukne tema</string>
+    <string name="select_theme_dialog_title">Velg tema</string>
+    <string name="english">Engelsk</string>
+    <string name="spanish">Spansk</string>
+    <string name="norwegian">Norsk</string>
+    <string name="italian">Italiensk</string>
+    <string name="portuguese">Portugisisk</string>
+    <string name="language_preference_key">språk_preferanse</string>
+    <string name="select_language">Velg språk</string>
+    <string name="choose_preferred_language">Velg ditt foretrukne språk</string>
+    <string name="select_language_dialog_title">Velg språk</string>
+    <string name="default_language">en</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hei tom fragment</string>
+</resources>
