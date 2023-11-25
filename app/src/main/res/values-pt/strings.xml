@@ -38,6 +38,10 @@
     <string name="choose_preferred_language">Escolha o seu idioma preferido</string>
     <string name="select_language_dialog_title">Selecionar Idioma</string>
     <string name="default_language">en</string>
+    <string name="button_delete_data">Excluir datos</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="delete_confirmation_message">" alle øyeblikkene dine og logge ut?"</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Olá fragmento em branco</string>
