@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Quaver</string>
+    <string name="token">Token di accesso: %1$s</string>
+    <string name="request_token">Richiedi Token</string>
+    <string name="request_code">Richiedi Codice</string>
+    <string name="login_with_spotify">Accedi con Spotify</string>
+    <string name="welcome">Benvenuto</string>
+    <string name="moment_image_description">Immagine del Momento</string>
+    <string name="moment_title_text">Titolo</string>
+    <string name="top_genres_previsualization_title">Generi Principali:</string>
+    <string name="top_artists_previsualization_title">Artisti Principali:</string>
+    <string name="top_tracks_previsualization_title">Brani Principali:</string>
+    <string name="history_previsualization_title">Cronologia:</string>
+    <string name="more">Altro...</string>
+    <string name="top_genres_title">Genere</string>
+    <string name="popularity">Popolarità: %s</string>
+    <string name="genres">Generi: %s</string>
+    <string name="artist">Artista: %s</string>
+    <string name="track_title">Titolo: %s</string>
+    <string name="album_name">Album: %s</string>
+    <string name="artist_name">Artista: %s</string>
+    <string name="logout_button_text">Chiudi sessione</string>
+    <string name="user_profile_text">Ciao, sto usando Quaver!</string>
+    <string name="light_theme">Chiaro</string>
+    <string name="dark_theme">Scuro</string>
+    <string name="theme_preference_key">preferenza_tema</string>
+    <string name="select_theme">Seleziona Tema</string>
+    <string name="choose_preferred_theme">Scegli il tuo tema preferito</string>
+    <string name="select_theme_dialog_title">Seleziona tema</string>
+    <string name="english">Inglese</string>
+    <string name="spanish">Spagnolo</string>
+    <string name="norwegian">Norvegese</string>
+    <string name="italian">Italiano</string>
+    <string name="portuguese">Portoghese</string>
+    <string name="language_preference_key">preferenza_lingua</string>
+    <string name="select_language">Seleziona Lingua</string>
+    <string name="choose_preferred_language">Scegli la tua lingua preferita</string>
+    <string name="select_language_dialog_title">Seleziona Lingua</string>
+    <string name="default_language">en</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Ciao frammento vuoto</string>
+</resources>
