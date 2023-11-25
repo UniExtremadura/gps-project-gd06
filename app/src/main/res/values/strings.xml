@@ -38,6 +38,9 @@
     <string name="select_language_dialog_title">Select Language</string>
     <string name="default_language">en</string>
     <string name="button_delete_data">Delete data</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="delete_confirmation_message">Are you sure you want to delete all your moments and log out?</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

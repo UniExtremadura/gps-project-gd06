@@ -1,5 +1,6 @@
 package com.spotify.quavergd06.view.home
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -11,9 +12,13 @@ import java.util.Locale
 import android.content.res.Configuration
 import android.view.View
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.lifecycleScope
 import com.spotify.quavergd06.database.QuaverDatabase
 import com.spotify.quavergd06.model.LocaleManager
 import com.spotify.quavergd06.view.LoginActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
@@ -76,6 +81,33 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private fun clearUserToken() {
         val sharedPreferences = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         sharedPreferences.edit().clear().apply()
+    }
+
+    private fun showDeleteConfirmationDialog() {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+        alertDialogBuilder.setTitle(context?.getString(R.string.button_delete_data))
+        alertDialogBuilder.setMessage(context?.getString(R.string.delete_confirmation_message))
+        alertDialogBuilder.setPositiveButton(context?.getString(R.string.yes)) { dialog, which ->
+
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    // Código para realizar operaciones de base de datos
+                    db.clearAllTables()
+                    clearUserToken()
+                    requireActivity().finish()
+                    val intent = Intent(requireContext(), LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                }
+            }
+        }
+        alertDialogBuilder.setNegativeButton(context?.getString(R.string.no)) { dialog, which ->
+            // Usuario hizo clic en No, cerrar el cuadro de diálogo sin hacer nada
+            dialog.dismiss()
+        }
+
+        val alertDialog: AlertDialog = alertDialogBuilder.create()
+        alertDialog.show()
     }
 }
 

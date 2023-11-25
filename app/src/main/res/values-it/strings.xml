@@ -39,6 +39,9 @@
     <string name="select_language_dialog_title">Seleziona Lingua</string>
     <string name="default_language">en</string>
     <string name="button_delete_data">Elimina dati</string>
+    <string name="yes">Sì</string>
+    <string name="no">No</string>
+    <string name="delete_confirmation_message">Sei sicuro di voler eliminare tutti i tuoi momenti e disconnetterti?</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Ciao frammento vuoto</string>
