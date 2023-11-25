@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <!-- Stats -->
+        <item
+            android:title="Stats"
+            android:id="@+id/statsFragment"
+            android:icon="@drawable/baseline_bar_chart_24"/>
+
+        <!-- Moment -->
+        <item
+            android:title="Moment"
+            android:id="@+id/momentFragment"
+            android:icon="@drawable/baseline_image_24"/>
+
+        <!-- Camera -->
+        <item
+            android:title="Add Moment"
+            android:id="@+id/momentEditFragment"
+            android:icon="@drawable/baseline_add_box_24"/>
+
+        <!-- Profile -->
+        <item
+            android:title="Profile"
+            android:id="@+id/profileFragment"
+            android:icon="@drawable/baseline_person_outline_24"/>
+
+        <!-- Settings -->
+        <item
+            android:title="Settings"
+            android:id="@+id/settingsFragment"
+            android:icon="@drawable/baseline_settings_24"/>
+</menu>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Quaver</string>
+    <string name="token">Token de Acesso: %1$s</string>
+    <string name="request_token">Solicitar Token</string>
+    <string name="request_code">Solicitar Código</string>
+    <string name="login_with_spotify">Entrar com o Spotify</string>
+    <string name="welcome">Bem-vindo</string>
+    <string name="moment_image_description">Imagem do Momento</string>
+    <string name="moment_title_text">Título</string>
+    <string name="top_genres_previsualization_title">Principais Gêneros:</string>
+    <string name="top_artists_previsualization_title">Principais Artistas:</string>
+    <string name="top_tracks_previsualization_title">Principais Faixas:</string>
+    <string name="history_previsualization_title">Histórico:</string>
+    <string name="more">Mais...</string>
+    <string name="top_genres_title">Gênero</string>
+    <string name="popularity">Popularidade: %s</string>
+    <string name="genres">Gêneros: %s</string>
+    <string name="artist">Artista: %s</string>
+    <string name="track_title">Título: %s</string>
+    <string name="album_name">Álbum: %s</string>
+    <string name="artist_name">Artista: %s</string>
+    <string name="logout_button_text">Encerrar sessão</string>
+    <string name="user_profile_text">Olá, estou usando o Quaver!</string>
+    <string name="light_theme">Claro</string>
+    <string name="dark_theme">Escuro</string>
+    <string name="theme_preference_key">preferencia_tema</string>
+    <string name="select_theme">Selecionar Tema</string>
+    <string name="choose_preferred_theme">Escolha o seu tema preferido</string>
+    <string name="select_theme_dialog_title">Selecionar tema</string>
+    <string name="english">Inglês</string>
+    <string name="spanish">Espanhol</string>
+    <string name="norwegian">Norueguês</string>
+    <string name="italian">Italiano</string>
+    <string name="portuguese">Português</string>
+    <string name="language_preference_key">preferencia_idioma</string>
+    <string name="select_language">Selecionar Idioma</string>
+    <string name="choose_preferred_language">Escolha o seu idioma preferido</string>
+    <string name="select_language_dialog_title">Selecionar Idioma</string>
+    <string name="default_language">en</string>
+    <string name="button_delete_data">Excluir datos</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="delete_confirmation_message">" alle øyeblikkene dine og logge ut?"</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Olá fragmento em branco</string>
+</resources>

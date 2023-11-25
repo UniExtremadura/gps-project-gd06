@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="377dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardBackgroundColor="#FFF"
+        app:cardCornerRadius="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Contenido de la tarjeta -->
+
+            <ImageView
+                android:id="@+id/detailImage"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Cambié el RelativeLayout por ConstraintLayout -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cameraOverlay"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="#80000000"
+                android:clickable="true"
+                app:layout_constraintBottom_toBottomOf="@+id/detailImage"
+                app:layout_constraintEnd_toEndOf="@+id/detailImage"
+                app:layout_constraintStart_toStartOf="@+id/detailImage"
+                app:layout_constraintTop_toTopOf="@+id/detailImage">
+
+                <ImageView
+                    android:layout_width="63dp"
+                    android:layout_height="47dp"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/baseline_photo_camera_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <ImageView
+                android:id="@+id/iconSpotify"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/spotify_logo"
+                app:layout_constraintBottom_toBottomOf="@+id/detailSongTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/detailSongTitle" />
+
+
+            <AutoCompleteTextView
+                android:id="@+id/detailSongTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:iconifiedByDefault="false"
+                android:queryHint="Buscar pistas..."
+                app:iconifiedByDefault="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/iconSpotify"
+                app:layout_constraintTop_toBottomOf="@+id/detailImage"/>
+
+            <ImageView
+                android:id="@+id/iconDate"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/baseline_calendar_month_24"
+                app:layout_constraintBottom_toBottomOf="@+id/detailDate"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/detailDate"
+                app:tint="@color/green_spotify" />
+
+            <TextView
+                android:id="@+id/detailDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:text="Date"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iconDate"
+                app:layout_constraintTop_toBottomOf="@+id/detailSongTitle" />
+
+            <ImageView
+                android:id="@+id/iconLocation"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/baseline_location_on_24"
+                app:layout_constraintBottom_toBottomOf="@+id/detailLocation"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/detailLocation"
+                app:tint="@color/green_spotify" />
+
+            <TextView
+                android:id="@+id/detailLocation"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:text="Localization"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iconLocation"
+                app:layout_constraintTop_toBottomOf="@+id/detailDate" />
+
+            <ImageView
+                android:id="@+id/iconTitle"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/baseline_format_quote_24"
+                app:layout_constraintBottom_toBottomOf="@+id/detailTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/detailTitle"
+                app:tint="@color/green_spotify" />
+
+            <EditText
+                android:id="@+id/detailTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:text="Title"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iconTitle"
+                app:layout_constraintTop_toBottomOf="@+id/detailLocation" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/buttonSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                app:backgroundTint="@color/green_spotify"
+                app:layout_constraintBottom_toBottomOf="@+id/buttonCancel"
+                app:layout_constraintEnd_toEndOf="@+id/detailTitle"
+                app:layout_constraintTop_toTopOf="@+id/buttonCancel"
+                app:srcCompat="@drawable/baseline_save_24" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/buttonCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="29dp"
+                android:layout_marginBottom="24dp"
+                android:clickable="true"
+                app:backgroundTint="@color/red_cancel_close"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/iconTitle"
+                app:layout_constraintTop_toBottomOf="@+id/detailTitle"
+                app:srcCompat="@drawable/baseline_close_24" />
+
+
+            <!-- Agrega otros elementos según sea necesario -->
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Otros elementos del ConstraintLayout exterior -->
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+

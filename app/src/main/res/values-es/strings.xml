@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <string name="app_name">Quaver</string>
+        <string name="token">Token de acceso: %1$s</string>
+        <string name="request_token">Solicitar Token</string>
+        <string name="request_code">Solicitar Código</string>
+        <string name="login_with_spotify">Iniciar sesión con Spotify</string>
+        <string name="welcome">Bienvenido</string>
+        <string name="moment_image_description">Imagen del Momento</string>
+        <string name="moment_title_text">Título</string>
+        <string name="top_genres_previsualization_title">Top Géneros:</string>
+        <string name="top_artists_previsualization_title">Top Artistas:</string>
+        <string name="top_tracks_previsualization_title">Top Canciones:</string>
+        <string name="history_previsualization_title">Historial:</string>
+        <string name="more">Más...</string>
+        <string name="top_genres_title">Género</string>
+        <string name="popularity">Popularidad: %s</string>
+        <string name="genres">Géneros: %s</string>
+        <string name="artist">Artista: %s</string>
+        <string name="track_title">Título: %s</string>
+        <string name="album_name">Álbum: %s</string>
+        <string name="artist_name">Artista: %s</string>
+        <string name="logout_button_text">Cerrar sesión</string>
+        <string name="user_profile_text">¡Hola! Estoy usando Quaver.</string>
+        <string name="light_theme">Claro</string>
+        <string name="dark_theme">Oscuro</string>
+        <string name="theme_preference_key">preferencia_tema</string>
+        <string name="select_theme">Seleccionar Tema</string>
+        <string name="choose_preferred_theme">Elige tu tema preferido</string>
+        <string name="select_theme_dialog_title">Seleccionar tema</string>
+        <string name="english">Inglés</string>
+        <string name="spanish">Español</string>
+        <string name="norwegian">Noruego</string>
+        <string name="italian">Italiano</string>
+        <string name="portuguese">Portugués</string>
+        <string name="language_preference_key">preferencia_idioma</string>
+        <string name="select_language">Seleccionar Idioma</string>
+        <string name="choose_preferred_language">Elige tu idioma preferido</string>
+        <string name="select_language_dialog_title">Seleccionar Idioma</string>
+        <string name="default_language">en</string>
+        <string name="button_delete_data">Borrar datos</string>
+        <string name="yes">Sí</string>
+        <string name="no">No</string>
+        <string name="delete_confirmation_message">¿Estás seguro de que quieres borrar todos tus momentos y cerrar sesión?</string>
+
+        <!-- TODO: Remove or change this placeholder text -->
+        <string name="hello_blank_fragment">Hola fragmento en blanco</string>
+
+</resources>

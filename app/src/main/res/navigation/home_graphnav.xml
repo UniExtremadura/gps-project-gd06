@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_graphnav"
+    app:startDestination="@id/momentFragment">
+
+    <fragment
+        android:id="@+id/momentFragment"
+        android:name="com.spotify.quavergd06.view.home.MomentFragment"
+        android:label="fragment_moment"
+        tools:layout="@layout/fragment_moment" >
+        <action
+            android:id="@+id/action_momentFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_momentFragment_to_momentDetailFragment"
+            app:destination="@id/momentDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.spotify.quavergd06.view.home.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/statsFragment"
+        android:name="com.spotify.quavergd06.view.home.StatsFragment"
+        android:label="fragment_stats"
+        tools:layout="@layout/fragment_stats" >
+        <action
+            android:id="@+id/action_statsFragment_to_topItemViewPagerFragment"
+            app:destination="@id/topItemViewPagerFragment" />
+        <action
+            android:id="@+id/action_statsFragment_to_trackInfoFragment"
+            app:destination="@id/trackInfoFragment" />
+        <action
+            android:id="@+id/action_statsFragment_to_artistInfoFragment"
+            app:destination="@id/artistInfoFragment" />
+        <action
+            android:id="@+id/action_statsFragment_to_historyListFragment"
+            app:destination="@id/historyListFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.spotify.quavergd06.view.home.SettingsFragment"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.spotify.quavergd06.view.home.MapFragment"
+        android:label="MapFragment"
+        tools:layout="@layout/fragment_map">
+        <action
+            android:id="@+id/action_mapFragment_to_momentFragment"
+            app:destination="@id/momentFragment" />
+        <action
+            android:id="@+id/action_mapFragment_to_momentDetailFragment"
+            app:destination="@id/momentDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/momentDetailFragment"
+        android:name="com.spotify.quavergd06.view.home.MomentDetailFragment"
+        android:label="MomentDetailFragment" >
+        <action
+            android:id="@+id/action_momentDetailFragment_to_momentEditFragment"
+            app:destination="@id/momentEditFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/topItemFragment"
+        android:name="com.spotify.quavergd06.view.home.TopGridFragment"
+        android:label="TopItemFragment" />
+    <fragment
+        android:id="@+id/topItemViewPagerFragment"
+        android:name="com.spotify.quavergd06.view.home.TopItemViewPagerFragment"
+        android:label="TopItemViewPagerFragment" >
+        <action
+            android:id="@+id/action_topItemViewPagerFragment_to_trackInfoFragment"
+            app:destination="@id/trackInfoFragment" />
+        <action
+            android:id="@+id/action_topItemViewPagerFragment_to_artistInfoFragment"
+            app:destination="@id/artistInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/momentEditFragment"
+        android:name="com.spotify.quavergd06.view.home.MomentEditFragment"
+        android:label="MomentEditFragment" >
+        <action
+            android:id="@+id/action_momentEditFragment_to_momentFragment"
+            app:destination="@id/momentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/artistInfoFragment"
+        android:name="com.spotify.quavergd06.view.home.ArtistInfoFragment"
+        android:label="fragment_track_info"
+        tools:layout="@layout/fragment_track_info" />
+    <fragment
+        android:id="@+id/trackInfoFragment"
+        android:name="com.spotify.quavergd06.view.home.TrackInfoFragment"
+        android:label="TrackInfoFragment" >
+    <action
+        android:id="@+id/action_trackInfoFragment_to_artistInfoFragment"
+        app:destination="@id/artistInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/historyListFragment"
+        android:name="com.spotify.quavergd06.view.home.HistoryFragment"
+        android:label="HistoryListFragment" >
+        <action
+            android:id="@+id/action_historyListFragment_to_trackInfoFragment"
+            app:destination="@id/trackInfoFragment" />
+    </fragment>
+
+
+</navigation>
