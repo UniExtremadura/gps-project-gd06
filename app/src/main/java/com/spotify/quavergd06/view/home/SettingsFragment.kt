@@ -8,12 +8,11 @@ import androidx.preference.ListPreference
 import androidx.preference.PreferenceFragmentCompat
 import com.spotify.quavergd06.R
 import com.spotify.quavergd06.model.ThemeManager
-import java.util.Locale
-import android.content.res.Configuration
 import android.view.View
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.lifecycleScope
+import androidx.preference.Preference
 import com.spotify.quavergd06.database.QuaverDatabase
+import com.spotify.quavergd06.databinding.FragmentSettingsBinding
 import com.spotify.quavergd06.model.LocaleManager
 import com.spotify.quavergd06.view.LoginActivity
 import kotlinx.coroutines.Dispatchers
@@ -22,24 +21,12 @@ import kotlinx.coroutines.withContext
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
     private lateinit var db : QuaverDatabase
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         db = QuaverDatabase.getInstance(context)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val deleteDataButton = view.findViewById<View>(R.id.buttonDeleteData)
-        deleteDataButton.setOnClickListener {
-            db.clearAllTables()
-            clearUserToken()
-            requireActivity().finish()
-            val intent = Intent(requireContext(), LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-        }
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -53,11 +40,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
-        // Update theme entries with localized strings
-        val themePreference = findPreference<ListPreference>("theme_preference")
-        val themeEntries = resources.getStringArray(R.array.theme_entries)
-        themePreference?.entries = themeEntries
-
         findPreference<ListPreference>("language_preference")?.setOnPreferenceChangeListener { _, newValue ->
             // Handle language change
             LocaleManager.updateLocale(requireContext(), newValue as String)
@@ -65,6 +47,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
             saveLanguagePreference(newValue as String)
             true
         }
+
+        findPreference<Preference>("delete_data_preference")?.setOnPreferenceClickListener {
+            showDeleteConfirmationDialog()
+            true
+        }
+
+        // Update theme entries with localized strings
+        val themePreference = findPreference<ListPreference>("theme_preference")
+        val themeEntries = resources.getStringArray(R.array.theme_entries)
+        themePreference?.entries = themeEntries
 
         // Update language entries with localized strings
         val languagePreference = findPreference<ListPreference>("language_preference")
