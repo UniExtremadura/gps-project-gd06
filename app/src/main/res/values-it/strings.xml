@@ -38,6 +38,7 @@
     <string name="choose_preferred_language">Scegli la tua lingua preferita</string>
     <string name="select_language_dialog_title">Seleziona Lingua</string>
     <string name="default_language">en</string>
+    <string name="button_delete_data">Elimina dati</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Ciao frammento vuoto</string>

@@ -38,6 +38,7 @@
     <string name="choose_preferred_language">Velg ditt foretrukne språk</string>
     <string name="select_language_dialog_title">Velg språk</string>
     <string name="default_language">en</string>
+    <string name="button_delete_data">Slett data</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hei tom fragment</string>
