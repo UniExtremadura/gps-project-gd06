@@ -20,6 +20,6 @@
     under the License.
 -->
 <resources>
-    <string name="com_spotify_sdk_redirect_scheme">quavergd06</string>
-    <string name="com_spotify_sdk_redirect_host">auth</string>
+    <string name="com_spotify_sdk_redirect_scheme" translatable="false">quavergd06</string>
+    <string name="com_spotify_sdk_redirect_host" translatable="false">auth</string>
 </resources>
