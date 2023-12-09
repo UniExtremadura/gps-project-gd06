@@ -1,5 +1,6 @@
 package com.spotify.quavergd06.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -13,7 +14,7 @@ interface MomentDAO {
     suspend fun insertMoment(moment: Moment): Long
 
     @Query("SELECT * FROM moment ORDER BY date DESC")
-    suspend fun getAllMoments(): List<Moment>
+    fun getAllMoments(): LiveData<List<Moment>>
 
     //Delete a moment
     @Query("DELETE FROM moment WHERE momentId = :id")

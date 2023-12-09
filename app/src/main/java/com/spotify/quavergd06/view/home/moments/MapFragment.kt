@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.spotify.quavergd06.R
+import com.spotify.quavergd06.data.MomentsRepository
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
@@ -28,11 +29,13 @@ class MapFragment : Fragment() {
 
     private lateinit var mapView: MapView
     private lateinit var db: QuaverDatabase
+    private lateinit var repository: MomentsRepository
     private var moments = emptyList<Moment>()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         db = QuaverDatabase.getInstance(requireContext())
+        repository = MomentsRepository.getInstance(db.momentDAO())
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,13 +44,17 @@ class MapFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_map, container, false)
         mapView = view.findViewById(R.id.osmMapView)
         configureMapView()
-        lifecycleScope.launch {
-            moments = db.momentDAO().getAllMoments()
-            if (moments.isNotEmpty()) {
-                loadMapMoments()
-            }
+        repository.moments.observe(viewLifecycleOwner) { moments ->
+            this.moments = moments
+            loadMapMoments()
         }
         return view
+    }
+
+    private fun subscribeUi(adapter : MomentAdapter) {
+        repository.moments.observe(viewLifecycleOwner) { moments ->
+            adapter.updateData(moments)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -109,7 +116,7 @@ class MapFragment : Fragment() {
 
     }
 
-    fun getBitmapFromUri(contentResolver: ContentResolver, uriString: String): Bitmap? {
+    private fun getBitmapFromUri(contentResolver: ContentResolver, uriString: String): Bitmap? {
         return try {
             // Utiliza la ContentResolver para abrir la entrada de datos en la URI
             val inputStream = contentResolver.openInputStream(uriString.toUri())

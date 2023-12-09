@@ -37,6 +37,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.spotify.quavergd06.database.QuaverDatabase
 import android.text.InputFilter
+import android.text.Spanned
 
 class MomentEditFragment : Fragment() {
 
@@ -64,9 +65,9 @@ class MomentEditFragment : Fragment() {
 
         val maxTitleLength = 25 // Establece la longitud máxima permitida
         val maxSongLength = 40 // Establece la longitud máxima permitida
-        // Crea un InputFilter para limitar la longitud del texto
-        val titleFilter = arrayOf<InputFilter>(InputFilter.LengthFilter(maxTitleLength))
-        val songFilter = arrayOf<InputFilter>(InputFilter.LengthFilter(maxSongLength))
+        // Crea un InputFilter para limitar la longitud del texto y eliminar saltos de línea
+        val titleFilter = arrayOf(InputFilter.LengthFilter(maxTitleLength), NoNewlineInputFilter())
+        val songFilter = arrayOf(InputFilter.LengthFilter(maxSongLength), NoNewlineInputFilter())
 
         // Aplica el InputFilter al EditText
         binding.detailTitle.filters = titleFilter
@@ -353,5 +354,26 @@ class MomentEditFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    class NoNewlineInputFilter : InputFilter {
+        override fun filter(
+            source: CharSequence?,
+            start: Int,
+            end: Int,
+            dest: Spanned?,
+            dstart: Int,
+            dend: Int
+        ): CharSequence? {
+            source?.let {
+                for (i in start until end) {
+                    if (it[i] == '\n') {
+                        // Exclude newline characters
+                        return ""
+                    }
+                }
+            }
+            return null // Keep the original input
+        }
     }
 }

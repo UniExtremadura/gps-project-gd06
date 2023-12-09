@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.spotify.quavergd06.R
+import com.spotify.quavergd06.data.MomentsRepository
 
 import com.spotify.quavergd06.databinding.FragmentMomentBinding
 import com.spotify.quavergd06.data.model.Moment
@@ -21,6 +22,7 @@ class MomentFragment : Fragment() {
 
     private lateinit var listener: OnMomentClickListener
     private lateinit var db : QuaverDatabase
+    private lateinit var repository : MomentsRepository
     interface OnMomentClickListener {
         fun onMomentClick(moment: Moment)
     }
@@ -34,6 +36,7 @@ class MomentFragment : Fragment() {
     override fun onAttach(context: android.content.Context) {
         super.onAttach(context)
         db = QuaverDatabase.getInstance(requireContext())
+        repository = MomentsRepository.getInstance(db.momentDAO())
     }
 
     override fun onCreateView(
@@ -45,12 +48,14 @@ class MomentFragment : Fragment() {
             listener.onMomentClick(it)
         }
         )
-        db = QuaverDatabase.getInstance(requireContext())!!
-        lifecycleScope.launch {
-            moments = db.momentDAO().getAllMoments()
+        subscribeUi(adapter)
+        return binding.root
+    }
+
+    private fun subscribeUi(adapter : MomentAdapter) {
+        repository.moments.observe(viewLifecycleOwner) { moments ->
             adapter.updateData(moments)
         }
-        return binding.root
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
