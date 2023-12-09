@@ -36,6 +36,7 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.spotify.quavergd06.database.QuaverDatabase
+import android.text.InputFilter
 
 class MomentEditFragment : Fragment() {
 
@@ -60,6 +61,17 @@ class MomentEditFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val maxTitleLength = 25 // Establece la longitud máxima permitida
+        val maxSongLength = 40 // Establece la longitud máxima permitida
+        // Crea un InputFilter para limitar la longitud del texto
+        val titleFilter = arrayOf<InputFilter>(InputFilter.LengthFilter(maxTitleLength))
+        val songFilter = arrayOf<InputFilter>(InputFilter.LengthFilter(maxSongLength))
+
+        // Aplica el InputFilter al EditText
+        binding.detailTitle.filters = titleFilter
+        binding.detailSongTitle.filters = songFilter
+
         val autoCompleteTextView = binding.detailSongTitle
         binding.cameraOverlay.setOnClickListener {
 
@@ -68,11 +80,18 @@ class MomentEditFragment : Fragment() {
         }
 
         binding.buttonSave.setOnClickListener {
-            if (imageURI == null){
-                imageURI = saveImage(binding.detailImage.drawable.toBitmap())
+            try{
+                if (imageURI == null){
+                    imageURI = saveImage(binding.detailImage.drawable.toBitmap())
+                }
+                persistMoment(imageURI!!)
             }
-            persistMoment(imageURI!!)
-            navigateToMomentFragment()
+            catch (e: Exception){
+                Log.d("ERROR", "El usuario no ha tomado una foto")
+            }
+            finally {
+                navigateToMomentFragment()
+            }
         }
 
         binding.buttonCancel.setOnClickListener {
@@ -221,7 +240,7 @@ class MomentEditFragment : Fragment() {
         try {
             apiTracks = getNetworkService().loadTracks().body()?.items ?: emptyList()
         } catch (cause: Throwable) {
-            //throw APIError("Unable to fetch data from API", cause)
+            //throw APIException("Unable to fetch data from API", cause)
         }
         for (item in apiTracks) {
             if (item.type.equals("track")) {
