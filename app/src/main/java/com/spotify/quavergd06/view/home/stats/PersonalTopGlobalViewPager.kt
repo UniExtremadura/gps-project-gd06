@@ -1,11 +1,8 @@
-package com.spotify.quavergd06.view.home
+package com.spotify.quavergd06.view.home.stats
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import androidx.navigation.NavArgs
-import com.spotify.quavergd06.data.fetchables.Fetchable
-import com.spotify.quavergd06.data.model.StatsItem
 
 class PersonalTopGlobalViewPager(
     fragmentManager: FragmentManager,

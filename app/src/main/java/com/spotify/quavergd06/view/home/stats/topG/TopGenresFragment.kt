@@ -1,4 +1,4 @@
-package com.spotify.quavergd06.view.home
+package com.spotify.quavergd06.view.home.stats.topG
 
 import android.content.Context
 import android.os.Bundle
@@ -7,18 +7,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.spotify.quavergd06.R
 import com.spotify.quavergd06.api.getNetworkService
 import com.spotify.quavergd06.api.setKey
 import com.spotify.quavergd06.data.api.ArtistItem
-import com.spotify.quavergd06.data.fetchables.ArtistFetchable
 import com.spotify.quavergd06.data.model.Artist
-import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.data.toArtist
-import com.spotify.quavergd06.data.toStatsItem
 import com.spotify.quavergd06.databinding.FragmentTopGenresBinding
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
@@ -84,12 +79,16 @@ class TopGenresFragment : Fragment() {
             topGenresRecyclerView.layoutManager = LinearLayoutManager(context, androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL,  false)
             topGenresRecyclerView.adapter = adapter
         }
-        android.util.Log.d("TopGenresFragment", "setUpRecyclerView")
+        Log.d("TopGenresFragment", "setUpRecyclerView")
     }
 
+//    private fun getGenresFromArtistList(artists: List<Artist>): List<String> {
+//        return artists.flatMap { it.genres }
+//    }
+//
+    //Refactoriza getGenresFromArtistList para que se adecúe al cambio hecho con el StringListWrapper
     private fun getGenresFromArtistList(artists: List<Artist>): List<String> {
-        return artists.flatMap { it.genres }
-
+        return artists.flatMap { it.genres.list }
     }
 
     private fun getTopGenres(genres: List<String>): List<String> {

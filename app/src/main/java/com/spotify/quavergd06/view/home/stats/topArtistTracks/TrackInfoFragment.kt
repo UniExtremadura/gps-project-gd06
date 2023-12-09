@@ -1,24 +1,17 @@
-package com.spotify.quavergd06.view.home
+package com.spotify.quavergd06.view.home.stats.topArtistTracks
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.spotify.quavergd06.R
-import com.spotify.quavergd06.api.setKey
-import com.spotify.quavergd06.data.fetchables.ArtistFetchable
-import com.spotify.quavergd06.data.model.Artist
 import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.data.toStatsItem
 import com.spotify.quavergd06.databinding.FragmentTrackInfoBinding
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.launch
 
 
 class TrackInfoFragment : Fragment() {
@@ -53,7 +46,9 @@ class TrackInfoFragment : Fragment() {
     private fun setButtonListener() {
         binding.artistName.setOnClickListener{
             Log.d("TrackInfoFragment", "artistName clicked")
-            findNavController().navigate(R.id.action_trackInfoFragment_to_artistInfoFragment, ArtistInfoFragment.newInstance(statsItem?.artist!!.toStatsItem()).arguments)
+            findNavController().navigate(R.id.action_trackInfoFragment_to_artistInfoFragment, ArtistInfoFragment.newInstance(
+                statsItem?.artist!!.toStatsItem()
+            ).arguments)
         }
     }
 

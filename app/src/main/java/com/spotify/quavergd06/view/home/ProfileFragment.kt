@@ -2,18 +2,14 @@ package com.spotify.quavergd06.view.home
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import androidx.room.Index
-import androidx.room.util.appendPlaceholders
 import com.spotify.quavergd06.R
-import com.spotify.quavergd06.api.APIException
+import com.spotify.quavergd06.api.APIError
 import com.spotify.quavergd06.api.getNetworkService
 import com.spotify.quavergd06.api.setKey
 import com.spotify.quavergd06.data.api.UserProfileInfoResponse
@@ -88,7 +84,7 @@ class ProfileFragment : Fragment() {
         try {
             userInfo = getNetworkService().getUserProfile().body() ?: UserProfileInfoResponse()
         } catch (cause: Throwable) {
-            throw APIException("Unable to fetch data from API", cause)
+            throw APIError("Unable to fetch data from API", cause)
         }
     }
 

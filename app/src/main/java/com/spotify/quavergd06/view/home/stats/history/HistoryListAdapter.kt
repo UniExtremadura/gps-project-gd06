@@ -1,4 +1,4 @@
-package com.spotify.quavergd06.view.home
+package com.spotify.quavergd06.view.home.stats.history
 
 import android.content.Context
 import android.util.Log
@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.databinding.FragmentHistoryListItemBinding
-import com.spotify.quavergd06.databinding.FragmentTopItemBinding
 import com.squareup.picasso.Picasso
 
 class HistoryListAdapter (
@@ -27,8 +26,8 @@ class HistoryListAdapter (
                 Picasso.get().load(item.imageUrls?.get(1)).into(topItemImg)
 
                 //Log de nombre y log de imagenes
-                Log.d("StatsItemAdapter", "Name: ${item.name}")
-                Log.d("StatsItemAdapter", "Images: ${item.imageUrls}")
+                Log.d("com.spotify.quavergd06.view.home.stats.StatsItemAdapter", "Name: ${item.name}")
+                Log.d("com.spotify.quavergd06.view.home.stats.StatsItemAdapter", "Images: ${item.imageUrls}")
 
                 fragmentItem.setOnClickListener {
                     onClick(item)

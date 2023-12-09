@@ -1,21 +1,15 @@
-package com.spotify.quavergd06.view.home
+package com.spotify.quavergd06.view.home.stats.topArtistTracks
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.lifecycleScope
 import com.spotify.quavergd06.R
-import com.spotify.quavergd06.api.setKey
-import com.spotify.quavergd06.data.fetchables.ArtistFetchable
 import com.spotify.quavergd06.data.model.StatsItem
-import com.spotify.quavergd06.data.toStatsItem
 import com.spotify.quavergd06.databinding.FragmentArtistInfoBinding
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.launch
 
 
 class ArtistInfoFragment : Fragment() {

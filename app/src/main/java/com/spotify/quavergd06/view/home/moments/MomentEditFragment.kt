@@ -1,4 +1,4 @@
-package com.spotify.quavergd06.view.home
+package com.spotify.quavergd06.view.home.moments
 
 import android.app.Activity
 import android.content.Intent
@@ -36,7 +36,6 @@ import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.spotify.quavergd06.database.QuaverDatabase
-import kotlinx.coroutines.runBlocking
 
 class MomentEditFragment : Fragment() {
 
@@ -222,7 +221,7 @@ class MomentEditFragment : Fragment() {
         try {
             apiTracks = getNetworkService().loadTracks().body()?.items ?: emptyList()
         } catch (cause: Throwable) {
-            //throw APIException("Unable to fetch data from API", cause)
+            //throw APIError("Unable to fetch data from API", cause)
         }
         for (item in apiTracks) {
             if (item.type.equals("track")) {

@@ -6,13 +6,14 @@ import com.spotify.quavergd06.data.api.TrackItem
 import com.spotify.quavergd06.data.model.Artist
 import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.data.model.Track
+import com.spotify.quavergd06.database.StringListWrapper
 
 fun ArtistItem.toArtist() = Artist(
-    id = id ?: "null",
+    artistId = id ?: "null",
     name = name,
     popularity = popularity,
-    genres = genres,
-    imageUrls = images.map { it.url ?: "null" } as ArrayList<String>
+    genres = StringListWrapper(genres),
+    imageUrls = StringListWrapper(images.map { it.url ?: "null" } as ArrayList<String>)
 )
 
 fun TrackItem.toTrack() = Track(
@@ -24,10 +25,10 @@ fun TrackItem.toTrack() = Track(
 )
 
 fun Artist.toStatsItem() = StatsItem(
-    id = id,
+    id = artistId,
     name = name,
-    imageUrls = imageUrls,
-    genres = genres,
+    imageUrls = imageUrls.list,
+    genres = genres.list,
     popularity = popularity
 )
 

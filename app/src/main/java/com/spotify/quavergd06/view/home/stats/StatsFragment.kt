@@ -1,4 +1,4 @@
-package com.spotify.quavergd06.view.home
+package com.spotify.quavergd06.view.home.stats
 
 import android.os.Bundle
 import android.util.Log
@@ -8,12 +8,10 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.fragment.app.Fragment
 import com.spotify.quavergd06.R
-import com.spotify.quavergd06.data.fetchables.ArtistFetchable
-import com.spotify.quavergd06.data.fetchables.Fetchable
-import com.spotify.quavergd06.data.fetchables.HistoryFetchable
-import com.spotify.quavergd06.data.fetchables.TrackFetchable
 import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.databinding.FragmentStatsBinding
+import com.spotify.quavergd06.view.home.stats.topArtistTracks.ArtistInfoFragment
+import com.spotify.quavergd06.view.home.stats.topArtistTracks.TrackInfoFragment
 
 
 class StatsFragment : Fragment() {
@@ -50,9 +48,13 @@ class StatsFragment : Fragment() {
 
     private fun onClick(statsItem: StatsItem){
         if (statsItem.artist == null) {
-            findNavController().navigate(R.id.action_topItemViewPagerFragment_to_artistInfoFragment, ArtistInfoFragment.newInstance(statsItem).arguments)
+            findNavController().navigate(R.id.action_topItemViewPagerFragment_to_artistInfoFragment, ArtistInfoFragment.newInstance(
+                statsItem
+            ).arguments)
         } else {
-            findNavController().navigate(R.id.action_topItemViewPagerFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(statsItem).arguments)
+            findNavController().navigate(R.id.action_topItemViewPagerFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(
+                statsItem
+            ).arguments)
         }
     }
 

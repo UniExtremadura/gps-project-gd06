@@ -1,4 +1,4 @@
-package com.spotify.quavergd06.view.home
+package com.spotify.quavergd06.view.home.stats
 
 import android.content.Context
 import android.os.Bundle
@@ -12,11 +12,11 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.spotify.quavergd06.R
 import com.spotify.quavergd06.api.setKey
-import com.spotify.quavergd06.data.api.TopGlobalTracks
-import com.spotify.quavergd06.data.fetchables.HistoryFetchable
 import com.spotify.quavergd06.data.fetchables.TopGlobalFetchable
 import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.databinding.FragmentRecyclerViewBinding
+import com.spotify.quavergd06.view.home.stats.history.HistoryListAdapter
+import com.spotify.quavergd06.view.home.stats.topArtistTracks.TrackInfoFragment
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 

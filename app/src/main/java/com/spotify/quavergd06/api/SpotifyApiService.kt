@@ -47,7 +47,7 @@ val spotifyService: SpotifyApiService by lazy {
 }
 fun getNetworkService() = spotifyService
 
-class APIException(message: String, cause: Throwable?) : Throwable(message, cause)
+class APIError(message: String, cause: Throwable?) : Throwable(message, cause)
 
 interface SpotifyApiService {
     // Endpoint para buscar artistas en Spotify

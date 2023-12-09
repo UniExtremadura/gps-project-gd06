@@ -1,4 +1,4 @@
-package com.spotify.quavergd06.view.home
+package com.spotify.quavergd06.view.home.moments
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

@@ -1,7 +1,6 @@
-package com.spotify.quavergd06.view.home
+package com.spotify.quavergd06.view.home.stats
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +10,11 @@ import com.spotify.quavergd06.R
 import com.spotify.quavergd06.data.fetchables.ArtistFetchable
 import com.spotify.quavergd06.data.fetchables.HistoryFetchable
 import com.spotify.quavergd06.data.fetchables.TrackFetchable
-import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.databinding.FragmentPersonalStatsBinding
-import com.spotify.quavergd06.databinding.FragmentStatsBinding
+import com.spotify.quavergd06.view.home.stats.topArtistTracks.ArtistInfoFragment
+import com.spotify.quavergd06.view.home.stats.topArtistTracks.TopItemViewPagerFragment
+import com.spotify.quavergd06.view.home.stats.topArtistTracks.TrackInfoFragment
+import com.spotify.quavergd06.view.home.stats.topG.TopGenresFragment
 
 class PersonalStatsFragment(
     private val navigate: (Int, Fragment) -> Unit,

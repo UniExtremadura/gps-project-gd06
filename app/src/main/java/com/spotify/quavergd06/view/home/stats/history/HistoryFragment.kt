@@ -1,4 +1,4 @@
-package com.spotify.quavergd06.view.home
+package com.spotify.quavergd06.view.home.stats.history
 
 import android.content.Context
 import android.os.Bundle
@@ -15,6 +15,7 @@ import com.spotify.quavergd06.api.setKey
 import com.spotify.quavergd06.data.fetchables.HistoryFetchable
 import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.databinding.FragmentRecyclerViewBinding
+import com.spotify.quavergd06.view.home.stats.topArtistTracks.TrackInfoFragment
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
@@ -73,7 +74,9 @@ class HistoryFragment() : Fragment() {
 
     private fun onClick(statsItem: StatsItem) {
         Log.d("HistoryFragment", "onClick")
-        findNavController().navigate(R.id.action_historyListFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(statsItem).arguments)
+        findNavController().navigate(R.id.action_historyListFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(
+            statsItem
+        ).arguments)
     }
 
     override fun onDestroyView() {

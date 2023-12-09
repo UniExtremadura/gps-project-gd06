@@ -1,3 +1,5 @@
+package com.spotify.quavergd06.view.home.stats
+
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -25,8 +27,8 @@ class StatsItemAdapter(
                 Picasso.get().load(item.imageUrls?.get(2)).into(topItemImg)
 
                 //Log de nombre y log de imagenes
-                Log.d("StatsItemAdapter", "Name: ${item.name}")
-                Log.d("StatsItemAdapter", "Images: ${item.imageUrls}")
+                Log.d("com.spotify.quavergd06.view.home.stats.StatsItemAdapter", "Name: ${item.name}")
+                Log.d("com.spotify.quavergd06.view.home.stats.StatsItemAdapter", "Images: ${item.imageUrls}")
 
                 fragmentItem.setOnClickListener {
                     onClick(item)

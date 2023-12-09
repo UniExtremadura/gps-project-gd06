@@ -1,6 +1,5 @@
-package com.spotify.quavergd06.view.home
+package com.spotify.quavergd06.view.home.stats.topArtistTracks
 
-import TopItemGridPagerAdapter
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.spotify.quavergd06.R
 import com.spotify.quavergd06.data.fetchables.Fetchable
-import com.spotify.quavergd06.data.model.Artist
 import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.databinding.FragmentTopItemViewPagerBinding
 
@@ -67,9 +65,13 @@ class TopItemViewPagerFragment : Fragment() {
 
     private fun onPreviewItemClick(statsItem: StatsItem){
         if (statsItem.artist == null) {
-            findNavController().navigate(R.id.action_topItemViewPagerFragment_to_artistInfoFragment, ArtistInfoFragment.newInstance(statsItem).arguments)
+            findNavController().navigate(R.id.action_topItemViewPagerFragment_to_artistInfoFragment, ArtistInfoFragment.newInstance(
+                statsItem
+            ).arguments)
         } else {
-            findNavController().navigate(R.id.action_topItemViewPagerFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(statsItem).arguments)
+            findNavController().navigate(R.id.action_topItemViewPagerFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(
+                statsItem
+            ).arguments)
         }
     }
 
