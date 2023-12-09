@@ -1,4 +1,4 @@
-package com.spotify.quavergd06.database
+package com.spotify.quavergd06.database.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao

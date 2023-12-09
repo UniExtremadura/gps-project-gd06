@@ -12,9 +12,11 @@ import androidx.navigation.fragment.findNavController
 import com.spotify.quavergd06.R
 import com.spotify.quavergd06.api.getNetworkService
 import com.spotify.quavergd06.api.setKey
+import com.spotify.quavergd06.data.ArtistsRepository
 import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.data.toArtist
 import com.spotify.quavergd06.data.toStatsItem
+import com.spotify.quavergd06.database.QuaverDatabase
 import com.spotify.quavergd06.databinding.FragmentTrackInfoBinding
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
@@ -29,6 +31,9 @@ class TrackInfoFragment : Fragment() {
 
     private lateinit var artist: StatsItem
 
+    private lateinit var db : QuaverDatabase
+    private lateinit var artistsRepository : ArtistsRepository
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("TrackInfoFragment", "onCreate")
@@ -41,6 +46,12 @@ class TrackInfoFragment : Fragment() {
 
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        db = QuaverDatabase.getInstance(context)!!
+        artistsRepository = ArtistsRepository.getInstance(db.artistDAO(), getNetworkService())
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -48,8 +59,7 @@ class TrackInfoFragment : Fragment() {
 
         lifecycleScope.launch {
             try {
-                setKey(obtenerSpotifyApiKey(requireContext())!!)
-                artist = getNetworkService().loadArtist(statsItem?.artist?.artistId!!).body()?.toArtist()?.toStatsItem()!!
+                artistsRepository.tryUpdateRecentArtistCache(statsItem?.artist?.artistId.toString())
                 Log.d("TrackInfoFragment", "artist: $artist")
             }   catch (e: Exception) {
                 Log.d("TrackInfoFragment", "Error: ${e.message}")

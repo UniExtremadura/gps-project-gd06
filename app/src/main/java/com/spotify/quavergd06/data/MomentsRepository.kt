@@ -1,6 +1,6 @@
 package com.spotify.quavergd06.data
 
-import com.spotify.quavergd06.database.MomentDAO
+import com.spotify.quavergd06.database.dao.MomentDAO
 
 class MomentsRepository private constructor (private val momentDAO: MomentDAO) {
 

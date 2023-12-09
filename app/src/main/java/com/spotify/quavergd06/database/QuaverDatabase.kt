@@ -4,10 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import com.spotify.quavergd06.data.model.Artist
 import com.spotify.quavergd06.data.model.Moment
+import com.spotify.quavergd06.database.dao.ArtistDAO
+import com.spotify.quavergd06.database.dao.MomentDAO
 
 @Database(entities = [Moment::class, Artist::class], version = 1)
 @TypeConverters(Converters::class)

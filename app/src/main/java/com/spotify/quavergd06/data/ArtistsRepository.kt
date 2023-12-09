@@ -2,7 +2,9 @@ package com.spotify.quavergd06.data
 
 import com.spotify.quavergd06.api.APIError
 import com.spotify.quavergd06.api.SpotifyApiService
-import com.spotify.quavergd06.database.ArtistDAO
+import com.spotify.quavergd06.data.model.Artist
+import com.spotify.quavergd06.database.dao.ArtistDAO
+import java.sql.RowId
 
 class ArtistsRepository (
     private val artistDAO: ArtistDAO, private
@@ -15,7 +17,6 @@ class ArtistsRepository (
         if (shouldUpdateShowsCache())
             fetchArtists(timeRange)
     }
-
     private suspend fun fetchArtists(timeRange: String) {
         try {
             val artists = networkService.loadTopArtists(timeRange).body()?.artistItems?.map { it.toArtist() } ?: emptyList()
@@ -25,6 +26,22 @@ class ArtistsRepository (
             throw APIError("Unable to fetch data from API", cause)
         }
     }
+
+    suspend fun tryUpdateRecentArtistCache(id: String) {
+        if (shouldUpdateShowsCache())
+            fetchArtistDetail(id)
+    }
+
+    private suspend fun fetchArtistDetail(artistId: String) {
+        try {
+            val artist = networkService.loadArtist(artistId).body()?.toArtist()!!
+            artistDAO.insertArtist(artist)
+            lastUpdateTimeMillis = System.currentTimeMillis ()
+        } catch (cause: Throwable) {
+            throw APIError("Unable to fetch data from API", cause)
+        }
+    }
+
     private suspend fun shouldUpdateShowsCache(): Boolean {
         val lastFetchTimeMillis = lastUpdateTimeMillis
         val timeFromLastFetch = System.currentTimeMillis() - lastFetchTimeMillis
@@ -32,7 +49,7 @@ class ArtistsRepository (
     }
 
     companion object {
-        private const val MIN_TIME_FROM_LAST_FETCH_MILLIS: Long = 30000
+        private const val MIN_TIME_FROM_LAST_FETCH_MILLIS: Long = 60000
         @Volatile private var INSTANCE: ArtistsRepository? = null
 
         fun getInstance(artistDAO: ArtistDAO, spotifyApiService: SpotifyApiService): ArtistsRepository {

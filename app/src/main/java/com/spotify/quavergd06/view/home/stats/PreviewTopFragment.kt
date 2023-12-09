@@ -55,19 +55,13 @@ class PreviewTopFragment(private val fetchable: Fetchable, private val onPreview
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
         Log.d("PreviewTopFragment", "onViewCreated")
-        // Realizar una búsqueda de artistas en Spotify
+        subscribeUI(adapter)
         lifecycleScope.launch {
-            try {
-                setKey(obtenerSpotifyApiKey(requireContext())!!)
-                items = fetchable.fetch()
-                Log.d("PreviewTopFragment", "items: $items")
-                adapter.updateData(items)
-
-            } catch (e: Exception) {
-                Log.d("PreviewTopFragment", "Error: ${e.message}")
-            }
+            artistsRepository.tryUpdateRecentArtistsCache("short_term")
         }
     }
+
+
 
     private fun setUpRecyclerView() {
         adapter = StatsItemAdapter(
