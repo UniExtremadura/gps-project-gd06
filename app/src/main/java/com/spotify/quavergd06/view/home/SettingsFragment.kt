@@ -36,15 +36,15 @@ class SettingsFragment : PreferenceFragmentCompat() {
             val selectedTheme = newValue as String
             ThemeManager.saveThemePreference(requireContext(), selectedTheme)
             ThemeManager.applyTheme(requireContext())
-            activity?.recreate()
+            //activity?.recreate()
             true
         }
 
         findPreference<ListPreference>("language_preference")?.setOnPreferenceChangeListener { _, newValue ->
             // Handle language change
             LocaleManager.updateLocale(requireContext(), newValue as String)
+            saveLanguagePreference(newValue)
             activity?.recreate()
-            saveLanguagePreference(newValue as String)
             true
         }
 
@@ -102,4 +102,3 @@ class SettingsFragment : PreferenceFragmentCompat() {
         alertDialog.show()
     }
 }
-
