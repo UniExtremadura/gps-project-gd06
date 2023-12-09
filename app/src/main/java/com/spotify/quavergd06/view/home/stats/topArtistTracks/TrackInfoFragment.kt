@@ -1,17 +1,23 @@
 package com.spotify.quavergd06.view.home.stats.topArtistTracks
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.spotify.quavergd06.R
+import com.spotify.quavergd06.api.getNetworkService
+import com.spotify.quavergd06.api.setKey
 import com.spotify.quavergd06.data.model.StatsItem
+import com.spotify.quavergd06.data.toArtist
 import com.spotify.quavergd06.data.toStatsItem
 import com.spotify.quavergd06.databinding.FragmentTrackInfoBinding
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.launch
 
 
 class TrackInfoFragment : Fragment() {
@@ -20,6 +26,8 @@ class TrackInfoFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var statsItem: StatsItem? = null
+
+    private lateinit var artist: StatsItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,17 +46,23 @@ class TrackInfoFragment : Fragment() {
     ): View? {
         _binding = FragmentTrackInfoBinding.inflate(inflater, container, false)
 
-        setButtonListener()
-
+        lifecycleScope.launch {
+            try {
+                setKey(obtenerSpotifyApiKey(requireContext())!!)
+                artist = getNetworkService().loadArtist(statsItem?.artist?.artistId!!).body()?.toArtist()?.toStatsItem()!!
+                Log.d("TrackInfoFragment", "artist: $artist")
+            }   catch (e: Exception) {
+                Log.d("TrackInfoFragment", "Error: ${e.message}")
+            }
+            setButtonListener()
+        }
         return binding.root
     }
 
     private fun setButtonListener() {
         binding.artistName.setOnClickListener{
             Log.d("TrackInfoFragment", "artistName clicked")
-            findNavController().navigate(R.id.action_trackInfoFragment_to_artistInfoFragment, ArtistInfoFragment.newInstance(
-                statsItem?.artist!!.toStatsItem()
-            ).arguments)
+            findNavController().navigate(R.id.action_trackInfoFragment_to_artistInfoFragment, ArtistInfoFragment.newInstance(artist).arguments)
         }
     }
 
@@ -72,6 +86,11 @@ class TrackInfoFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun obtenerSpotifyApiKey(context: Context): String? {
+        val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        return sharedPreferences.getString("access_token", null)
     }
 
     companion object {

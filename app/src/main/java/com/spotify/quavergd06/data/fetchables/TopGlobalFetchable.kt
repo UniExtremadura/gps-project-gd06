@@ -11,11 +11,6 @@ import com.spotify.quavergd06.data.toTrack
 class TopGlobalFetchable : Fetchable {
     override suspend fun fetch(): List<StatsItem> {
         var apiTracks = getNetworkService().loadTopGlobal().body()?.tracks!!.items.map { it.track!!}
-
-        apiTracks.forEach { track ->
-            track.artists[0] = getNetworkService().loadArtist(track.artists[0].id!!).body()!!
-            Log.d("HistoryFetchable", "track: $track")
-        }
         return apiTracks.map(TrackItem::toTrack).map(Track::toStatsItem)
     }
 
