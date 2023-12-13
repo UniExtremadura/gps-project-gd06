@@ -43,11 +43,11 @@ class MomentFragment : Fragment() {
         super.onAttach(context)
         db = QuaverDatabase.getInstance(requireContext())
         repository = MomentsRepository.getInstance(db.momentDAO())
-        when(context) {
-            is OnMomentClickListener -> listener = context
-            is OnMapButtonListener -> mapListener = context
-            else -> throw RuntimeException("$context must implement OnMomentClickListener")
-        }
+        if (context is OnMapButtonListener)
+            mapListener = context
+
+        if(context is OnMomentClickListener)
+            listener = context
     }
 
     override fun onCreateView(
@@ -95,12 +95,6 @@ class MomentFragment : Fragment() {
         android.util.Log.d("DiscoverFragment", "setUpRecyclerView")
     }
 
-    /*
-    private fun navigateToMapFragment() {
-        // Encuentra el NavController y navega a la acción definida en el gráfico de navegación
-        findNavController().navigate(R.id.action_momentFragment_to_mapFragment)
-    }
-    */
     private fun filterMoments(query: String?) {
         val filteredMoments = moments.filter {
             it.title.contains(query.orEmpty(), ignoreCase = true)

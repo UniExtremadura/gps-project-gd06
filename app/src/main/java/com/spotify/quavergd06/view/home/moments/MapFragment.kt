@@ -41,6 +41,8 @@ class MapFragment : Fragment() {
         super.onAttach(context)
         db = QuaverDatabase.getInstance(requireContext())
         repository = MomentsRepository.getInstance(db.momentDAO())
+        if (context is OnMomentButtonListener)
+            onMomentButtonListener = context
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
