@@ -27,6 +27,10 @@ class MomentFragment : Fragment() {
         fun onMomentClick(moment: Moment)
     }
 
+    interface onMapButtonListener {
+        fun onMapButtonClick()
+    }
+
     private var _binding: FragmentMomentBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: MomentAdapter
@@ -37,6 +41,11 @@ class MomentFragment : Fragment() {
         super.onAttach(context)
         db = QuaverDatabase.getInstance(requireContext())
         repository = MomentsRepository.getInstance(db.momentDAO())
+        if (context is OnMomentClickListener)
+            listener = context
+        else {
+            throw RuntimeException("$context must implement OnMomentClickListener")
+        }
     }
 
     override fun onCreateView(
@@ -44,11 +53,6 @@ class MomentFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMomentBinding.inflate(inflater, container, false)
-        adapter = MomentAdapter(moments, onClick = {
-            listener.onMomentClick(it)
-        }
-        )
-        subscribeUi(adapter)
         return binding.root
     }
 
@@ -59,16 +63,12 @@ class MomentFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpRecyclerView()
         val button = binding.buttonToMap as FloatingActionButton
         button.setOnClickListener {
             navigateToMapFragment()
         }
         setUpRecyclerView()
-        listener = object : OnMomentClickListener {
-            override fun onMomentClick(moment: Moment) {
-                showMomentDetailFragment(moment)
-            }
-        }
         binding.searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 filterMoments(query)
@@ -80,9 +80,12 @@ class MomentFragment : Fragment() {
                 return false
             }
         })
-
+        subscribeUi(adapter)
     }
     private fun setUpRecyclerView() {
+        adapter = MomentAdapter(moments = moments, onClick = {
+            listener.onMomentClick(it)
+        })
         with(binding) {
             momentShowGrid.layoutManager = GridLayoutManager(context, 2)
             momentShowGrid.adapter = adapter
@@ -93,17 +96,6 @@ class MomentFragment : Fragment() {
     private fun navigateToMapFragment() {
         // Encuentra el NavController y navega a la acción definida en el gráfico de navegación
         findNavController().navigate(R.id.action_momentFragment_to_mapFragment)
-    }
-
-    private fun showMomentDetailFragment(moment: Moment) {
-        // Navega al MomentDetailFragment y pasa el momento como argumento
-        val momentDetailFragment = MomentDetailFragment()
-        val bundle = Bundle()
-        bundle.putSerializable("moment", moment)
-        momentDetailFragment.arguments = bundle
-
-        // Usa findNavController() para navegar al fragmento
-        findNavController().navigate(R.id.momentDetailFragment, bundle)
     }
 
     private fun filterMoments(query: String?) {

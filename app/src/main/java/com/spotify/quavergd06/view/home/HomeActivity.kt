@@ -12,10 +12,20 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import com.spotify.quavergd06.data.model.Moment
 import com.spotify.quavergd06.model.ThemeManager
+import com.spotify.quavergd06.view.home.moments.MomentDetailFragment
+import com.spotify.quavergd06.view.home.moments.MomentDetailFragmentDirections
+import com.spotify.quavergd06.view.home.moments.MomentFragment
+import com.spotify.quavergd06.view.home.moments.MomentFragmentDirections
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), MomentFragment.OnMomentClickListener,
+    MomentDetailFragment.OnMomentEditClickListener {
     private lateinit var binding: ActivityHomeBinding
+
+    private val navController by lazy {
+        (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
+    }
     companion object {
         const val MY_CHANNEL_ID = "myChannel"
     }
@@ -52,12 +62,20 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-
     private fun setUpUI() {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         binding.bottomNavigation.setupWithNavController(navHostFragment.navController)
     }
 
+    override fun onMomentClick(moment : Moment) {
+        val action = MomentFragmentDirections.actionMomentFragmentToMomentDetailFragment(moment)
+        navController.navigate(action)
+    }
+
+    override fun onMomentEditClick(moment : Moment) {
+        val action = MomentDetailFragmentDirections.actionMomentDetailFragmentToMomentEditFragment(moment)
+        navController.navigate(action)
+    }
 
 }

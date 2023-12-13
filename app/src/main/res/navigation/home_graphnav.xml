@@ -5,6 +5,14 @@
     android:id="@+id/home_graphnav"
     app:startDestination="@id/momentFragment">
 
+    <action
+        android:id="@+id/action_momentDetailFragment_to_momentEditFragment"
+        app:destination="@id/momentEditFragment" />
+
+    <action
+        android:id="@+id/action_momentEditFragment_to_momentFragment"
+        app:destination="@id/momentFragment" />
+
     <fragment
         android:id="@+id/momentFragment"
         android:name="com.spotify.quavergd06.view.home.moments.MomentFragment"
@@ -61,11 +69,13 @@
     <fragment
         android:id="@+id/momentDetailFragment"
         android:name="com.spotify.quavergd06.view.home.moments.MomentDetailFragment"
-        android:label="MomentDetailFragment" >
-        <action
-            android:id="@+id/action_momentDetailFragment_to_momentEditFragment"
-            app:destination="@id/momentEditFragment" />
+        android:label="MomentDetailFragment"
+        tools:layout="@layout/fragment_moment_detail" >
+        <argument
+            android:name="moment"
+            app:argType="com.spotify.quavergd06.data.model.Moment" />
     </fragment>
+
     <fragment
         android:id="@+id/topItemFragment"
         android:name="com.spotify.quavergd06.view.home.stats.topArtistTracks.TopGridFragment"
@@ -84,10 +94,11 @@
     <fragment
         android:id="@+id/momentEditFragment"
         android:name="com.spotify.quavergd06.view.home.moments.MomentEditFragment"
-        android:label="MomentEditFragment" >
-        <action
-            android:id="@+id/action_momentEditFragment_to_momentFragment"
-            app:destination="@id/momentFragment" />
+        android:label="MomentEditFragment"
+        tools:layout="@layout/fragment_moment_edit">
+        <argument
+            android:name="moment"
+            app:argType="com.spotify.quavergd06.data.model.Moment" />
     </fragment>
     <fragment
         android:id="@+id/artistInfoFragment"

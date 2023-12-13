@@ -13,6 +13,9 @@ interface MomentDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMoment(moment: Moment): Long
 
+    @Query("SELECT * FROM moment WHERE momentId = :id LIMIT 1")
+    suspend fun getMoment(id: Long) : Moment
+
     @Query("SELECT * FROM moment ORDER BY date DESC")
     fun getAllMoments(): LiveData<List<Moment>>
 
