@@ -13,14 +13,15 @@
         android:id="@+id/action_momentEditFragment_to_momentFragment"
         app:destination="@id/momentFragment" />
 
+    <action
+        android:id="@+id/action_momentFragment_to_mapFragment"
+        app:destination="@id/mapFragment" />
+
     <fragment
         android:id="@+id/momentFragment"
         android:name="com.spotify.quavergd06.view.home.moments.MomentFragment"
         android:label="fragment_moment"
         tools:layout="@layout/fragment_moment" >
-        <action
-            android:id="@+id/action_momentFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
         <action
             android:id="@+id/action_momentFragment_to_momentDetailFragment"
             app:destination="@id/momentDetailFragment" />

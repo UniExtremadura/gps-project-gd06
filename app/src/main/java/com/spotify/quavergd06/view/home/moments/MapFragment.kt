@@ -27,11 +27,16 @@ import kotlinx.coroutines.launch
 
 class MapFragment : Fragment() {
 
+    private lateinit var onMomentButtonListener: OnMomentButtonListener
     private lateinit var mapView: MapView
     private lateinit var db: QuaverDatabase
     private lateinit var repository: MomentsRepository
     private var moments = emptyList<Moment>()
 
+
+    interface OnMomentButtonListener {
+        fun onMomentButtonClick()
+    }
     override fun onAttach(context: Context) {
         super.onAttach(context)
         db = QuaverDatabase.getInstance(requireContext())
@@ -44,25 +49,23 @@ class MapFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_map, container, false)
         mapView = view.findViewById(R.id.osmMapView)
         configureMapView()
-        repository.moments.observe(viewLifecycleOwner) { moments ->
-            this.moments = moments
-            loadMapMoments()
-        }
+        subscribeUi()
         return view
     }
 
-    private fun subscribeUi(adapter : MomentAdapter) {
+    private fun subscribeUi() {
         repository.moments.observe(viewLifecycleOwner) { moments ->
-            adapter.updateData(moments)
+            this.moments = moments
+            loadMapMoments()
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val button = view?.findViewById(R.id.buttonToMoment) as FloatingActionButton
+        val button = view.findViewById(R.id.buttonToMoment) as FloatingActionButton
         button.setOnClickListener {
-            navigateToMomentFragment()
+            onMomentButtonListener.onMomentButtonClick()
         }
     }
 

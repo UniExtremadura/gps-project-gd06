@@ -14,13 +14,15 @@ import android.content.Context
 import android.os.Build
 import com.spotify.quavergd06.data.model.Moment
 import com.spotify.quavergd06.model.ThemeManager
+import com.spotify.quavergd06.view.home.moments.MapFragment
+import com.spotify.quavergd06.view.home.moments.MapFragmentDirections
 import com.spotify.quavergd06.view.home.moments.MomentDetailFragment
 import com.spotify.quavergd06.view.home.moments.MomentDetailFragmentDirections
 import com.spotify.quavergd06.view.home.moments.MomentFragment
 import com.spotify.quavergd06.view.home.moments.MomentFragmentDirections
 
 class HomeActivity : AppCompatActivity(), MomentFragment.OnMomentClickListener,
-    MomentDetailFragment.OnMomentEditClickListener {
+    MomentDetailFragment.OnMomentEditClickListener, MomentFragment.OnMapButtonListener, MapFragment.OnMomentButtonListener {
     private lateinit var binding: ActivityHomeBinding
 
     private val navController by lazy {
@@ -75,6 +77,16 @@ class HomeActivity : AppCompatActivity(), MomentFragment.OnMomentClickListener,
 
     override fun onMomentEditClick(moment : Moment) {
         val action = MomentDetailFragmentDirections.actionMomentDetailFragmentToMomentEditFragment(moment)
+        navController.navigate(action)
+    }
+
+    override fun onMapButtonClick() {
+        val action = MomentFragmentDirections.actionMomentFragmentToMapFragment()
+        navController.navigate(action)
+    }
+
+    override fun onMomentButtonClick() {
+        val action = MapFragmentDirections.actionMapFragmentToMomentFragment()
         navController.navigate(action)
     }
 

@@ -21,13 +21,15 @@ import kotlinx.coroutines.launch
 class MomentFragment : Fragment() {
 
     private lateinit var listener: OnMomentClickListener
+    private lateinit var mapListener: OnMapButtonListener
+
     private lateinit var db : QuaverDatabase
     private lateinit var repository : MomentsRepository
     interface OnMomentClickListener {
         fun onMomentClick(moment: Moment)
     }
 
-    interface onMapButtonListener {
+    interface OnMapButtonListener {
         fun onMapButtonClick()
     }
 
@@ -41,10 +43,10 @@ class MomentFragment : Fragment() {
         super.onAttach(context)
         db = QuaverDatabase.getInstance(requireContext())
         repository = MomentsRepository.getInstance(db.momentDAO())
-        if (context is OnMomentClickListener)
-            listener = context
-        else {
-            throw RuntimeException("$context must implement OnMomentClickListener")
+        when(context) {
+            is OnMomentClickListener -> listener = context
+            is OnMapButtonListener -> mapListener = context
+            else -> throw RuntimeException("$context must implement OnMomentClickListener")
         }
     }
 
@@ -66,7 +68,7 @@ class MomentFragment : Fragment() {
         setUpRecyclerView()
         val button = binding.buttonToMap as FloatingActionButton
         button.setOnClickListener {
-            navigateToMapFragment()
+            mapListener.onMapButtonClick()
         }
         setUpRecyclerView()
         binding.searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
@@ -93,11 +95,12 @@ class MomentFragment : Fragment() {
         android.util.Log.d("DiscoverFragment", "setUpRecyclerView")
     }
 
+    /*
     private fun navigateToMapFragment() {
         // Encuentra el NavController y navega a la acción definida en el gráfico de navegación
         findNavController().navigate(R.id.action_momentFragment_to_mapFragment)
     }
-
+    */
     private fun filterMoments(query: String?) {
         val filteredMoments = moments.filter {
             it.title.contains(query.orEmpty(), ignoreCase = true)
