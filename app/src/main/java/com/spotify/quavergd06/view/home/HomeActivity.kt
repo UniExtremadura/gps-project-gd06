@@ -22,7 +22,7 @@ import com.spotify.quavergd06.view.home.moments.MomentFragment
 import com.spotify.quavergd06.view.home.moments.MomentFragmentDirections
 
 class HomeActivity : AppCompatActivity(), MomentFragment.OnMomentClickListener,
-    MomentDetailFragment.OnMomentEditClickListener, MomentFragment.OnMapButtonListener, MapFragment.OnMomentButtonListener {
+    MomentDetailFragment.OnMomentEditClickListener, MomentFragment.OnMapButtonListener, MapFragment.OnMomentButtonListener, MapFragment.OnMomentMapClickListener {
     private lateinit var binding: ActivityHomeBinding
 
     private val navController by lazy {
@@ -72,6 +72,11 @@ class HomeActivity : AppCompatActivity(), MomentFragment.OnMomentClickListener,
 
     override fun onMomentClick(moment : Moment) {
         val action = MomentFragmentDirections.actionMomentFragmentToMomentDetailFragment(moment)
+        navController.navigate(action)
+    }
+
+    override fun onMomentMapClickListener(moment: Moment) {
+        val action = MapFragmentDirections.actionMapFragmentToMomentDetailFragment(moment)
         navController.navigate(action)
     }
 

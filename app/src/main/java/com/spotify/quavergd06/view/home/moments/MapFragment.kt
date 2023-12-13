@@ -28,14 +28,18 @@ import kotlinx.coroutines.launch
 class MapFragment : Fragment() {
 
     private lateinit var onMomentButtonListener: OnMomentButtonListener
+    private lateinit var onMomentMapClickListener: OnMomentMapClickListener
     private lateinit var mapView: MapView
     private lateinit var db: QuaverDatabase
     private lateinit var repository: MomentsRepository
     private var moments = emptyList<Moment>()
 
-
     interface OnMomentButtonListener {
         fun onMomentButtonClick()
+    }
+
+    interface OnMomentMapClickListener {
+        fun onMomentMapClickListener(moment: Moment)
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -43,6 +47,8 @@ class MapFragment : Fragment() {
         repository = MomentsRepository.getInstance(db.momentDAO())
         if (context is OnMomentButtonListener)
             onMomentButtonListener = context
+        if (context is OnMomentMapClickListener)
+            onMomentMapClickListener = context
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -107,9 +113,9 @@ class MapFragment : Fragment() {
             marker.setAnchor(0.5f, 1.0f)
 
             // Agrega un OnMarkerClickListener al marcador
-            marker.setOnMarkerClickListener { marker, mapView ->
-                // Navega al MomentDetailFragment y pasa el momento como argumento
-                showMomentDetailFragment(moment)
+
+            marker.setOnMarkerClickListener { marker, _ ->
+                onMomentMapClickListener.onMomentMapClickListener(moment)
                 true
             }
 
@@ -132,20 +138,6 @@ class MapFragment : Fragment() {
             e.printStackTrace()
             null
         }
-    }
-    private fun showMomentDetailFragment(moment: Moment) {
-        // Navega al MomentDetailFragment y pasa el momento como argumento
-        val momentDetailFragment = MomentDetailFragment()
-        val bundle = Bundle()
-        bundle.putSerializable("moment", moment)
-        momentDetailFragment.arguments = bundle
-
-        // Usa findNavController() para navegar al fragmento
-        findNavController().navigate(R.id.momentDetailFragment, bundle)
-    }
-    private fun navigateToMomentFragment() {
-        // Encuentra el NavController y navega a la acción definida en el gráfico de navegación
-        findNavController().navigate(R.id.action_mapFragment_to_momentFragment)
     }
 
     override fun onDestroyView() {
