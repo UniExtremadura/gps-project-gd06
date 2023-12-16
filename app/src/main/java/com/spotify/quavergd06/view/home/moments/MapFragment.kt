@@ -11,27 +11,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.viewModels
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.spotify.quavergd06.R
-import com.spotify.quavergd06.data.MomentsRepository
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
-import com.spotify.quavergd06.database.QuaverDatabase
+
 import com.spotify.quavergd06.data.model.Moment
-import kotlinx.coroutines.launch
+
 
 class MapFragment : Fragment() {
 
     private lateinit var onMomentButtonListener: OnMomentButtonListener
     private lateinit var onMomentMapClickListener: OnMomentMapClickListener
     private lateinit var mapView: MapView
-    private lateinit var db: QuaverDatabase
-    private lateinit var repository: MomentsRepository
+
+    private val viewModel: MapViewModel by viewModels { MapViewModel.Factory }
+
     private var moments = emptyList<Moment>()
 
     interface OnMomentButtonListener {
@@ -43,8 +42,6 @@ class MapFragment : Fragment() {
     }
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        db = QuaverDatabase.getInstance(requireContext())
-        repository = MomentsRepository.getInstance(db.momentDAO())
         if (context is OnMomentButtonListener)
             onMomentButtonListener = context
         if (context is OnMomentMapClickListener)
@@ -62,7 +59,7 @@ class MapFragment : Fragment() {
     }
 
     private fun subscribeUi() {
-        repository.moments.observe(viewLifecycleOwner) { moments ->
+        viewModel.moments.observe(viewLifecycleOwner) { moments ->
             this.moments = moments
             loadMapMoments()
         }

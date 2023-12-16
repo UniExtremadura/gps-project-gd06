@@ -12,6 +12,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
+import androidx.activity.viewModels
 import com.spotify.quavergd06.data.model.Moment
 import com.spotify.quavergd06.model.ThemeManager
 import com.spotify.quavergd06.view.home.moments.MapFragment
@@ -21,10 +22,11 @@ import com.spotify.quavergd06.view.home.moments.MomentDetailFragmentDirections
 import com.spotify.quavergd06.view.home.moments.MomentFragment
 import com.spotify.quavergd06.view.home.moments.MomentFragmentDirections
 
-class HomeActivity : AppCompatActivity(), MomentFragment.OnMomentClickListener,
+class HomeActivity : AppCompatActivity(),
     MomentDetailFragment.OnMomentEditClickListener, MomentFragment.OnMapButtonListener, MapFragment.OnMomentButtonListener, MapFragment.OnMomentMapClickListener {
     private lateinit var binding: ActivityHomeBinding
 
+    private val viewModel: HomeViewModel by viewModels()
     private val navController by lazy {
         (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
     }
@@ -37,6 +39,12 @@ class HomeActivity : AppCompatActivity(), MomentFragment.OnMomentClickListener,
         supportActionBar?.hide()
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        viewModel.navigateToMomentDetail.observe(this) { moment ->
+            moment?.let {
+                onMomentClick(moment)
+            }
+        }
 
         setUpUI()
 
@@ -70,7 +78,7 @@ class HomeActivity : AppCompatActivity(), MomentFragment.OnMomentClickListener,
         binding.bottomNavigation.setupWithNavController(navHostFragment.navController)
     }
 
-    override fun onMomentClick(moment : Moment) {
+    private fun onMomentClick(moment : Moment) {
         val action = MomentFragmentDirections.actionMomentFragmentToMomentDetailFragment(moment)
         navController.navigate(action)
     }

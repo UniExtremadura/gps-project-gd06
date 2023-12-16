@@ -6,28 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.spotify.quavergd06.R
-import com.spotify.quavergd06.data.MomentsRepository
 
 import com.spotify.quavergd06.databinding.FragmentMomentBinding
 import com.spotify.quavergd06.data.model.Moment
-import com.spotify.quavergd06.database.QuaverDatabase
-import kotlinx.coroutines.launch
+import com.spotify.quavergd06.view.home.HomeViewModel
+
 
 class MomentFragment : Fragment() {
 
-    private lateinit var listener: OnMomentClickListener
     private lateinit var mapListener: OnMapButtonListener
-
-    private lateinit var db : QuaverDatabase
-    private lateinit var repository : MomentsRepository
-    interface OnMomentClickListener {
-        fun onMomentClick(moment: Moment)
-    }
+    private val viewModel: MomentViewModel by viewModels { MomentViewModel.Factory }
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     interface OnMapButtonListener {
         fun onMapButtonClick()
@@ -41,13 +34,8 @@ class MomentFragment : Fragment() {
 
     override fun onAttach(context: android.content.Context) {
         super.onAttach(context)
-        db = QuaverDatabase.getInstance(requireContext())
-        repository = MomentsRepository.getInstance(db.momentDAO())
         if (context is OnMapButtonListener)
             mapListener = context
-
-        if(context is OnMomentClickListener)
-            listener = context
     }
 
     override fun onCreateView(
@@ -59,35 +47,45 @@ class MomentFragment : Fragment() {
     }
 
     private fun subscribeUi(adapter : MomentAdapter) {
-        repository.moments.observe(viewLifecycleOwner) { moments ->
+        viewModel.moments.observe(viewLifecycleOwner) { moments ->
             adapter.updateData(moments)
         }
+
+        viewModel.filteredMoments.observe(viewLifecycleOwner) { filteredMoments ->
+            adapter.updateData(filteredMoments)
+        }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
+
         val button = binding.buttonToMap as FloatingActionButton
         button.setOnClickListener {
             mapListener.onMapButtonClick()
         }
-        setUpRecyclerView()
+
         binding.searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                filterMoments(query)
+            override fun onQueryTextSubmit(query: String): Boolean {
+                viewModel.setFilterQuery(query)
                 return false
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                filterMoments(newText)
+            override fun onQueryTextChange(query: String): Boolean {
+                viewModel.setFilterQuery(query)
                 return false
             }
         })
+
         subscribeUi(adapter)
     }
     private fun setUpRecyclerView() {
-        adapter = MomentAdapter(moments = moments, onClick = {
-            listener.onMomentClick(it)
-        })
+        adapter = MomentAdapter(
+            moments = moments,
+            onClick = {
+                homeViewModel.onMomentClick(it)
+        }
+        )
         with(binding) {
             momentShowGrid.layoutManager = GridLayoutManager(context, 2)
             momentShowGrid.adapter = adapter
@@ -95,12 +93,12 @@ class MomentFragment : Fragment() {
         android.util.Log.d("DiscoverFragment", "setUpRecyclerView")
     }
 
-    private fun filterMoments(query: String?) {
+/*    private fun filterMoments(query: String?) {
         val filteredMoments = moments.filter {
             it.title.contains(query.orEmpty(), ignoreCase = true)
         }
         adapter.updateData(filteredMoments)
-    }
+    }*/
 
     override fun onDestroyView() {
         super.onDestroyView()

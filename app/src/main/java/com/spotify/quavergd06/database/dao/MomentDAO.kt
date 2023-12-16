@@ -19,6 +19,9 @@ interface MomentDAO {
     @Query("SELECT * FROM moment ORDER BY date DESC")
     fun getAllMoments(): LiveData<List<Moment>>
 
+    @Query("SELECT * FROM moment WHERE title LIKE '%' || :momentTitle || '%' ORDER BY date DESC")
+    fun getFilteredMoments(momentTitle: String): LiveData<List<Moment>>
+
     //Delete a moment
     @Query("DELETE FROM moment WHERE momentId = :id")
     suspend fun deleteMoment(id: Long)
