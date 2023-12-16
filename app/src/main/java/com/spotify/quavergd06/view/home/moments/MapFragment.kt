@@ -1,7 +1,6 @@
 package com.spotify.quavergd06.view.home.moments
 
 import android.content.ContentResolver
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
@@ -56,7 +55,7 @@ class MapFragment : Fragment() {
 
         val button = view.findViewById(R.id.buttonToMoment) as FloatingActionButton
         button.setOnClickListener {
-            homeViewModel.navigateToMomentFromMap(!homeViewModel.navigateToMomentFromMap.value!!)
+            homeViewModel.navigateFromMapToMoment(!homeViewModel.navigateFromMapToMoment.value!!)
         }
     }
 
@@ -98,7 +97,7 @@ class MapFragment : Fragment() {
             // Agrega un OnMarkerClickListener al marcador
 
             marker.setOnMarkerClickListener { marker, _ ->
-                homeViewModel.navigateToDetailFromMap(moment)
+                homeViewModel.navigateFromMapToDetail(moment)
                 true
             }
 

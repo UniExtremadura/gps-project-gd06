@@ -95,7 +95,7 @@ class MomentEditFragment : Fragment() {
                 Log.d("ERROR", "El usuario no ha tomado una foto")
             }
             finally {
-                homeViewModel.navigateToMomentFromEdit(!homeViewModel.navigateToMomentFromEdit.value!!)
+                homeViewModel.navigateFromEditToMoment(!homeViewModel.navigateFromEditToMoment.value!!)
             }
         }
 
@@ -214,14 +214,14 @@ class MomentEditFragment : Fragment() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.d("PERMISSION", "Camera permission granted")
             } else {
-                homeViewModel.navigateToMomentFromEdit(!homeViewModel.navigateToMomentFromEdit.value!!)
+                homeViewModel.navigateFromEditToMoment(!homeViewModel.navigateFromEditToMoment.value!!)
             }
         }
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.d("PERMISSION", "Location permission granted")
             } else {
-                homeViewModel.navigateToMomentFromEdit(!homeViewModel.navigateToMomentFromEdit.value!!)
+                homeViewModel.navigateFromEditToMoment(!homeViewModel.navigateFromEditToMoment.value!!)
             }
         }
     }

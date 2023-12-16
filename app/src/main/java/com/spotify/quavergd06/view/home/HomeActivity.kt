@@ -35,9 +35,9 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.navigateToMomentDetail.observe(this) { moment ->
+        viewModel.navigateFromMomentToDetail.observe(this) { moment ->
             moment?.let {
-                toDetailFromMoment(moment)
+                fromMomentToDetail(moment)
             }
         }
 
@@ -49,15 +49,15 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.navigateToMomentFromEdit.observe(this) { fromEditToMoment() }
+        viewModel.navigateFromEditToMoment.observe(this) { fromEditToMoment() }
 
-        viewModel.navigateToDetailFromMap.observe(this) { moment ->
+        viewModel.navigateFromMapToDetail.observe(this) { moment ->
             moment?.let {
                 fromMapToDetail(moment)
             }
         }
 
-        viewModel.navigateToMomentFromMap.observe(this) { fromMapToMoment() }
+        viewModel.navigateFromMapToMoment.observe(this) { fromMapToMoment() }
 
         setUpUI()
 
@@ -91,7 +91,7 @@ class HomeActivity : AppCompatActivity() {
         binding.bottomNavigation.setupWithNavController(navHostFragment.navController)
     }
 
-    private fun toDetailFromMoment(moment: Moment) {
+    private fun fromMomentToDetail(moment: Moment) {
         val action = MomentFragmentDirections.actionMomentFragmentToMomentDetailFragment(moment)
         navController.navigate(action)
     }

@@ -46,7 +46,7 @@ class MomentFragment : Fragment() {
         setUpRecyclerView()
 
         binding.buttonToMap.setOnClickListener {
-            homeViewModel.navigateToMapFromMoment(!homeViewModel.navigateToMapFromMoment.value!!)
+            homeViewModel.navigateFromMomentToMap(!homeViewModel.navigateToMapFromMoment.value!!)
         }
 
         binding.searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
@@ -67,7 +67,7 @@ class MomentFragment : Fragment() {
         adapter = MomentAdapter(
             moments = emptyList(),
             onClick = {
-                homeViewModel.onMomentClick(it)
+                homeViewModel.navigateFromMomentToDetail(it)
         }
         )
         with(binding) {
