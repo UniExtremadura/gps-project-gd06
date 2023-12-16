@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.spotify.quavergd06.R
@@ -21,32 +22,17 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 
 import com.spotify.quavergd06.data.model.Moment
+import com.spotify.quavergd06.view.home.HomeViewModel
 
 
 class MapFragment : Fragment() {
 
-    private lateinit var onMomentButtonListener: OnMomentButtonListener
-    private lateinit var onMomentMapClickListener: OnMomentMapClickListener
     private lateinit var mapView: MapView
 
     private val viewModel: MapViewModel by viewModels { MapViewModel.Factory }
-
+    private val homeViewModel: HomeViewModel by activityViewModels()
     private var moments = emptyList<Moment>()
 
-    interface OnMomentButtonListener {
-        fun onMomentButtonClick()
-    }
-
-    interface OnMomentMapClickListener {
-        fun onMomentMapClickListener(moment: Moment)
-    }
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnMomentButtonListener)
-            onMomentButtonListener = context
-        if (context is OnMomentMapClickListener)
-            onMomentMapClickListener = context
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -70,7 +56,7 @@ class MapFragment : Fragment() {
 
         val button = view.findViewById(R.id.buttonToMoment) as FloatingActionButton
         button.setOnClickListener {
-            onMomentButtonListener.onMomentButtonClick()
+            homeViewModel.navigateToMomentFromMap(!homeViewModel.navigateToMomentFromMap.value!!)
         }
     }
 
@@ -112,7 +98,7 @@ class MapFragment : Fragment() {
             // Agrega un OnMarkerClickListener al marcador
 
             marker.setOnMarkerClickListener { marker, _ ->
-                onMomentMapClickListener.onMomentMapClickListener(moment)
+                homeViewModel.navigateToDetailFromMap(moment)
                 true
             }
 

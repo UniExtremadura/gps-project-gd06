@@ -14,6 +14,15 @@ import kotlinx.coroutines.launch
 class MomentDetailViewModel(private val repository: MomentsRepository)
     : ViewModel(){
 
+    private val _bottomNavigationViewVisibility = MutableLiveData<Boolean>()
+    val bottomNavigationViewVisibility: LiveData<Boolean>
+        get() = _bottomNavigationViewVisibility
+
+    // Function to update BottomNavigationView visibility
+    fun setBottomNavigationViewVisibility(visible: Boolean) {
+        _bottomNavigationViewVisibility.value = visible
+    }
+
     private val _momentDetail = MutableLiveData<Moment>(null)
     val momentDetail: LiveData<Moment>
         get() = _momentDetail

@@ -20,4 +20,8 @@ class MomentsRepository (private val momentDAO: MomentDAO) {
         return momentDAO.getFilteredMoments(momentTitle)
     }
 
+    suspend fun insertMoment(moment: Moment): Long {
+        return momentDAO.insertMoment(moment)
+    }
+
 }

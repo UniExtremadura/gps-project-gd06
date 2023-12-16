@@ -1,15 +1,13 @@
 package com.spotify.quavergd06.view.home.moments
 
 import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
@@ -19,29 +17,18 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.spotify.quavergd06.R
-import com.spotify.quavergd06.api.APIError
-import com.spotify.quavergd06.data.MomentsRepository
-import com.spotify.quavergd06.database.QuaverDatabase
-import kotlinx.coroutines.launch
+import com.spotify.quavergd06.view.home.HomeViewModel
 
 
 class MomentDetailFragment : Fragment() {
 
     private val viewModel: MomentDetailViewModel by viewModels { MomentDetailViewModel.Factory }
-    private lateinit var onMomentEditClickListener: OnMomentEditClickListener
+    private val homeViewModel: HomeViewModel by activityViewModels()
+
     private var _binding: FragmentMomentDetailBinding? = null
     private val binding get() = _binding!!
     
     private val args: MomentDetailFragmentArgs by navArgs()
-
-    interface OnMomentEditClickListener {
-        fun onMomentEditClick(moment : Moment)
-    }
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context is OnMomentEditClickListener)
-            onMomentEditClickListener = context
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,7 +47,7 @@ class MomentDetailFragment : Fragment() {
         subscribeUi()
 
         binding.buttonDelete.setOnClickListener {
-            moment.momentId?.let { momentId ->
+            viewModel.moment!!.momentId?.let { momentId ->
                 showDeleteConfirmationDialog(momentId)
             }
         }
@@ -71,6 +58,9 @@ class MomentDetailFragment : Fragment() {
             }
         }
 
+        viewModel.bottomNavigationViewVisibility.observe(viewLifecycleOwner) { visible ->
+            updateBottomNavigationViewVisibility(visible)
+        }
     }
 
     private fun subscribeUi() {
@@ -96,7 +86,7 @@ class MomentDetailFragment : Fragment() {
         binding.detailTitle.text = moment.title
 
         binding.buttonEdit.setOnClickListener {
-            onMomentEditClickListener.onMomentEditClick(moment)
+            homeViewModel.navigateToMomentEditFromDetail(moment)
         }
 
         binding.buttonDelete.setOnClickListener {
@@ -122,19 +112,21 @@ class MomentDetailFragment : Fragment() {
         alertDialog.show()
     }
 
+    private fun updateBottomNavigationViewVisibility(visible: Boolean) {
+        val navBar: BottomNavigationView? = activity?.findViewById(R.id.bottom_navigation)
+        navBar?.visibility = if (visible) View.VISIBLE else View.GONE
+    }
+
     override fun onResume() {
         super.onResume()
         // Ocultar BottomNavigationView
-        val navBar: BottomNavigationView? = activity?.findViewById(R.id.bottom_navigation)
-        navBar?.visibility = View.GONE
+        viewModel.setBottomNavigationViewVisibility(false)
     }
 
     override fun onPause() {
         super.onPause()
-
         // Mostrar BottomNavigationView
-        val navBar: BottomNavigationView? = activity?.findViewById(R.id.bottom_navigation)
-        navBar?.visibility = View.VISIBLE
+        viewModel.setBottomNavigationViewVisibility(true)
     }
     override fun onDestroyView() {
         super.onDestroyView()

@@ -9,34 +9,19 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 import com.spotify.quavergd06.databinding.FragmentMomentBinding
-import com.spotify.quavergd06.data.model.Moment
 import com.spotify.quavergd06.view.home.HomeViewModel
 
 
 class MomentFragment : Fragment() {
 
-    private lateinit var mapListener: OnMapButtonListener
     private val viewModel: MomentViewModel by viewModels { MomentViewModel.Factory }
     private val homeViewModel: HomeViewModel by activityViewModels()
-
-    interface OnMapButtonListener {
-        fun onMapButtonClick()
-    }
 
     private var _binding: FragmentMomentBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: MomentAdapter
-
-    private var moments = emptyList<Moment>()
-
-    override fun onAttach(context: android.content.Context) {
-        super.onAttach(context)
-        if (context is OnMapButtonListener)
-            mapListener = context
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,9 +45,8 @@ class MomentFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setUpRecyclerView()
 
-        val button = binding.buttonToMap as FloatingActionButton
-        button.setOnClickListener {
-            mapListener.onMapButtonClick()
+        binding.buttonToMap.setOnClickListener {
+            homeViewModel.navigateToMapFromMoment(!homeViewModel.navigateToMapFromMoment.value!!)
         }
 
         binding.searchView.setOnQueryTextListener(object : android.widget.SearchView.OnQueryTextListener {
@@ -81,7 +65,7 @@ class MomentFragment : Fragment() {
     }
     private fun setUpRecyclerView() {
         adapter = MomentAdapter(
-            moments = moments,
+            moments = emptyList(),
             onClick = {
                 homeViewModel.onMomentClick(it)
         }
@@ -92,13 +76,6 @@ class MomentFragment : Fragment() {
         }
         android.util.Log.d("DiscoverFragment", "setUpRecyclerView")
     }
-
-/*    private fun filterMoments(query: String?) {
-        val filteredMoments = moments.filter {
-            it.title.contains(query.orEmpty(), ignoreCase = true)
-        }
-        adapter.updateData(filteredMoments)
-    }*/
 
     override fun onDestroyView() {
         super.onDestroyView()

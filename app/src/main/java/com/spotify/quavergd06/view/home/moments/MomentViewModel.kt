@@ -6,10 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.spotify.quavergd06.QuaverApplication
 import com.spotify.quavergd06.data.MomentsRepository
 import com.spotify.quavergd06.data.model.Moment
+import kotlinx.coroutines.launch
 
 class MomentViewModel(
     repository: MomentsRepository

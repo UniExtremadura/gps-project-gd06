@@ -14,16 +14,11 @@ import android.content.Context
 import android.os.Build
 import androidx.activity.viewModels
 import com.spotify.quavergd06.data.model.Moment
-import com.spotify.quavergd06.model.ThemeManager
-import com.spotify.quavergd06.view.home.moments.MapFragment
 import com.spotify.quavergd06.view.home.moments.MapFragmentDirections
-import com.spotify.quavergd06.view.home.moments.MomentDetailFragment
 import com.spotify.quavergd06.view.home.moments.MomentDetailFragmentDirections
-import com.spotify.quavergd06.view.home.moments.MomentFragment
 import com.spotify.quavergd06.view.home.moments.MomentFragmentDirections
 
-class HomeActivity : AppCompatActivity(),
-    MomentDetailFragment.OnMomentEditClickListener, MomentFragment.OnMapButtonListener, MapFragment.OnMomentButtonListener, MapFragment.OnMomentMapClickListener {
+class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
 
     private val viewModel: HomeViewModel by viewModels()
@@ -42,9 +37,27 @@ class HomeActivity : AppCompatActivity(),
 
         viewModel.navigateToMomentDetail.observe(this) { moment ->
             moment?.let {
-                onMomentClick(moment)
+                toDetailFromMoment(moment)
             }
         }
+
+        viewModel.navigateToMapFromMoment.observe(this) { fromMomentToMap() }
+
+        viewModel.navigateToMomentEditFromDetail.observe(this) { moment ->
+            moment?.let {
+                fromDetailToEdit(moment)
+            }
+        }
+
+        viewModel.navigateToMomentFromEdit.observe(this) { fromEditToMoment() }
+
+        viewModel.navigateToDetailFromMap.observe(this) { moment ->
+            moment?.let {
+                fromMapToDetail(moment)
+            }
+        }
+
+        viewModel.navigateToMomentFromMap.observe(this) { fromMapToMoment() }
 
         setUpUI()
 
@@ -78,28 +91,33 @@ class HomeActivity : AppCompatActivity(),
         binding.bottomNavigation.setupWithNavController(navHostFragment.navController)
     }
 
-    private fun onMomentClick(moment : Moment) {
+    private fun toDetailFromMoment(moment: Moment) {
         val action = MomentFragmentDirections.actionMomentFragmentToMomentDetailFragment(moment)
         navController.navigate(action)
     }
 
-    override fun onMomentMapClickListener(moment: Moment) {
+    private fun fromMapToDetail(moment: Moment) {
         val action = MapFragmentDirections.actionMapFragmentToMomentDetailFragment(moment)
         navController.navigate(action)
     }
 
-    override fun onMomentEditClick(moment : Moment) {
+    private fun fromDetailToEdit(moment : Moment) {
         val action = MomentDetailFragmentDirections.actionMomentDetailFragmentToMomentEditFragment(moment)
         navController.navigate(action)
     }
 
-    override fun onMapButtonClick() {
+    private fun fromMomentToMap() {
         val action = MomentFragmentDirections.actionMomentFragmentToMapFragment()
         navController.navigate(action)
     }
 
-    override fun onMomentButtonClick() {
+    private fun fromMapToMoment() {
         val action = MapFragmentDirections.actionMapFragmentToMomentFragment()
+        navController.navigate(action)
+    }
+
+    private fun fromEditToMoment() {
+        val action = MomentDetailFragmentDirections.actionMomentEditFragmentToMomentFragment()
         navController.navigate(action)
     }
 

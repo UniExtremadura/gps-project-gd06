@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.provider.MediaStore
@@ -35,23 +36,23 @@ import android.util.Log
 import androidx.core.graphics.drawable.toBitmap
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.spotify.quavergd06.database.QuaverDatabase
 import android.text.InputFilter
 import android.text.Spanned
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import com.spotify.quavergd06.view.home.HomeViewModel
 
 class MomentEditFragment : Fragment() {
 
+    private val viewModel: MomentEditViewModel by viewModels { MomentEditViewModel.Factory }
+    private val homeViewModel: HomeViewModel by activityViewModels()
     private var _binding: FragmentMomentEditBinding? = null
     private val binding get() = _binding!!
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-    private lateinit var db: QuaverDatabase
-    private var momentId: Long? = null
-    var imageURI: String? = null
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        db = QuaverDatabase.getInstance(requireContext())
-    }
+    private var momentId: Long? = null
+    private var imageURI: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -73,9 +74,12 @@ class MomentEditFragment : Fragment() {
         binding.detailTitle.filters = titleFilter
         binding.detailSongTitle.filters = songFilter
 
+        viewModel.bottomNavigationViewVisibility.observe(viewLifecycleOwner) { visible ->
+            updateBottomNavigationViewVisibility(visible)
+        }
+
         val autoCompleteTextView = binding.detailSongTitle
         binding.cameraOverlay.setOnClickListener {
-
             getAllPermissions()
             openCamera()
         }
@@ -91,7 +95,7 @@ class MomentEditFragment : Fragment() {
                 Log.d("ERROR", "El usuario no ha tomado una foto")
             }
             finally {
-                navigateToMomentFragment()
+                homeViewModel.navigateToMomentFromEdit(!homeViewModel.navigateToMomentFromEdit.value!!)
             }
         }
 
@@ -102,7 +106,7 @@ class MomentEditFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 setKey(obtenerSpotifyApiKey(requireContext())!!)
-                var opciones = fetchTracks()
+                val opciones = fetchTracks()
                 val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, opciones)
                 autoCompleteTextView.setAdapter(adapter)
             } catch (e: Exception) {
@@ -110,10 +114,10 @@ class MomentEditFragment : Fragment() {
             }
         }
 
-
         val moment = arguments?.getSerializable("moment") as? Moment
-        if (moment != null) {
-            moment?.let {
+        viewModel.moment = moment
+        if (viewModel.moment != null) {
+            viewModel.moment?.let {
                 imageURI = it.imageURI
                 momentId = it.momentId
                 // Configurar la vista con los detalles del Momento
@@ -128,17 +132,23 @@ class MomentEditFragment : Fragment() {
             }
         } else {
             getAllPermissions()
-
             openCamera()
         }
     }
 
+    private fun updateBottomNavigationViewVisibility(visible: Boolean) {
+        val navBar: BottomNavigationView? = activity?.findViewById(R.id.bottom_navigation)
+        navBar?.visibility = if (visible) View.VISIBLE else View.GONE
+    }
+
     override fun onResume() {
         super.onResume()
+        viewModel.setBottomNavigationViewVisibility(false)
+    }
 
-        // Ocultar BottomNavigationView
-        val navBar: BottomNavigationView? = activity?.findViewById(R.id.bottom_navigation)
-        navBar?.visibility = View.GONE
+    override fun onPause() {
+        super.onPause()
+        viewModel.setBottomNavigationViewVisibility(true)
     }
 
     private fun obtenerSpotifyApiKey(context: Context): String? {
@@ -204,23 +214,24 @@ class MomentEditFragment : Fragment() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.d("PERMISSION", "Camera permission granted")
             } else {
-                navigateToMomentFragment()
+                homeViewModel.navigateToMomentFromEdit(!homeViewModel.navigateToMomentFromEdit.value!!)
             }
         }
         if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.d("PERMISSION", "Location permission granted")
             } else {
-                navigateToMomentFragment()
+                homeViewModel.navigateToMomentFromEdit(!homeViewModel.navigateToMomentFromEdit.value!!)
             }
         }
     }
+    @SuppressLint("SetTextI18n")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as? Bitmap
             binding.detailImage.setImageBitmap(imageBitmap)
-            if (arguments?.getSerializable("moment") == null) {
+            if (viewModel.moment == null) {
                 binding.detailDate.text = dateFormat.format(java.util.Date())
                 getAllPermissions()
                 obtenerUbicacion().let { (latitud, longitud) ->
@@ -295,13 +306,12 @@ class MomentEditFragment : Fragment() {
 
     private fun saveImage(imageBitmap: Bitmap?): String? {
         if (imageBitmap != null) {
-            val savedImageURI = MediaStore.Images.Media.insertImage(
+            return MediaStore.Images.Media.insertImage(
                 requireContext().contentResolver,
                 imageBitmap,
                 "Momento",
                 "Momento de Quaver"
             )
-            return savedImageURI
         }
         return null
     }
@@ -309,7 +319,7 @@ class MomentEditFragment : Fragment() {
     private fun persistMoment(_imageURI: String){
         val latLong = extractLatLongFromLocation(binding.detailLocation.text.toString())
         val (_latitude, _longitude) = latLong!!
-        var moment = Moment(
+        val moment = Moment(
             momentId = momentId,
             title = binding.detailTitle.text.toString(),
             date = dateFormat.parse(binding.detailDate.text.toString()),
@@ -319,9 +329,7 @@ class MomentEditFragment : Fragment() {
             latitude = _latitude,
             longitude = _longitude,
         )
-        lifecycleScope.launch {
-            db.momentDAO().insertMoment(moment)
-        }
+        viewModel.insertMoment(moment)
     }
 
     private fun extractLatLongFromLocation(location: String): Pair<Double, Double>? {
@@ -334,21 +342,10 @@ class MomentEditFragment : Fragment() {
         }
     }
 
-    private fun navigateToMomentFragment() {
-        findNavController().navigate(R.id.action_momentEditFragment_to_momentFragment)
-    }
     companion object {
         private const val CAMERA_REQUEST_CODE = 123
         private const val CAMERA_PERMISSION_REQUEST_CODE = 456
         private const val LOCATION_PERMISSION_REQUEST_CODE = 789
-    }
-
-    override fun onPause() {
-        super.onPause()
-
-        // Mostrar BottomNavigationView
-        val navBar: BottomNavigationView? = activity?.findViewById(R.id.bottom_navigation)
-        navBar?.visibility = View.VISIBLE
     }
 
     override fun onDestroyView() {

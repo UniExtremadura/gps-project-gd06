@@ -26,6 +26,7 @@
             android:id="@+id/action_momentFragment_to_momentDetailFragment"
             app:destination="@id/momentDetailFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.spotify.quavergd06.view.home.ProfileFragment"
