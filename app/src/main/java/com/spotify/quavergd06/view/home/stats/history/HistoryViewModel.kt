@@ -7,18 +7,19 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.spotify.quavergd06.QuaverApplication
 import com.spotify.quavergd06.api.setKey
+import com.spotify.quavergd06.data.HistoryRepository
 import com.spotify.quavergd06.data.TracksRepository
 import com.spotify.quavergd06.data.model.Track
 import com.spotify.quavergd06.data.model.User
 import kotlinx.coroutines.launch
 
 class HistoryViewModel(
-    repository: TracksRepository
+    repository: HistoryRepository
 ) : ViewModel() {
 
     var user: User? = null
 
-    private val _track = repository.tracksHistory
+    private val _track = repository.tracks
     val tracks: LiveData<List<Track>> get() = _track
 
     init {
@@ -26,7 +27,7 @@ class HistoryViewModel(
             user?.let {
                 setKey(it.token)
             }
-            repository.tryUpdateHistoryCache()
+            repository.tryUpdateCache()
         }
     }
 
@@ -39,7 +40,7 @@ class HistoryViewModel(
             ): T { // Get the Application object from extras
                 val application =
                     checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
-                return HistoryViewModel((application as QuaverApplication).appContainer.tracksRepository) as T
+                return HistoryViewModel((application as QuaverApplication).appContainer.historyRepository) as T
             }
         }
     }

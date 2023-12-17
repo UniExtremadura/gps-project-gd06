@@ -21,6 +21,8 @@ import com.spotify.quavergd06.view.home.moments.MapFragmentDirections
 import com.spotify.quavergd06.view.home.moments.MomentDetailFragmentDirections
 import com.spotify.quavergd06.view.home.moments.MomentFragmentDirections
 import com.spotify.quavergd06.view.home.stats.StatsFragmentDirections
+import com.spotify.quavergd06.view.home.stats.detailFragments.TrackInfoFragment
+import com.spotify.quavergd06.view.home.stats.detailFragments.TrackInfoFragmentDirections
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -81,6 +83,12 @@ class HomeActivity : AppCompatActivity() {
         viewModel.navigateFromHistoryToTrackDetail.observe(this) { statsItem ->
             statsItem?.let {
                 fromHistoryToTrackDetail(statsItem)
+            }
+        }
+
+        viewModel.navigateFromTrackDetailToArtistDetail.observe(this) { statsItem ->
+            statsItem?.let {
+                fromTrackDetailToArtistDetail(statsItem)
             }
         }
 
@@ -161,4 +169,8 @@ class HomeActivity : AppCompatActivity() {
         navController.navigate(action)
     }
 
+    private fun fromTrackDetailToArtistDetail(statsItem: StatsItem) {
+        val action = TrackInfoFragmentDirections.actionTrackInfoFragmentToArtistInfoFragment(statsItem)
+        navController.navigate(action)
+    }
 }

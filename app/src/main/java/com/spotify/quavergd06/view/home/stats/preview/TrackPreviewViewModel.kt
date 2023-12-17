@@ -26,7 +26,7 @@ class TrackPreviewViewModel (
             user?.let {
                 setKey(it.token)
             }
-            repository.tryUpdatePersonalTopTracksCache("short_term")
+            repository.tryUpdateCache("short_term")
         }
     }
 

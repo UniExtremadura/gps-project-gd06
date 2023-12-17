@@ -11,6 +11,8 @@ import com.spotify.quavergd06.R
 import com.spotify.quavergd06.data.fetchables.Fetchable
 import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.databinding.FragmentTopItemViewPagerBinding
+import com.spotify.quavergd06.view.home.stats.detailFragments.ArtistInfoFragment
+import com.spotify.quavergd06.view.home.stats.detailFragments.TrackInfoFragment
 
 class TopItemViewPagerFragment : Fragment() {
     private var _binding: FragmentTopItemViewPagerBinding? = null
@@ -69,7 +71,7 @@ class TopItemViewPagerFragment : Fragment() {
                 statsItem
             ).arguments)
         } else {
-            findNavController().navigate(R.id.action_topItemViewPagerFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(
+            findNavController().navigate(R.id.action_topItemViewPagerFragment_to_trackInfoFragment, TrackInfoFragment.  newInstance(
                 statsItem
             ).arguments)
         }

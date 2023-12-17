@@ -22,8 +22,14 @@ interface TrackDAO {
     @Query("SELECT * FROM track WHERE type='recent' ORDER BY position ASC")
     fun getHistory(): LiveData<List<Track>>
 
-    @Query("SELECT count(*) FROM track")
-    suspend fun getNumberOfTracks(): Long
+    @Query("SELECT count(*) FROM track WHERE type='personal'")
+    suspend fun getNumberOfPersonalTracks(): Long
+
+    @Query("SELECT count(*) FROM track WHERE type='global'")
+    suspend fun getNumberOfGlobalTracks(): Long
+
+    @Query("SELECT count(*) FROM track WHERE type='recent'")
+    suspend fun getNumberOfHistoryTracks(): Long
 
     @Query("DELETE FROM track WHERE trackId = :id")
     suspend fun deleteTrack(id: Long)

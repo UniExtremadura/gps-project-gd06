@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.home.stats.topArtistTracks.ArtistInfoFragment"
+    tools:context=".view.home.stats.detailFragments.ArtistInfoFragment"
     android:orientation="vertical">
 
     <ImageView

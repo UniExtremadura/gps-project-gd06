@@ -6,48 +6,39 @@ import com.spotify.quavergd06.data.api.TrackItem
 import com.spotify.quavergd06.data.model.Track
 import com.spotify.quavergd06.database.dao.TrackDAO
 
-class TracksRepository (
+class HistoryRepository(
     private val tracksDAO: TrackDAO, private
     val networkService: SpotifyApiService
-){
+) {
     private var lastUpdateTimeMillis: Long = 0L
-    val tracks = tracksDAO.getTopTracks()
+    val tracks = tracksDAO.getHistory()
 
-    suspend fun tryUpdateCache(timeRange: String) {
+    suspend fun tryUpdateCache() {
         if (shouldUpdateCache())
-            fetchTracks(timeRange)
+            fetchTracks()
     }
 
-    private suspend fun fetchTracks(timeRange: String) {
+    private suspend fun fetchTracks() {
         try {
-            val tracks = networkService.loadTopTracks(timeRange).body()?.trackItems?.map(TrackItem::toTrack) ?: emptyList()
+            val tracks = networkService.loadHistory().body()?.items?.map { it.track!! }
+                ?.map(TrackItem::toTrack) ?: emptyList()
 
             // Set position and time range for different types of tracks
-            setType(tracks, "personal")
+            setType(tracks, "recent")
             setTrackPosition(tracks)
-            setTrackTimeRange(tracks, timeRange)
+            setTrackTimeRange(tracks, "short_term")
 
             tracksDAO.insertAllTracks(tracks)
-            lastUpdateTimeMillis = System.currentTimeMillis ()
+            lastUpdateTimeMillis = System.currentTimeMillis()
         } catch (cause: Throwable) {
             throw APIError("Unable to fetch data from API", cause)
         }
-    }
-
-    suspend fun fetchTrackDetail(trackId: String) : Track {
-        var track : Track
-        try {
-            track = networkService.loadTrack(trackId).body()?.toTrack()!!
-        } catch (cause: Throwable) {
-            throw APIError("Unable to fetch data from API", cause)
-        }
-        return track
     }
 
     private suspend fun shouldUpdateCache(): Boolean {
         val lastFetchTimeMillis = lastUpdateTimeMillis
         val timeFromLastFetch = System.currentTimeMillis() - lastFetchTimeMillis
-        return timeFromLastFetch > MIN_TIME_FROM_LAST_FETCH_MILLIS || tracksDAO.getNumberOfPersonalTracks() == 0L
+        return timeFromLastFetch > MIN_TIME_FROM_LAST_FETCH_MILLIS || tracksDAO.getNumberOfHistoryTracks() == 0L
         return true
     }
 

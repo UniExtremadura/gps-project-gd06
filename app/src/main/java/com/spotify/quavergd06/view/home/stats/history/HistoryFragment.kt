@@ -1,6 +1,5 @@
 package com.spotify.quavergd06.view.home.stats.history
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,21 +8,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.spotify.quavergd06.R
-import com.spotify.quavergd06.api.setKey
-import com.spotify.quavergd06.data.fetchables.HistoryFetchable
-import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.data.model.Track
 import com.spotify.quavergd06.data.toStatsItem
 import com.spotify.quavergd06.databinding.FragmentRecyclerViewBinding
 import com.spotify.quavergd06.view.home.HomeViewModel
-import com.spotify.quavergd06.view.home.stats.GlobalTopViewModel
-import com.spotify.quavergd06.view.home.stats.topArtistTracks.TrackInfoFragment
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.launch
 
 class HistoryFragment() : Fragment() {
     private var _binding: FragmentRecyclerViewBinding? = null

@@ -108,7 +108,7 @@
     </fragment>
     <fragment
         android:id="@+id/artistInfoFragment"
-        android:name="com.spotify.quavergd06.view.home.stats.topArtistTracks.ArtistInfoFragment"
+        android:name="com.spotify.quavergd06.view.home.stats.detailFragments.ArtistInfoFragment"
         android:label="fragment_track_info"
         tools:layout="@layout/fragment_track_info" >
         <argument
@@ -117,7 +117,7 @@
     </fragment>
     <fragment
         android:id="@+id/trackInfoFragment"
-        android:name="com.spotify.quavergd06.view.home.stats.topArtistTracks.TrackInfoFragment"
+        android:name="com.spotify.quavergd06.view.home.stats.detailFragments.TrackInfoFragment"
         android:label="TrackInfoFragment" >
         <argument
             android:name="statsItem"

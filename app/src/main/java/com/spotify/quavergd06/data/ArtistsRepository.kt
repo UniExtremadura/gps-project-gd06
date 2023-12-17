@@ -28,19 +28,16 @@ class ArtistsRepository (
         }
     }
 
-    suspend fun tryUpdateRecentArtistCache(id: String) {
-        if (shouldUpdateCache())
-            fetchArtistDetail(id)
-    }
-
-    private suspend fun fetchArtistDetail(artistId: String) {
+    suspend fun fetchArtistDetail(artistId: String) : Artist {
+        var artist : Artist
         try {
-            val artist = networkService.loadArtist(artistId).body()?.toArtist()!!
+            artist = networkService.loadArtist(artistId).body()?.toArtist()!!
             artistDAO.insertSingleArtist(artist)
             lastUpdateTimeMillis = System.currentTimeMillis ()
         } catch (cause: Throwable) {
             throw APIError("Unable to fetch data from API", cause)
         }
+        return artist
     }
 
     private suspend fun shouldUpdateCache(): Boolean {

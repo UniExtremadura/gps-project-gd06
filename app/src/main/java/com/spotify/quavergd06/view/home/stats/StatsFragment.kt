@@ -5,13 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import androidx.fragment.app.Fragment
-import com.spotify.quavergd06.R
-import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.databinding.FragmentStatsBinding
-import com.spotify.quavergd06.view.home.stats.topArtistTracks.ArtistInfoFragment
-import com.spotify.quavergd06.view.home.stats.topArtistTracks.TrackInfoFragment
 
 
 class StatsFragment : Fragment() {
