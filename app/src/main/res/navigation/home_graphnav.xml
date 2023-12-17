@@ -110,7 +110,11 @@
         android:id="@+id/artistInfoFragment"
         android:name="com.spotify.quavergd06.view.home.stats.topArtistTracks.ArtistInfoFragment"
         android:label="fragment_track_info"
-        tools:layout="@layout/fragment_track_info" />
+        tools:layout="@layout/fragment_track_info" >
+        <argument
+            android:name="statsItem"
+            app:argType="com.spotify.quavergd06.data.model.StatsItem" />
+    </fragment>
     <fragment
         android:id="@+id/trackInfoFragment"
         android:name="com.spotify.quavergd06.view.home.stats.topArtistTracks.TrackInfoFragment"

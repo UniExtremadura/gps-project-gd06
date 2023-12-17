@@ -19,9 +19,6 @@ class StatsFragment : Fragment() {
     private var _binding: FragmentStatsBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,37 +35,14 @@ class StatsFragment : Fragment() {
     }
 
     fun setUpViewPager() {
-        val adapter = PersonalTopGlobalViewPager(childFragmentManager,
-            { i: Int ,fragment: Fragment -> findNavController().navigate(i, fragment.arguments)},
-            { i: Int -> findNavController().navigate(i)}
-        )
+        val adapter = PersonalTopGlobalViewPager(childFragmentManager)
         binding.topItemViewPager.adapter = adapter
         binding.personalGlobalTabLayout.setupWithViewPager(binding.topItemViewPager)
     }
 
-    private fun onClick(statsItem: StatsItem){
-        if (statsItem.artistId == null) {
-            findNavController().navigate(R.id.action_topItemViewPagerFragment_to_artistInfoFragment, ArtistInfoFragment.newInstance(
-                statsItem
-            ).arguments)
-        } else {
-            findNavController().navigate(R.id.action_topItemViewPagerFragment_to_trackInfoFragment, TrackInfoFragment.newInstance(
-                statsItem
-            ).arguments)
-        }
-    }
-
-    private fun navigateToTopItemFragment(fragment: Fragment) {
-        Log.d("StatsFragment", "navigateToTopItemViewPagerFragment")
-        findNavController().navigate(R.id.action_statsFragment_to_topItemViewPagerFragment, fragment.arguments)
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        fun newInstance() = StatsFragment()
     }
 }

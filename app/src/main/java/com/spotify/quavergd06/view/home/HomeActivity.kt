@@ -65,12 +65,17 @@ class HomeActivity : AppCompatActivity() {
 
         viewModel.navigateFromMapToMoment.observe(this) { fromMapToMoment() }
 
+        viewModel.navigateFromStatsToArtistDetail.observe(this) { statsItem ->
+            statsItem?.let {
+                fromStatsToArtistDetail(statsItem)
+            }
+        }
+
         viewModel.navigateFromStatsToTrackDetail.observe(this) { statsItem ->
             statsItem?.let {
                 fromStatsToTrackDetail(statsItem)
             }
         }
-
 
         viewModel.navigateFromHistoryToTrackDetail.observe(this) { statsItem ->
             statsItem?.let {
@@ -137,6 +142,11 @@ class HomeActivity : AppCompatActivity() {
 
     private fun fromEditToMoment() {
         val action = MomentDetailFragmentDirections.actionMomentEditFragmentToMomentFragment()
+        navController.navigate(action)
+    }
+
+    private fun fromStatsToArtistDetail(statsItem: StatsItem) {
+        val action = StatsFragmentDirections.actionStatsFragmentToArtistInfoFragment(statsItem)
         navController.navigate(action)
     }
 

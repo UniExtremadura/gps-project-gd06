@@ -15,7 +15,7 @@ class TracksRepository (
     val tracksGlobalTop = tracksDAO.getTopGlobalTracks()
     val tracksHistory = tracksDAO.getHistory()
 
-    suspend fun tryUpdateRecentPersonalTopTracksCache(timeRange: String) {
+    suspend fun tryUpdatePersonalTopTracksCache(timeRange: String) {
         if (shouldUpdateCache())
             fetchTracks(timeRange)
     }

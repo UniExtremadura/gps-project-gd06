@@ -73,4 +73,11 @@ class HomeViewModel : ViewModel() {
     fun navigateFromStatsToTrackDetail(statsItem: StatsItem) {
         _navigateFromStatsToTrackDetail.value = statsItem
     }
+
+    private val _navigateFromStatsToArtistDetail = MutableLiveData<StatsItem>(null)
+    val navigateFromStatsToArtistDetail: LiveData<StatsItem>
+        get() = _navigateFromStatsToArtistDetail
+    fun navigateFromStatsToArtistDetail(statsItem: StatsItem) {
+        _navigateFromStatsToArtistDetail.value = statsItem
+    }
 }

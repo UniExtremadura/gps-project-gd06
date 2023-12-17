@@ -5,27 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.activityViewModels
 import com.spotify.quavergd06.R
-import com.spotify.quavergd06.data.fetchables.ArtistFetchable
-import com.spotify.quavergd06.data.fetchables.HistoryFetchable
-import com.spotify.quavergd06.data.fetchables.TrackFetchable
 import com.spotify.quavergd06.databinding.FragmentPersonalStatsBinding
-import com.spotify.quavergd06.view.home.stats.topArtistTracks.ArtistInfoFragment
-import com.spotify.quavergd06.view.home.stats.topArtistTracks.TopItemViewPagerFragment
-import com.spotify.quavergd06.view.home.stats.topArtistTracks.TrackInfoFragment
+import com.spotify.quavergd06.view.home.HomeViewModel
+import com.spotify.quavergd06.view.home.stats.preview.ArtistPreviewFragment
+import com.spotify.quavergd06.view.home.stats.preview.HistoryPreviewFragment
+import com.spotify.quavergd06.view.home.stats.preview.TrackPreviewFragment
 import com.spotify.quavergd06.view.home.stats.topGenres.TopGenresFragment
 
-class PersonalStatsFragment(
-    private val navigate: (Int, Fragment) -> Unit,
-    private val navigateNoArgs: (Int) -> Unit
-) : Fragment() {
+class PersonalStatsFragment() : Fragment() {
     private var _binding: FragmentPersonalStatsBinding? = null
     private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,29 +36,9 @@ class PersonalStatsFragment(
         super.onViewCreated(view, savedInstanceState)
 
         loadFragment(R.id.fragmentTopGenres, TopGenresFragment())
-
-        loadFragment(R.id.fragmentTopArtists, PreviewTopFragment(ArtistFetchable()) { statsItem ->
-            navigate(
-                R.id.action_statsFragment_to_artistInfoFragment,
-                ArtistInfoFragment.newInstance(statsItem)
-            )
-        })
-
-        loadFragment(R.id.fragmentTopTracks, PreviewTopFragment(TrackFetchable()) { statsItem ->
-            navigate(
-                R.id.action_statsFragment_to_trackInfoFragment,
-                TrackInfoFragment.newInstance(statsItem)
-            )
-        })
-
-        loadFragment(R.id.fragmentHistory, PreviewTopFragment(HistoryFetchable()) { statsItem ->
-            navigate(
-                R.id.action_statsFragment_to_trackInfoFragment,
-                TrackInfoFragment.newInstance(statsItem)
-            )
-        })
-
-
+        loadFragment(R.id.fragmentTopArtists, ArtistPreviewFragment())
+        loadFragment(R.id.fragmentTopTracks, TrackPreviewFragment())
+        loadFragment(R.id.fragmentHistory, HistoryPreviewFragment())
     }
 
     private fun loadFragment(containerId: Int, fragment: Fragment) {
@@ -77,34 +50,25 @@ class PersonalStatsFragment(
     private fun setButtons() {
         val buttonTopArtistsMore = binding.moreTopArtists
         buttonTopArtistsMore.setOnClickListener {
-            navigate(
-                R.id.action_statsFragment_to_topItemViewPagerFragment,
-                TopItemViewPagerFragment.newInstance("short_term", ArtistFetchable())
-            )
+//            homeViewModel.navigateFromStatsToTopItemViewPagerFragment()
         }
 
         val buttonTopTracksMore = binding.moreTopTracks
         buttonTopTracksMore.setOnClickListener { //findNavController().navigate(R.id.action_statsFragment_to_topItemViewPagerFragment, TopItemViewPagerFragment.newInstance("short_term", TrackFetchable()).arguments)
-            navigate(
-                R.id.action_statsFragment_to_topItemViewPagerFragment,
-                TopItemViewPagerFragment.newInstance("short_term", TrackFetchable())
-            )
+//            navigate(
+//                R.id.action_statsFragment_to_topItemViewPagerFragment,
+//                TopItemViewPagerFragment.newInstance("short_term", TrackFetchable())
+//            )
         }
 
         val buttonTopHistory = binding.moreHistory
         buttonTopHistory.setOnClickListener {
-            navigateNoArgs(R.id.action_statsFragment_to_historyFragment)
+//            navigateNoArgs(R.id.action_statsFragment_to_historyFragment)
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        fun newInstance(navigate: (Int, Fragment) -> Unit, navigateNoArgs: (Int) -> Unit) =
-            PersonalStatsFragment(navigate, navigateNoArgs)
-
     }
 }
