@@ -41,6 +41,8 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="delete_confirmation_message">Are you sure you want to delete all your moments and log out?</string>
+    <string name="change_theme_confirmation_message">Are you sure you want to change Quaver\'s theme? Quaver must be restarted.</string>
+    <string name="change_language_confirmation_message">Are you sure you want to change Quaver\'s language? Quaver must be restarted.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
