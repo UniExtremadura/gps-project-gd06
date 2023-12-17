@@ -22,7 +22,6 @@ import kotlinx.coroutines.withContext
 class SettingsFragment : PreferenceFragmentCompat() {
 
     private var _binding: FragmentSettingsBinding? = null
-    private val binding get() = _binding!!
     private lateinit var db : QuaverDatabase
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -34,17 +33,14 @@ class SettingsFragment : PreferenceFragmentCompat() {
         findPreference<ListPreference>("theme_preference")?.setOnPreferenceChangeListener { _, newValue ->
             // Handle theme change
             val selectedTheme = newValue as String
-            ThemeManager.saveThemePreference(requireContext(), selectedTheme)
-            ThemeManager.applyTheme(requireContext())
-            //activity?.recreate()
+            handleThemeChange(selectedTheme)
             true
         }
 
         findPreference<ListPreference>("language_preference")?.setOnPreferenceChangeListener { _, newValue ->
             // Handle language change
-            LocaleManager.updateLocale(requireContext(), newValue as String)
-            saveLanguagePreference(newValue)
-            activity?.recreate()
+            val selectedLanguage = newValue as String
+            handleLocaleChange(selectedLanguage)
             true
         }
 
@@ -63,6 +59,52 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val languageEntries = resources.getStringArray(R.array.language_entries)
         languagePreference?.entries = languageEntries
 
+    }
+
+    private fun handleLocaleChange(selectedLanguage: String) {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+        alertDialogBuilder.setTitle(context?.getString(R.string.button_delete_data))
+        alertDialogBuilder.setMessage(context?.getString(R.string.change_language_confirmation_message))
+        alertDialogBuilder.setPositiveButton(context?.getString(R.string.yes)) { dialog, which ->
+            LocaleManager.updateLocale(requireContext(), selectedLanguage)
+            saveLanguagePreference(selectedLanguage)
+            // reiniciar la aplicacion
+            restartApplication()
+        }
+        alertDialogBuilder.setNegativeButton(context?.getString(R.string.no)) { dialog, which ->
+            // Usuario hizo clic en No, cerrar el cuadro de diálogo sin hacer nada
+            dialog.dismiss()
+        }
+
+        val alertDialog: AlertDialog = alertDialogBuilder.create()
+        alertDialog.show()
+
+    }
+
+    private fun handleThemeChange(selectedTheme: String) {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+        alertDialogBuilder.setTitle(context?.getString(R.string.button_delete_data))
+        alertDialogBuilder.setMessage(context?.getString(R.string.change_theme_confirmation_message))
+        alertDialogBuilder.setPositiveButton(context?.getString(R.string.yes)) { dialog, which ->
+            ThemeManager.saveThemePreference(requireContext(), selectedTheme)
+            ThemeManager.applyTheme(requireContext())
+            // reiniciar la aplicacion
+            restartApplication()
+        }
+        alertDialogBuilder.setNegativeButton(context?.getString(R.string.no)) { dialog, which ->
+            // Usuario hizo clic en No, cerrar el cuadro de diálogo sin hacer nada
+            dialog.dismiss()
+        }
+
+        val alertDialog: AlertDialog = alertDialogBuilder.create()
+        alertDialog.show()
+
+    }
+
+    private fun restartApplication() {
+        val intent = requireActivity().baseContext.packageManager.getLaunchIntentForPackage(requireActivity().baseContext.packageName)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
     }
 
     private fun saveLanguagePreference(languageCode: String) {

@@ -42,7 +42,8 @@
     <string name="yes">Ja</string>
     <string name="no">Nei</string>
     <string name="delete_confirmation_message">"Er du sikker på at du vil slette "</string>
-
+    <string name="change_theme_confirmation_message">Er du sikker på at du vil endre Quaver-temaet? Quaver må startes på nytt.</string>
+    <string name="change_language_confirmation_message">Er du sikker på at du vil endre Quaver-språket? Quaver må startes på nytt.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hei tom fragment</string>
 </resources>

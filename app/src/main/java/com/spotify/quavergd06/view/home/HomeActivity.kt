@@ -11,6 +11,7 @@ import com.spotify.quavergd06.notifications.NotificationScheduler
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Build
 import androidx.activity.viewModels
 import com.spotify.quavergd06.data.model.Moment

@@ -41,7 +41,9 @@
     <string name="button_delete_data">Excluir datos</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
-    <string name="delete_confirmation_message">" alle øyeblikkene dine og logge ut?"</string>
+    <string name="delete_confirmation_message">"Todos os seus momentos serão excluídos e você será desconectado?"</string>
+    <string name="change_theme_confirmation_message">Tem certeza de que deseja alterar o tema do Quaver? O Quaver precisa ser reiniciado.</string>
+    <string name="change_language_confirmation_message">Tem certeza de que deseja mudar o idioma do Quaver? O Quaver precisa ser reiniciado.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Olá fragmento em branco</string>

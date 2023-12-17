@@ -42,6 +42,8 @@
     <string name="yes">Sì</string>
     <string name="no">No</string>
     <string name="delete_confirmation_message">Sei sicuro di voler eliminare tutti i tuoi momenti e disconnetterti?</string>
+    <string name="change_theme_confirmation_message">Sei sicuro di voler cambiare il tema di Quaver? Quaver deve essere riavviato.</string>
+    <string name="change_language_confirmation_message">Sei sicuro di voler cambiare la lingua di Quaver? Quaver deve essere riavviato.</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Ciao frammento vuoto</string>
