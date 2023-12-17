@@ -15,8 +15,7 @@ interface ArtistDAO {
     suspend fun insertAllArtist(artists: List<Artist>)
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertArtist(artists: Artist)
-
+    suspend fun insertSingleArtist(artists: Artist)
 
     @Query("SELECT * FROM artist")
     fun getArtists(): LiveData<List<Artist>>

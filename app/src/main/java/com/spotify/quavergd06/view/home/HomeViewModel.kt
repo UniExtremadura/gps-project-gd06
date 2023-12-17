@@ -4,8 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.spotify.quavergd06.data.model.Moment
+import com.spotify.quavergd06.data.model.StatsItem
+import com.spotify.quavergd06.data.model.User
 
 class HomeViewModel : ViewModel() {
+    private val _user = MutableLiveData<User>(null)
+    val user: LiveData<User>
+        get() = _user
+
+    var userInSession: User? = null
+        set(value) {
+            field = value
+            _user.value = value!!
+        }
 
     private val _navigateFromMomentToDetail = MutableLiveData<Moment>(null)
     val navigateFromMomentToDetail: LiveData<Moment>
@@ -49,4 +60,17 @@ class HomeViewModel : ViewModel() {
         _navigateFromMapToDetail.value = moment
     }
 
+    private val _navigateFromHistoryToTrackDetail = MutableLiveData<StatsItem>(null)
+    val navigateFromHistoryToTrackDetail: LiveData<StatsItem>
+        get() = _navigateFromHistoryToTrackDetail
+    fun navigateFromHistoryToTrackDetail(statsItem: StatsItem) {
+        _navigateFromHistoryToTrackDetail.value = statsItem
+    }
+
+    private val _navigateFromStatsToTrackDetail = MutableLiveData<StatsItem>(null)
+    val navigateFromStatsToTrackDetail: LiveData<StatsItem>
+        get() = _navigateFromStatsToTrackDetail
+    fun navigateFromStatsToTrackDetail(statsItem: StatsItem) {
+        _navigateFromStatsToTrackDetail.value = statsItem
+    }
 }

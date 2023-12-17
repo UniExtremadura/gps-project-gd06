@@ -16,7 +16,7 @@ class PersonalTopGlobalViewPager(
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> PersonalStatsFragment(navigate, navigateNoArgs)
-            1 -> GlobalTopFragment(navigate)
+            1 -> GlobalTopFragment()
             else -> throw IllegalArgumentException("Invalid position: $position")
         }
     }

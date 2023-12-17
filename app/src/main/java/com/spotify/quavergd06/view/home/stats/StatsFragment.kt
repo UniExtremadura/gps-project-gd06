@@ -47,7 +47,7 @@ class StatsFragment : Fragment() {
     }
 
     private fun onClick(statsItem: StatsItem){
-        if (statsItem.artist == null) {
+        if (statsItem.artistId == null) {
             findNavController().navigate(R.id.action_topItemViewPagerFragment_to_artistInfoFragment, ArtistInfoFragment.newInstance(
                 statsItem
             ).arguments)

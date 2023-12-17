@@ -9,11 +9,11 @@ import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.databinding.FragmentHistoryListItemBinding
 import com.squareup.picasso.Picasso
 
-class HistoryListAdapter (
+class ListTracksAdapter (
     private var statsItems: List<StatsItem>,
     private val onClick: (statsItem: StatsItem) -> Unit,
     private val context: Context?
-) : RecyclerView.Adapter<HistoryListAdapter.StatsItemViewHolder>() {
+) : RecyclerView.Adapter<ListTracksAdapter.StatsItemViewHolder>() {
 
     class StatsItemViewHolder(
         private val binding: FragmentHistoryListItemBinding,

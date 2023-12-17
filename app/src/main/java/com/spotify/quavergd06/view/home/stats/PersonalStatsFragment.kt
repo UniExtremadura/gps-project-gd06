@@ -14,7 +14,7 @@ import com.spotify.quavergd06.databinding.FragmentPersonalStatsBinding
 import com.spotify.quavergd06.view.home.stats.topArtistTracks.ArtistInfoFragment
 import com.spotify.quavergd06.view.home.stats.topArtistTracks.TopItemViewPagerFragment
 import com.spotify.quavergd06.view.home.stats.topArtistTracks.TrackInfoFragment
-import com.spotify.quavergd06.view.home.stats.topG.TopGenresFragment
+import com.spotify.quavergd06.view.home.stats.topGenres.TopGenresFragment
 
 class PersonalStatsFragment(
     private val navigate: (Int, Fragment) -> Unit,
@@ -93,7 +93,7 @@ class PersonalStatsFragment(
 
         val buttonTopHistory = binding.moreHistory
         buttonTopHistory.setOnClickListener {
-            navigateNoArgs(R.id.action_statsFragment_to_historyListFragment)
+            navigateNoArgs(R.id.action_statsFragment_to_historyFragment)
         }
     }
 
@@ -106,13 +106,5 @@ class PersonalStatsFragment(
         fun newInstance(navigate: (Int, Fragment) -> Unit, navigateNoArgs: (Int) -> Unit) =
             PersonalStatsFragment(navigate, navigateNoArgs)
 
-        fun newInstance() = PersonalStatsFragment(
-            { id, fragment ->
-                fragment.findNavController().navigate(id)
-            },
-            { _ -> }
-        )
-
     }
-
 }

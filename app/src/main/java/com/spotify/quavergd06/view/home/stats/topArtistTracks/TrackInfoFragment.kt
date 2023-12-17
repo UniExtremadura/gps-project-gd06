@@ -59,7 +59,7 @@ class TrackInfoFragment : Fragment() {
 
         lifecycleScope.launch {
             try {
-                artistsRepository.tryUpdateRecentArtistCache(statsItem?.artist?.artistId.toString())
+                artistsRepository.tryUpdateRecentArtistCache(statsItem?.artistId.toString())
                 Log.d("TrackInfoFragment", "artist: $artist")
             }   catch (e: Exception) {
                 Log.d("TrackInfoFragment", "Error: ${e.message}")
@@ -84,7 +84,7 @@ class TrackInfoFragment : Fragment() {
 
     private fun setupUI(statsItem: StatsItem) {
         with(binding) {
-            artistName.text = getString(R.string.artist, statsItem.artist?.name)
+            artistName.text = getString(R.string.artist, statsItem.artistName)
 
             trackName.text = getString(R.string.track_title, statsItem.name.toString())
             albumName.text = getString(R.string.album_name, statsItem.album)

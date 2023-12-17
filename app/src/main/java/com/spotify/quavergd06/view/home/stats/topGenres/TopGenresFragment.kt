@@ -1,4 +1,4 @@
-package com.spotify.quavergd06.view.home.stats.topG
+package com.spotify.quavergd06.view.home.stats.topGenres
 
 import android.content.Context
 import android.os.Bundle

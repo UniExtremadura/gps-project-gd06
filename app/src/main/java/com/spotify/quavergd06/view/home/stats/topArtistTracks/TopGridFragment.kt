@@ -23,9 +23,8 @@ class TopGridFragment(private val fetchable: Fetchable,  private val onClick: (S
     private var _binding: FragmentRecyclerViewBinding? = null
     private val binding get() = _binding!!
 
-    //private lateinit var adapter: Adapter
     private var items: List<StatsItem> = emptyList()
-    private var timePeriod: String = "short_term" // Default time period
+    private var timePeriod: String = "short_term"
     private lateinit var adapter : StatsItemAdapter
 
     override fun onCreateView(

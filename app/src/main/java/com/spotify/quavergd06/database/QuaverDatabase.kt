@@ -7,16 +7,18 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.spotify.quavergd06.data.model.Artist
 import com.spotify.quavergd06.data.model.Moment
+import com.spotify.quavergd06.data.model.Track
+import com.spotify.quavergd06.data.model.User
 import com.spotify.quavergd06.database.dao.ArtistDAO
 import com.spotify.quavergd06.database.dao.MomentDAO
+import com.spotify.quavergd06.database.dao.TrackDAO
 
-@Database(entities = [Moment::class, Artist::class], version = 1)
+@Database(entities = [Moment::class, Artist::class, Track::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class QuaverDatabase : RoomDatabase() {
     abstract fun momentDAO(): MomentDAO
     abstract fun artistDAO(): ArtistDAO
-
-
+    abstract fun trackDAO(): TrackDAO
     companion object {
         private var INSTANCE: QuaverDatabase? = null
 

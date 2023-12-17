@@ -14,9 +14,12 @@ import android.content.Context
 import android.os.Build
 import androidx.activity.viewModels
 import com.spotify.quavergd06.data.model.Moment
+import com.spotify.quavergd06.data.model.StatsItem
+import com.spotify.quavergd06.data.model.User
 import com.spotify.quavergd06.view.home.moments.MapFragmentDirections
 import com.spotify.quavergd06.view.home.moments.MomentDetailFragmentDirections
 import com.spotify.quavergd06.view.home.moments.MomentFragmentDirections
+import com.spotify.quavergd06.view.home.stats.StatsFragmentDirections
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -34,6 +37,9 @@ class HomeActivity : AppCompatActivity() {
         supportActionBar?.hide()
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val token = this.getSharedPreferences("user_prefs", Context.MODE_PRIVATE).getString("access_token", null)
+        viewModel.userInSession = User("33", token = token!!)
 
         viewModel.navigateFromMomentToDetail.observe(this) { moment ->
             moment?.let {
@@ -58,6 +64,19 @@ class HomeActivity : AppCompatActivity() {
         }
 
         viewModel.navigateFromMapToMoment.observe(this) { fromMapToMoment() }
+
+        viewModel.navigateFromStatsToTrackDetail.observe(this) { statsItem ->
+            statsItem?.let {
+                fromStatsToTrackDetail(statsItem)
+            }
+        }
+
+
+        viewModel.navigateFromHistoryToTrackDetail.observe(this) { statsItem ->
+            statsItem?.let {
+                fromHistoryToTrackDetail(statsItem)
+            }
+        }
 
         setUpUI()
 
@@ -118,6 +137,16 @@ class HomeActivity : AppCompatActivity() {
 
     private fun fromEditToMoment() {
         val action = MomentDetailFragmentDirections.actionMomentEditFragmentToMomentFragment()
+        navController.navigate(action)
+    }
+
+    private fun fromStatsToTrackDetail(statsItem: StatsItem) {
+        val action = StatsFragmentDirections.actionStatsFragmentToTrackInfoFragment(statsItem)
+        navController.navigate(action)
+    }
+
+    private fun fromHistoryToTrackDetail(statsItem: StatsItem) {
+        val action = StatsFragmentDirections.actionStatsFragmentToTrackInfoFragment(statsItem)
         navController.navigate(action)
     }
 

@@ -57,7 +57,7 @@ class PreviewTopFragment(private val fetchable: Fetchable, private val onPreview
         Log.d("PreviewTopFragment", "onViewCreated")
         subscribeUI(adapter)
         lifecycleScope.launch {
-            artistsRepository.tryUpdateRecentArtistsCache("short_term")
+            artistsRepository.tryUpdateRecentCache("short_term")
         }
     }
 

@@ -1,11 +1,12 @@
 package com.spotify.quavergd06.data
 
 import com.spotify.quavergd06.data.api.ArtistItem
-import com.spotify.quavergd06.data.api.ItemsHistory
 import com.spotify.quavergd06.data.api.TrackItem
+import com.spotify.quavergd06.data.api.UserProfileInfoResponse
 import com.spotify.quavergd06.data.model.Artist
 import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.data.model.Track
+import com.spotify.quavergd06.data.model.User
 import com.spotify.quavergd06.database.StringListWrapper
 
 fun ArtistItem.toArtist() = Artist(
@@ -17,11 +18,15 @@ fun ArtistItem.toArtist() = Artist(
 )
 
 fun TrackItem.toTrack() = Track(
-    id = id ?: "null",
+    trackId = id ?: "null",
     name = name,
-    artist = artists.firstOrNull()?.toArtist(),
+    artistName = artists.firstOrNull()?.toArtist()?.name,
+    artistId = artists.firstOrNull()?.id ?: "null",
     album = album?.name ?: "null",
-    imageUrls = album?.images?.map { it.url ?: "null" } as ArrayList<String>
+    imageUrls = StringListWrapper(album?.images?.map { it.url ?: "null" } as ArrayList<String>),
+    position = 0,
+    timeRange = "null",
+    type = "null"
 )
 
 fun Artist.toStatsItem() = StatsItem(
@@ -33,10 +38,12 @@ fun Artist.toStatsItem() = StatsItem(
 )
 
 fun Track.toStatsItem() = StatsItem(
-    id = id,
+    id = trackId,
     name = name,
-    imageUrls = imageUrls,
+    imageUrls = imageUrls.list,
     album = album,
-    artist = artist
+    artistId = artistId,
+    artistName = artistName
 )
+
 

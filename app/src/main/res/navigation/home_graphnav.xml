@@ -56,8 +56,8 @@
             android:id="@+id/action_statsFragment_to_artistInfoFragment"
             app:destination="@id/artistInfoFragment" />
         <action
-            android:id="@+id/action_statsFragment_to_historyListFragment"
-            app:destination="@id/historyListFragment" />
+            android:id="@+id/action_statsFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
 
     </fragment>
     <fragment
@@ -115,16 +115,20 @@
         android:id="@+id/trackInfoFragment"
         android:name="com.spotify.quavergd06.view.home.stats.topArtistTracks.TrackInfoFragment"
         android:label="TrackInfoFragment" >
+        <argument
+            android:name="statsItem"
+            app:argType="com.spotify.quavergd06.data.model.StatsItem" />
     <action
         android:id="@+id/action_trackInfoFragment_to_artistInfoFragment"
         app:destination="@id/artistInfoFragment" />
     </fragment>
     <fragment
-        android:id="@+id/historyListFragment"
+        android:id="@+id/historyFragment"
         android:name="com.spotify.quavergd06.view.home.stats.history.HistoryFragment"
-        android:label="HistoryListFragment" >
-        <action
-            android:id="@+id/action_historyListFragment_to_trackInfoFragment"
+        android:label="HistoryFragment"
+        tools:layout="@layout/fragment_recycler_view" >
+    <action
+            android:id="@+id/action_historyFragment_to_trackInfoFragment"
             app:destination="@id/trackInfoFragment" />
     </fragment>
 
