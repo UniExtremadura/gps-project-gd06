@@ -14,6 +14,7 @@ import androidx.preference.Preference
 import com.spotify.quavergd06.database.QuaverDatabase
 import com.spotify.quavergd06.databinding.FragmentSettingsBinding
 import com.spotify.quavergd06.model.LocaleManager
+import com.spotify.quavergd06.util.AppContainer
 import com.spotify.quavergd06.view.LoginActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -22,11 +23,6 @@ import kotlinx.coroutines.withContext
 class SettingsFragment : PreferenceFragmentCompat() {
 
     private var _binding: FragmentSettingsBinding? = null
-    private lateinit var db : QuaverDatabase
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        db = QuaverDatabase.getInstance(context)
-    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.preferences, rootKey)
@@ -36,6 +32,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             handleThemeChange(selectedTheme)
             true
         }
+
 
         findPreference<ListPreference>("language_preference")?.setOnPreferenceChangeListener { _, newValue ->
             // Handle language change
@@ -127,7 +124,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
             lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
                     // Código para realizar operaciones de base de datos
-                    db.clearAllTables()
+                    AppContainer(requireContext()).clearAll()
                     clearUserToken()
                     requireActivity().finish()
                     val intent = Intent(requireContext(), LoginActivity::class.java)

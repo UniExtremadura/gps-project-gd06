@@ -22,4 +22,8 @@ class AppContainer(context: Context?) {
     val tracksRepository = TracksRepository(db.trackDAO(), networkService)
     val globalTopTracksRepository = GlobalTopTracksRepository(db.trackDAO(), networkService)
     val historyRepository = HistoryRepository(db.trackDAO(), networkService)
+
+    fun clearAll() {
+        db.clearAllTables()
+    }
 }
