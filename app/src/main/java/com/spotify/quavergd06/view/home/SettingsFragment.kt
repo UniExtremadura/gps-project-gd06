@@ -63,9 +63,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun handleLocaleChange(selectedLanguage: String) {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setTitle(context?.getString(R.string.button_delete_data))
+        alertDialogBuilder.setTitle(context?.getString(R.string.button_change_language))
         alertDialogBuilder.setMessage(context?.getString(R.string.change_language_confirmation_message))
-        alertDialogBuilder.setPositiveButton(context?.getString(R.string.yes)) { dialog, which ->
+        alertDialogBuilder.setPositiveButton(context?.getString(R.string.yes)) { _, _ ->
             LocaleManager.updateLocale(requireContext(), selectedLanguage)
             saveLanguagePreference(selectedLanguage)
             // reiniciar la aplicacion
@@ -83,7 +83,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private fun handleThemeChange(selectedTheme: String) {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
-        alertDialogBuilder.setTitle(context?.getString(R.string.button_delete_data))
+        alertDialogBuilder.setTitle(context?.getString(R.string.button_change_theme))
         alertDialogBuilder.setMessage(context?.getString(R.string.change_theme_confirmation_message))
         alertDialogBuilder.setPositiveButton(context?.getString(R.string.yes)) { dialog, which ->
             ThemeManager.saveThemePreference(requireContext(), selectedTheme)

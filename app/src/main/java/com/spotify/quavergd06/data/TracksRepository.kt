@@ -7,8 +7,8 @@ import com.spotify.quavergd06.data.model.Track
 import com.spotify.quavergd06.database.dao.TrackDAO
 
 class TracksRepository (
-    private val tracksDAO: TrackDAO, private
-    val networkService: SpotifyApiService
+    private val tracksDAO: TrackDAO,
+    private val networkService: SpotifyApiService
 ){
     private var lastUpdateTimeMillis: Long = 0L
     val tracks = tracksDAO.getTopTracks()

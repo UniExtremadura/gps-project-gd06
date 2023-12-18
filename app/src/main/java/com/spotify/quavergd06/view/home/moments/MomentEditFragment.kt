@@ -23,12 +23,6 @@ import androidx.core.app.ActivityCompat
 import com.spotify.quavergd06.R
 import com.spotify.quavergd06.databinding.FragmentMomentEditBinding
 import android.widget.ArrayAdapter
-import android.widget.Toast
-import androidx.lifecycle.lifecycleScope
-import com.spotify.quavergd06.api.getNetworkService
-import com.spotify.quavergd06.api.setKey
-import com.spotify.quavergd06.data.api.Items
-import kotlinx.coroutines.launch
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -52,6 +46,8 @@ class MomentEditFragment : Fragment() {
 
     private var momentId: Long? = null
     private var imageURI: String? = null
+
+    private var suggestionsTrackNames = listOf<String?>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -103,15 +99,11 @@ class MomentEditFragment : Fragment() {
             findNavController().navigateUp()
         }
 
-        lifecycleScope.launch {
-            try {
-                setKey(obtenerSpotifyApiKey(requireContext())!!)
-                val opciones = fetchTracks()
-                val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, opciones)
-                autoCompleteTextView.setAdapter(adapter)
-            } catch (e: Exception) {
-                Toast.makeText(requireContext(), e.message, Toast.LENGTH_LONG).show()
-            }
+        viewModel.tracks.observe(viewLifecycleOwner) { suggestions ->
+            val trackNames = suggestions.map { it.name.toString() }
+            suggestionsTrackNames += trackNames
+            Log.d("ASDA", suggestionsTrackNames.toString())
+            autoCompleteTextView.setAdapter(ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, suggestionsTrackNames))
         }
 
         val moment = arguments?.getSerializable("moment") as? Moment
@@ -244,22 +236,6 @@ class MomentEditFragment : Fragment() {
                 }
             }
         }
-    }
-
-    private suspend fun fetchTracks(): List<String> {
-        var apiTracks = listOf <Items>()
-        var apiTrackNames = listOf<String>()
-        try {
-            apiTracks = getNetworkService().loadTracks().body()?.items ?: emptyList()
-        } catch (cause: Throwable) {
-            //throw APIException("Unable to fetch data from API", cause)
-        }
-        for (item in apiTracks) {
-            if (item.type.equals("track")) {
-                apiTrackNames += item.name.toString()
-            }
-        }
-        return apiTrackNames
     }
 
     private fun obtenerUbicacion(): Pair<Double, Double> {

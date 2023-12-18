@@ -39,6 +39,8 @@
     <string name="select_language_dialog_title">Selecionar Idioma</string>
     <string name="default_language">en</string>
     <string name="button_delete_data">Excluir datos</string>
+    <string name="button_change_language">Alterar idioma</string>
+    <string name="button_change_theme">Alterar tema</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="delete_confirmation_message">"Todos os seus momentos serão excluídos e você será desconectado?"</string>

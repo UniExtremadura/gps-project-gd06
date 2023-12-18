@@ -11,9 +11,9 @@ import com.spotify.quavergd06.notifications.NotificationScheduler
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Build
 import androidx.activity.viewModels
+import com.spotify.quavergd06.api.setKey
 import com.spotify.quavergd06.data.model.Moment
 import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.data.model.User
@@ -21,7 +21,6 @@ import com.spotify.quavergd06.view.home.moments.MapFragmentDirections
 import com.spotify.quavergd06.view.home.moments.MomentDetailFragmentDirections
 import com.spotify.quavergd06.view.home.moments.MomentFragmentDirections
 import com.spotify.quavergd06.view.home.stats.StatsFragmentDirections
-import com.spotify.quavergd06.view.home.stats.detailFragments.TrackInfoFragment
 import com.spotify.quavergd06.view.home.stats.detailFragments.TrackInfoFragmentDirections
 
 class HomeActivity : AppCompatActivity() {
@@ -42,7 +41,8 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val token = this.getSharedPreferences("user_prefs", Context.MODE_PRIVATE).getString("access_token", null)
-        viewModel.userInSession = User("33", token = token!!)
+        viewModel.userInSession = User(33, token = token!!)
+        setKey(token)
 
         viewModel.navigateFromMomentToDetail.observe(this) { moment ->
             moment?.let {
