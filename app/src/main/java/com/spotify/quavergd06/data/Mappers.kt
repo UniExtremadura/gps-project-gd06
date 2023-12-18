@@ -48,4 +48,10 @@ fun Track.toStatsItem() = StatsItem(
     artistName = artistName
 )
 
+fun UserProfileInfoResponse.toUser() = User(
+    userId = id!!,
+    name = displayName!!,
+    profileImages = StringListWrapper(images.map { it.url ?: "null" } as ArrayList<String>)
+)
+
 

@@ -13,6 +13,7 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.activity.viewModels
+import com.spotify.quavergd06.api.setKey
 import com.spotify.quavergd06.data.model.Moment
 import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.data.model.User
@@ -41,7 +42,8 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val token = this.getSharedPreferences("user_prefs", Context.MODE_PRIVATE).getString("access_token", null)
-        viewModel.userInSession = User("33", token = token!!)
+        viewModel.userInSession = User(33, token = token!!)
+        setKey(token)
 
         viewModel.navigateFromMomentToDetail.observe(this) { moment ->
             moment?.let {
@@ -49,7 +51,11 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.navigateToMapFromMoment.observe(this) { fromMomentToMap() }
+        viewModel.navigateToMapFromMoment.observe(this) { trigger ->
+            trigger?.let {
+                fromMomentToMap()
+            }
+        }
 
         viewModel.navigateToMomentEditFromDetail.observe(this) { moment ->
             moment?.let {
@@ -57,7 +63,11 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.navigateFromEditToMoment.observe(this) { fromEditToMoment() }
+        viewModel.navigateFromEditToMoment.observe(this) { trigger ->
+            trigger?.let {
+                fromEditToMoment()
+            }
+        }
 
         viewModel.navigateFromMapToDetail.observe(this) { moment ->
             moment?.let {
@@ -65,7 +75,11 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.navigateFromMapToMoment.observe(this) { fromMapToMoment() }
+        viewModel.navigateFromMapToMoment.observe(this) { trigger ->
+            trigger?.let {
+                fromMapToMoment()
+            }
+        }
 
         viewModel.navigateFromStatsToArtistDetail.observe(this) { statsItem ->
             statsItem?.let {
@@ -168,11 +182,13 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun fromMapToMoment() {
+        navController.popBackStack(navController.graph.startDestinationId, true)
         val action = MapFragmentDirections.actionMapFragmentToMomentFragment()
         navController.navigate(action)
     }
 
     private fun fromEditToMoment() {
+        navController.popBackStack(navController.graph.startDestinationId, true)
         val action = MomentDetailFragmentDirections.actionMomentEditFragmentToMomentFragment()
         navController.navigate(action)
     }

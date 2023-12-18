@@ -39,6 +39,8 @@
     <string name="select_language_dialog_title">Velg språk</string>
     <string name="default_language">en</string>
     <string name="button_delete_data">Slett data</string>
+    <string name="button_change_language">Endre språk</string>
+    <string name="button_change_theme">Endre tema</string>
     <string name="yes">Ja</string>
     <string name="no">Nei</string>
     <string name="delete_confirmation_message">"Er du sikker på at du vil slette "</string>
