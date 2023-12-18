@@ -53,6 +53,7 @@ class ProfileFragment : Fragment() {
         homeViewModel.user.observe(viewLifecycleOwner) { user ->
             viewModel.auxUser = user
         }
+
         viewModel.user.observe(viewLifecycleOwner) {
             setupUI()
         }
@@ -62,12 +63,13 @@ class ProfileFragment : Fragment() {
     private fun setupUI() {
         with(binding) {
             try {
-                Picasso.get().load(viewModel.user.value?.profileImages?.list?.get(0)).placeholder(R.drawable.user).into(AvatarImageView)
-            } catch (e: Exception){
-                    Picasso.get().load(R.drawable.user).into(AvatarImageView)
-                }
-            usernameTextView.text = viewModel.user.value?.name
+                Picasso.get().load(viewModel.user.value?.profileImages?.list?.get(0))
+                    .placeholder(R.drawable.user).into(AvatarImageView)
+            } catch (e: Exception) {
+                Picasso.get().load(R.drawable.user).into(AvatarImageView)
             }
+            usernameTextView.text = viewModel.user.value?.name
+        }
     }
 
 

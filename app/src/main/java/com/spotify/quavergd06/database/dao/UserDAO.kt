@@ -13,7 +13,7 @@ interface UserDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertUser(user: User)
 
-    @Query("SELECT * FROM user WHERE userId = 1")
+    @Query("SELECT * FROM user LIMIT 1")
     fun getUser() : LiveData<User>
 
     @Query("SELECT count(*) FROM user")
