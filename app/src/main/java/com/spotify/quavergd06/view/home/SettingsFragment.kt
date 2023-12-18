@@ -105,6 +105,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val intent = requireActivity().baseContext.packageManager.getLaunchIntentForPackage(requireActivity().baseContext.packageName)
         intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
+        requireActivity().finishAffinity()
     }
 
     private fun saveLanguagePreference(languageCode: String) {

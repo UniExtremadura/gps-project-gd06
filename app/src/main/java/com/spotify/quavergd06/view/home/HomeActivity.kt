@@ -50,7 +50,11 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.navigateToMapFromMoment.observe(this) { fromMomentToMap() }
+        viewModel.navigateToMapFromMoment.observe(this) { trigger ->
+            trigger?.let {
+                fromMomentToMap()
+            }
+        }
 
         viewModel.navigateToMomentEditFromDetail.observe(this) { moment ->
             moment?.let {
@@ -58,7 +62,11 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.navigateFromEditToMoment.observe(this) { fromEditToMoment() }
+        viewModel.navigateFromEditToMoment.observe(this) { trigger ->
+            trigger?.let {
+                fromEditToMoment()
+            }
+        }
 
         viewModel.navigateFromMapToDetail.observe(this) { moment ->
             moment?.let {
@@ -66,7 +74,11 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.navigateFromMapToMoment.observe(this) { fromMapToMoment() }
+        viewModel.navigateFromMapToMoment.observe(this) { trigger ->
+            trigger?.let {
+                fromMapToMoment()
+            }
+        }
 
         viewModel.navigateFromStatsToArtistDetail.observe(this) { statsItem ->
             statsItem?.let {
@@ -145,11 +157,13 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun fromMapToMoment() {
+        navController.popBackStack(navController.graph.startDestinationId, true)
         val action = MapFragmentDirections.actionMapFragmentToMomentFragment()
         navController.navigate(action)
     }
 
     private fun fromEditToMoment() {
+        navController.popBackStack(navController.graph.startDestinationId, true)
         val action = MomentDetailFragmentDirections.actionMomentEditFragmentToMomentFragment()
         navController.navigate(action)
     }
