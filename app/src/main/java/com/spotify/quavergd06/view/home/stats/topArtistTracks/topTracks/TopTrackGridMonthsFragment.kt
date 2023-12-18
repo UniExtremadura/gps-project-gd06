@@ -1,26 +1,34 @@
-package com.spotify.quavergd06.view.home.stats.history
+package com.spotify.quavergd06.view.home.stats.topArtistTracks.topTracks
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.spotify.quavergd06.data.model.Track
 import com.spotify.quavergd06.data.toStatsItem
 import com.spotify.quavergd06.databinding.FragmentRecyclerViewBinding
 import com.spotify.quavergd06.view.home.HomeViewModel
+import com.spotify.quavergd06.view.home.stats.StatsItemAdapter
+import com.spotify.quavergd06.view.home.stats.preview.TopTrackGridMonthViewModel
+import com.spotify.quavergd06.view.home.stats.preview.TopTrackGridViewModel
 
-class HistoryFragment() : Fragment() {
+class TopTrackGridMonthsFragment : Fragment() {
+    private val TAG = "TopTrackGridMonthsFragment"
+
     private var _binding: FragmentRecyclerViewBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var adapter : ListTracksAdapter
-    private val viewModel: HistoryViewModel by viewModels { HistoryViewModel.Factory }
+    private lateinit var adapter : StatsItemAdapter
+
+    private val viewModel: TopTrackGridMonthViewModel by viewModels { TopTrackGridMonthViewModel.Factory }
     private val homeViewModel: HomeViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,27 +49,24 @@ class HistoryFragment() : Fragment() {
         subscribeUi(adapter)
     }
 
-    private fun subscribeUi(adapter: ListTracksAdapter) {
+    private fun subscribeUi(adapter: StatsItemAdapter) {
         viewModel.tracks.observe(viewLifecycleOwner) { tracks ->
-                adapter.updateData(tracks.map(Track::toStatsItem))
+            adapter.updateData(tracks.map(Track::toStatsItem))
         }
     }
 
     private fun setUpRecyclerView() {
-        adapter = ListTracksAdapter(
+        adapter = StatsItemAdapter(
             statsItems = emptyList(),
             context = this.context,
-            onClick = { track -> homeViewModel.navigateFromHistoryToTrackDetail(track) }
+            onClick = {statsItem -> homeViewModel.navigateFromTopGridToTrackDetail(statsItem) }
         )
         with(binding) {
-            topItemRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            topItemRecyclerView.layoutManager = GridLayoutManager(context, 2)
             topItemRecyclerView.adapter = adapter
-
         }
-
-        Log.d("HistoryFragment", "setUpRecyclerView")
+        Log.d(TAG, "setUpRecyclerView")
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()

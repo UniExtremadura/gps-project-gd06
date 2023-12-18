@@ -14,7 +14,9 @@ fun ArtistItem.toArtist() = Artist(
     name = name,
     popularity = popularity,
     genres = StringListWrapper(genres),
-    imageUrls = StringListWrapper(images.map { it.url ?: "null" } as ArrayList<String>)
+    imageUrls = StringListWrapper(images.map { it.url ?: "null" } as ArrayList<String>),
+    position = 0,
+    timeRange = "null",
 )
 
 fun TrackItem.toTrack() = Track(

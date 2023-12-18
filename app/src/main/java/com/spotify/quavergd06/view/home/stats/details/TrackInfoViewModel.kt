@@ -1,4 +1,4 @@
-package com.spotify.quavergd06.view.home.stats.detailFragments
+package com.spotify.quavergd06.view.home.stats.details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

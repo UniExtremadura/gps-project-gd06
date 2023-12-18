@@ -50,20 +50,17 @@ class PersonalStatsFragment() : Fragment() {
     private fun setButtons() {
         val buttonTopArtistsMore = binding.moreTopArtists
         buttonTopArtistsMore.setOnClickListener {
-//            homeViewModel.navigateFromStatsToTopItemViewPagerFragment()
+            homeViewModel.navigateFromStatsToTopItemGrid("artist")
         }
 
         val buttonTopTracksMore = binding.moreTopTracks
-        buttonTopTracksMore.setOnClickListener { //findNavController().navigate(R.id.action_statsFragment_to_topItemViewPagerFragment, TopItemViewPagerFragment.newInstance("short_term", TrackFetchable()).arguments)
-//            navigate(
-//                R.id.action_statsFragment_to_topItemViewPagerFragment,
-//                TopItemViewPagerFragment.newInstance("short_term", TrackFetchable())
-//            )
+        buttonTopTracksMore.setOnClickListener {
+            homeViewModel.navigateFromStatsToTopItemGrid("track")
         }
 
         val buttonTopHistory = binding.moreHistory
         buttonTopHistory.setOnClickListener {
-//            navigateNoArgs(R.id.action_statsFragment_to_historyFragment)
+            homeViewModel.navigateFromStatsToHistory(true)
         }
     }
 

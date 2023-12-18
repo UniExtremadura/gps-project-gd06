@@ -84,12 +84,16 @@
 
     <fragment
         android:id="@+id/topItemFragment"
-        android:name="com.spotify.quavergd06.view.home.stats.topArtistTracks.TopGridFragment"
+        android:name="com.spotify.quavergd06.view.home.stats.topArtistTracks.topArtist.TopArtistGridFragment"
         android:label="TopItemFragment" />
     <fragment
         android:id="@+id/topItemViewPagerFragment"
         android:name="com.spotify.quavergd06.view.home.stats.topArtistTracks.TopItemViewPagerFragment"
         android:label="TopItemViewPagerFragment" >
+        <argument
+            android:name="itemClass"
+            app:argType="string"
+            android:defaultValue="artist" />
         <action
             android:id="@+id/action_topItemViewPagerFragment_to_trackInfoFragment"
             app:destination="@id/trackInfoFragment" />
@@ -108,7 +112,7 @@
     </fragment>
     <fragment
         android:id="@+id/artistInfoFragment"
-        android:name="com.spotify.quavergd06.view.home.stats.detailFragments.ArtistInfoFragment"
+        android:name="com.spotify.quavergd06.view.home.stats.details.ArtistInfoFragment"
         android:label="fragment_track_info"
         tools:layout="@layout/fragment_track_info" >
         <argument
@@ -117,7 +121,7 @@
     </fragment>
     <fragment
         android:id="@+id/trackInfoFragment"
-        android:name="com.spotify.quavergd06.view.home.stats.detailFragments.TrackInfoFragment"
+        android:name="com.spotify.quavergd06.view.home.stats.details.TrackInfoFragment"
         android:label="TrackInfoFragment" >
         <argument
             android:name="statsItem"

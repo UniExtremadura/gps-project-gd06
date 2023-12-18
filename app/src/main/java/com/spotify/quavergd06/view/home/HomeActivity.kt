@@ -11,7 +11,6 @@ import com.spotify.quavergd06.notifications.NotificationScheduler
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Build
 import androidx.activity.viewModels
 import com.spotify.quavergd06.data.model.Moment
@@ -21,8 +20,8 @@ import com.spotify.quavergd06.view.home.moments.MapFragmentDirections
 import com.spotify.quavergd06.view.home.moments.MomentDetailFragmentDirections
 import com.spotify.quavergd06.view.home.moments.MomentFragmentDirections
 import com.spotify.quavergd06.view.home.stats.StatsFragmentDirections
-import com.spotify.quavergd06.view.home.stats.detailFragments.TrackInfoFragment
-import com.spotify.quavergd06.view.home.stats.detailFragments.TrackInfoFragmentDirections
+import com.spotify.quavergd06.view.home.stats.details.TrackInfoFragmentDirections
+import com.spotify.quavergd06.view.home.stats.topArtistTracks.TopItemViewPagerFragmentDirections
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -89,6 +88,30 @@ class HomeActivity : AppCompatActivity() {
         viewModel.navigateFromTrackDetailToArtistDetail.observe(this) { statsItem ->
             statsItem?.let {
                 fromTrackDetailToArtistDetail(statsItem)
+            }
+        }
+
+        viewModel.navigateFromTopGridToArtistDetail.observe(this) { statsItem ->
+            statsItem?.let {
+                fromTopGridToArtistDetail(statsItem)
+            }
+        }
+
+        viewModel.navigateFromTopGridToTrackDetail.observe(this) { statsItem ->
+            statsItem?.let {
+                fromTopGridToTrackDetail(statsItem)
+            }
+        }
+
+        viewModel.navigateFromStatsToTopItemGrid.observe(this) { itemClass ->
+            itemClass?.let {
+                fromStatsToTopGrid(itemClass)
+            }
+        }
+
+        viewModel.navigateFromStatsToHistory.observe(this) { trigger ->
+            trigger?.let {
+                fromStatsToHistory()
             }
         }
 
@@ -173,4 +196,25 @@ class HomeActivity : AppCompatActivity() {
         val action = TrackInfoFragmentDirections.actionTrackInfoFragmentToArtistInfoFragment(statsItem)
         navController.navigate(action)
     }
+
+    private fun fromTopGridToArtistDetail(statsItem: StatsItem) {
+        val action = TopItemViewPagerFragmentDirections.actionTopItemViewPagerFragmentToArtistInfoFragment(statsItem)
+        navController.navigate(action)
+    }
+
+    private fun fromTopGridToTrackDetail(statsItem: StatsItem) {
+        val action = TopItemViewPagerFragmentDirections.actionTopItemViewPagerFragmentToTrackInfoFragment(statsItem)
+        navController.navigate(action)
+    }
+
+    private fun fromStatsToTopGrid(itemClass : String) {
+        val action = StatsFragmentDirections.actionStatsFragmentToTopItemViewPagerFragment(itemClass)
+        navController.navigate(action)
+    }
+
+    private fun fromStatsToHistory() {
+        val action = StatsFragmentDirections.actionStatsFragmentToHistoryFragment()
+        navController.navigate(action)
+    }
+
 }

@@ -12,9 +12,11 @@ class TracksRepository (
 ){
     private var lastUpdateTimeMillis: Long = 0L
     val tracks = tracksDAO.getTopTracks()
+    val tracksAll = tracksDAO.getPersonalTracksByTimeRange("long_term")
+    val tracksMonths = tracksDAO.getPersonalTracksByTimeRange("medium_term")
 
     suspend fun tryUpdateCache(timeRange: String) {
-        if (shouldUpdateCache())
+        if (shouldUpdateCache(timeRange))
             fetchTracks(timeRange)
     }
 
@@ -44,11 +46,10 @@ class TracksRepository (
         return track
     }
 
-    private suspend fun shouldUpdateCache(): Boolean {
+    private suspend fun shouldUpdateCache(timeRange: String): Boolean {
         val lastFetchTimeMillis = lastUpdateTimeMillis
         val timeFromLastFetch = System.currentTimeMillis() - lastFetchTimeMillis
-        return timeFromLastFetch > MIN_TIME_FROM_LAST_FETCH_MILLIS || tracksDAO.getNumberOfPersonalTracks() == 0L
-        return true
+        return timeFromLastFetch > MIN_TIME_FROM_LAST_FETCH_MILLIS || tracksDAO.getNumberOfPersonalTracks(timeRange) == 0L
     }
 
     private fun setType(tracks: List<Track>, type: String) {

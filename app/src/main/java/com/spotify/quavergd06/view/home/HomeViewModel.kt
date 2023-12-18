@@ -88,4 +88,31 @@ class HomeViewModel : ViewModel() {
         _navigateFromTrackDetailToArtistDetail.value = statsItem
     }
 
+    private val _navigateFromTopGridToArtistDetail = MutableLiveData<StatsItem>(null)
+    val navigateFromTopGridToArtistDetail: LiveData<StatsItem>
+        get() = _navigateFromTopGridToArtistDetail
+    fun navigateFromTopGridToArtistDetail(statsItem: StatsItem) {
+        _navigateFromTopGridToArtistDetail.value = statsItem
+    }
+
+    private val _navigateFromTopGridToTrackDetail = MutableLiveData<StatsItem>(null)
+    val navigateFromTopGridToTrackDetail: LiveData<StatsItem>
+        get() = _navigateFromTopGridToTrackDetail
+    fun navigateFromTopGridToTrackDetail(statsItem: StatsItem) {
+        _navigateFromTopGridToTrackDetail.value = statsItem
+    }
+
+    private val _navigateFromStatsToTopItemGrid = MutableLiveData<String>(null)
+    val navigateFromStatsToTopItemGrid: LiveData<String>
+        get() = _navigateFromStatsToTopItemGrid
+    fun navigateFromStatsToTopItemGrid(item:  String) {
+        _navigateFromStatsToTopItemGrid.value = item
+    }
+
+    private val _navigateFromStatsToHistory = MutableLiveData<Boolean>(null)
+    val navigateFromStatsToHistory: LiveData<Boolean>
+        get() = _navigateFromStatsToHistory
+    fun navigateFromStatsToHistory(trigger: Boolean) {
+        _navigateFromStatsToHistory.value = trigger
+    }
 }

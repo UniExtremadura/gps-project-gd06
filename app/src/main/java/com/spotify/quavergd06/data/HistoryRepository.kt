@@ -39,7 +39,6 @@ class HistoryRepository(
         val lastFetchTimeMillis = lastUpdateTimeMillis
         val timeFromLastFetch = System.currentTimeMillis() - lastFetchTimeMillis
         return timeFromLastFetch > MIN_TIME_FROM_LAST_FETCH_MILLIS || tracksDAO.getNumberOfHistoryTracks() == 0L
-        return true
     }
 
     private fun setType(tracks: List<Track>, type: String) {

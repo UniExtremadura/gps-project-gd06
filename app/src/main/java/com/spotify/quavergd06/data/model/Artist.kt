@@ -7,13 +7,15 @@ import androidx.room.TypeConverters
 import com.spotify.quavergd06.database.Converters
 import com.spotify.quavergd06.database.StringListWrapper
 import java.io.Serializable
+import java.text.FieldPosition
 
-@Entity
+@Entity(primaryKeys = ["artistId", "timeRange"])
 data class Artist(
-    @PrimaryKey
     val artistId: String,
     val name: String?,
     val popularity: Int?,
+    var timeRange: String,
+    var position: Int?,
 
     @TypeConverters(Converters::class)
     val genres: StringListWrapper = StringListWrapper(arrayListOf()),
@@ -21,8 +23,5 @@ data class Artist(
     @TypeConverters(Converters::class)
     val imageUrls: StringListWrapper = StringListWrapper(arrayListOf())
 
-//    val genres: ArrayList<String> = arrayListOf(),
-//
-//    val imageUrls: ArrayList<String> = arrayListOf(),
 
 ) : Serializable

@@ -1,4 +1,4 @@
-package com.spotify.quavergd06.view.home.stats.detailFragments
+package com.spotify.quavergd06.view.home.stats.details
 
 import android.os.Bundle
 import android.util.Log
@@ -81,11 +81,4 @@ class ArtistInfoFragment : Fragment() {
         _binding = null
     }
 
-    companion object {
-        fun newInstance(statsItem: StatsItem) = ArtistInfoFragment().apply {
-            arguments = Bundle().apply {
-                putSerializable("statsItem", statsItem)
-            }
-        }
-    }
 }

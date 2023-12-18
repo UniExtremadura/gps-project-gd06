@@ -1,6 +1,5 @@
-package com.spotify.quavergd06.view.home.stats.detailFragments
+package com.spotify.quavergd06.view.home.stats.details
 
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -10,20 +9,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.spotify.quavergd06.R
-import com.spotify.quavergd06.api.getNetworkService
-import com.spotify.quavergd06.data.ArtistsRepository
-import com.spotify.quavergd06.data.model.Artist
 import com.spotify.quavergd06.data.model.StatsItem
-import com.spotify.quavergd06.data.toStatsItem
-import com.spotify.quavergd06.database.QuaverDatabase
 import com.spotify.quavergd06.databinding.FragmentTrackInfoBinding
 import com.spotify.quavergd06.view.home.HomeViewModel
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.launch
 
 
 class TrackInfoFragment : Fragment() {
@@ -98,14 +89,6 @@ class TrackInfoFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        fun newInstance(statsItem: StatsItem) = TrackInfoFragment().apply {
-            arguments = Bundle().apply {
-                putSerializable("statsItem", statsItem)
-            }
-        }
     }
 
 }

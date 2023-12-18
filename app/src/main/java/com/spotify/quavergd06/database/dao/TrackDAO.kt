@@ -13,7 +13,7 @@ interface TrackDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertAllTracks(tracks: List<Track>)
 
-    @Query("SELECT * FROM track WHERE type='personal' ORDER BY position ASC")
+    @Query("SELECT * FROM track WHERE type='personal' AND timeRange LIKE 'short_term' ORDER BY position ASC")
     fun getTopTracks(): LiveData<List<Track>>
 
     @Query("SELECT * FROM track WHERE type='global' ORDER BY position ASC")
@@ -22,8 +22,11 @@ interface TrackDAO {
     @Query("SELECT * FROM track WHERE type='recent' ORDER BY position ASC")
     fun getHistory(): LiveData<List<Track>>
 
-    @Query("SELECT count(*) FROM track WHERE type='personal'")
-    suspend fun getNumberOfPersonalTracks(): Long
+    @Query("SELECT count(*) FROM track WHERE type='personal' AND timeRange LIKE :timeRange")
+    suspend fun getNumberOfPersonalTracks(timeRange: String): Long
+
+    @Query("SELECT * FROM track WHERE type='personal' AND timeRange LIKE :timeRange")
+    fun getPersonalTracksByTimeRange(timeRange: String): LiveData<List<Track>>
 
     @Query("SELECT count(*) FROM track WHERE type='global'")
     suspend fun getNumberOfGlobalTracks(): Long

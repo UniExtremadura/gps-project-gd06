@@ -30,7 +30,7 @@ class StatsFragment : Fragment() {
     }
 
     fun setUpViewPager() {
-        val adapter = PersonalTopGlobalViewPager(childFragmentManager)
+        val adapter = PersonalTopGlobalPagerAdapter(childFragmentManager)
         binding.topItemViewPager.adapter = adapter
         binding.personalGlobalTabLayout.setupWithViewPager(binding.topItemViewPager)
     }

@@ -1,4 +1,4 @@
-package com.spotify.quavergd06.view.home.stats.detailFragments
+package com.spotify.quavergd06.view.home.stats.details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.spotify.quavergd06.QuaverApplication
 import com.spotify.quavergd06.api.APIError
+import com.spotify.quavergd06.api.setKey
 import com.spotify.quavergd06.data.ArtistsRepository
 import com.spotify.quavergd06.data.model.StatsItem
 import com.spotify.quavergd06.data.model.User
@@ -30,10 +31,10 @@ class ArtistInfoViewModel(
     var artist: StatsItem? = null
         set(value) {
             field = value
-            getTrack()
+            getArtist()
         }
 
-    private fun getTrack() {
+    private fun getArtist() {
         if (artist != null)
             viewModelScope.launch {
                 try {

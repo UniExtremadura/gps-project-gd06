@@ -23,6 +23,12 @@ interface ArtistDAO {
     @Query("SELECT count(*) FROM artist")
     suspend fun getNumberOfArtists(): Long
 
+    @Query("SELECT count(*) FROM artist WHERE timeRange LIKE :timeRange")
+    suspend fun getNumberOfPersonalArtist(timeRange: String): Long
+
+    @Query("SELECT * FROM artist WHERE timeRange LIKE :timeRange")
+    fun getPersonalArtistByTimeRange(timeRange: String): LiveData<List<Artist>>
+
     @Query("DELETE FROM artist WHERE artistId = :id")
     suspend fun deleteArtist(id: String)
 
