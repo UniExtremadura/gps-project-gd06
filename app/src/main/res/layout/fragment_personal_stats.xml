@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:background="#FFFFFF"
         android:gravity="center_vertical"
         android:padding="8dp"
         android:text="@string/top_genres_previsualization_title"
@@ -32,7 +31,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:background="#FFFFFF"
         android:gravity="center_vertical"
         android:padding="8dp"
         android:text="@string/top_artists_previsualization_title"
@@ -70,7 +68,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:background="#FFFFFF"
         android:gravity="center_vertical"
         android:padding="8dp"
         android:text="@string/top_tracks_previsualization_title"
@@ -108,7 +105,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
-        android:background="#FFFFFF"
         android:gravity="center_vertical"
         android:padding="8dp"
         android:text="@string/history_previsualization_title"
@@ -142,5 +138,4 @@
         app:layout_constraintTop_toBottomOf="@+id/titleHistory" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
 

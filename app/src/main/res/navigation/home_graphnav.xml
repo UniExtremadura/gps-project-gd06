@@ -5,18 +5,37 @@
     android:id="@+id/home_graphnav"
     app:startDestination="@id/momentFragment">
 
+    <action
+        android:id="@+id/action_momentDetailFragment_to_momentEditFragment"
+        app:destination="@id/momentEditFragment" />
+
+    <action
+        android:id="@+id/action_momentEditFragment_to_momentFragment"
+        app:destination="@id/momentFragment" />
+
+    <action
+        android:id="@+id/action_momentFragment_to_mapFragment"
+        app:destination="@id/mapFragment" />
+
+    <action
+        android:id="@+id/action_mapFragment_to_momentFragment"
+        app:destination="@id/momentFragment" />
+    <action
+        android:id="@+id/action_mapFragment_to_momentDetailFragment"
+        app:destination="@id/momentDetailFragment" />
+
+    <action
+        android:id="@+id/action_momentFragment_to_momentDetailFragment"
+        app:destination="@id/momentDetailFragment" />
+
     <fragment
         android:id="@+id/momentFragment"
-        android:name="com.spotify.quavergd06.view.home.MomentFragment"
+        android:name="com.spotify.quavergd06.view.home.moments.MomentFragment"
         android:label="fragment_moment"
         tools:layout="@layout/fragment_moment" >
-        <action
-            android:id="@+id/action_momentFragment_to_mapFragment"
-            app:destination="@id/mapFragment" />
-        <action
-            android:id="@+id/action_momentFragment_to_momentDetailFragment"
-            app:destination="@id/momentDetailFragment" />
+
     </fragment>
+
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.spotify.quavergd06.view.home.ProfileFragment"
@@ -24,7 +43,7 @@
         tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/statsFragment"
-        android:name="com.spotify.quavergd06.view.home.StatsFragment"
+        android:name="com.spotify.quavergd06.view.home.stats.StatsFragment"
         android:label="fragment_stats"
         tools:layout="@layout/fragment_stats" >
         <action
@@ -37,8 +56,8 @@
             android:id="@+id/action_statsFragment_to_artistInfoFragment"
             app:destination="@id/artistInfoFragment" />
         <action
-            android:id="@+id/action_statsFragment_to_historyListFragment"
-            app:destination="@id/historyListFragment" />
+            android:id="@+id/action_statsFragment_to_historyFragment"
+            app:destination="@id/historyFragment" />
 
     </fragment>
     <fragment
@@ -48,32 +67,33 @@
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/mapFragment"
-        android:name="com.spotify.quavergd06.view.home.MapFragment"
+        android:name="com.spotify.quavergd06.view.home.moments.MapFragment"
         android:label="MapFragment"
         tools:layout="@layout/fragment_map">
-        <action
-            android:id="@+id/action_mapFragment_to_momentFragment"
-            app:destination="@id/momentFragment" />
-        <action
-            android:id="@+id/action_mapFragment_to_momentDetailFragment"
-            app:destination="@id/momentDetailFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/momentDetailFragment"
-        android:name="com.spotify.quavergd06.view.home.MomentDetailFragment"
-        android:label="MomentDetailFragment" >
-        <action
-            android:id="@+id/action_momentDetailFragment_to_momentEditFragment"
-            app:destination="@id/momentEditFragment" />
+        android:name="com.spotify.quavergd06.view.home.moments.MomentDetailFragment"
+        android:label="MomentDetailFragment"
+        tools:layout="@layout/fragment_moment_detail" >
+        <argument
+            android:name="moment"
+            app:argType="com.spotify.quavergd06.data.model.Moment" />
     </fragment>
+
     <fragment
         android:id="@+id/topItemFragment"
-        android:name="com.spotify.quavergd06.view.home.TopGridFragment"
+        android:name="com.spotify.quavergd06.view.home.stats.topArtistTracks.topArtist.TopArtistGridFragment"
         android:label="TopItemFragment" />
     <fragment
         android:id="@+id/topItemViewPagerFragment"
-        android:name="com.spotify.quavergd06.view.home.TopItemViewPagerFragment"
+        android:name="com.spotify.quavergd06.view.home.stats.topArtistTracks.TopItemViewPagerFragment"
         android:label="TopItemViewPagerFragment" >
+        <argument
+            android:name="itemClass"
+            app:argType="string"
+            android:defaultValue="artist" />
         <action
             android:id="@+id/action_topItemViewPagerFragment_to_trackInfoFragment"
             app:destination="@id/trackInfoFragment" />
@@ -83,31 +103,40 @@
     </fragment>
     <fragment
         android:id="@+id/momentEditFragment"
-        android:name="com.spotify.quavergd06.view.home.MomentEditFragment"
-        android:label="MomentEditFragment" >
-        <action
-            android:id="@+id/action_momentEditFragment_to_momentFragment"
-            app:destination="@id/momentFragment" />
+        android:name="com.spotify.quavergd06.view.home.moments.MomentEditFragment"
+        android:label="MomentEditFragment"
+        tools:layout="@layout/fragment_moment_edit">
+        <argument
+            android:name="moment"
+            app:argType="com.spotify.quavergd06.data.model.Moment" />
     </fragment>
     <fragment
         android:id="@+id/artistInfoFragment"
-        android:name="com.spotify.quavergd06.view.home.ArtistInfoFragment"
+        android:name="com.spotify.quavergd06.view.home.stats.details.ArtistInfoFragment"
         android:label="fragment_track_info"
-        tools:layout="@layout/fragment_track_info" />
+        tools:layout="@layout/fragment_track_info" >
+        <argument
+            android:name="statsItem"
+            app:argType="com.spotify.quavergd06.data.model.StatsItem" />
+    </fragment>
     <fragment
         android:id="@+id/trackInfoFragment"
-        android:name="com.spotify.quavergd06.view.home.TrackInfoFragment"
+        android:name="com.spotify.quavergd06.view.home.stats.details.TrackInfoFragment"
         android:label="TrackInfoFragment" >
+        <argument
+            android:name="statsItem"
+            app:argType="com.spotify.quavergd06.data.model.StatsItem" />
     <action
         android:id="@+id/action_trackInfoFragment_to_artistInfoFragment"
         app:destination="@id/artistInfoFragment" />
     </fragment>
     <fragment
-        android:id="@+id/historyListFragment"
-        android:name="com.spotify.quavergd06.view.home.HistoryFragment"
-        android:label="HistoryListFragment" >
-        <action
-            android:id="@+id/action_historyListFragment_to_trackInfoFragment"
+        android:id="@+id/historyFragment"
+        android:name="com.spotify.quavergd06.view.home.stats.history.HistoryFragment"
+        android:label="HistoryFragment"
+        tools:layout="@layout/fragment_recycler_view" >
+    <action
+            android:id="@+id/action_historyFragment_to_trackInfoFragment"
             app:destination="@id/trackInfoFragment" />
     </fragment>
 

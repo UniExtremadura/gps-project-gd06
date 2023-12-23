@@ -6,6 +6,7 @@ import com.spotify.quavergd06.data.api.Tracks
 import com.spotify.quavergd06.data.api.TopArtistsResponse
 import com.spotify.quavergd06.data.api.TopGlobalApiResponse
 import com.spotify.quavergd06.data.api.TopTracksResponse
+import com.spotify.quavergd06.data.api.TrackItem
 import com.spotify.quavergd06.data.api.UserProfileInfoResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -47,7 +48,7 @@ val spotifyService: SpotifyApiService by lazy {
 }
 fun getNetworkService() = spotifyService
 
-class APIException(message: String, cause: Throwable?) : Throwable(message, cause)
+class APIError(message: String, cause: Throwable?) : Throwable(message, cause)
 
 interface SpotifyApiService {
     // Endpoint para buscar artistas en Spotify
@@ -70,6 +71,13 @@ interface SpotifyApiService {
     suspend fun loadArtist(
         @Path("id") id: String
     ): Response<ArtistItem>
+
+    @Headers("Content-Type: application/json")
+    @GET("tracks/{id}")
+    suspend fun loadTrack(
+        @Path("id") id: String
+    ): Response<TrackItem>
+
 
     @Headers("Content-Type: application/json")
     @GET("me/player/recently-played")

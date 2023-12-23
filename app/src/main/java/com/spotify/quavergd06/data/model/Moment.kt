@@ -1,9 +1,7 @@
 package com.spotify.quavergd06.data.model
 
-import android.graphics.Bitmap
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.TypeConverter
 import java.io.Serializable
 import java.util.Date
 

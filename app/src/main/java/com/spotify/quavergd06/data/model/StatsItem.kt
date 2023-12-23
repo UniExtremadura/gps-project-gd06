@@ -14,6 +14,7 @@ data class StatsItem (
 
     // Track
     val album        : String?            = null,
-    val artist       : Artist?            = null,
+    val artistId     : String?            = null,
+    val artistName   : String?            = null,
 
-    ) : Serializable
+) : Serializable

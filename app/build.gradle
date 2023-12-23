@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.devtools.ksp'
+    id 'androidx.navigation.safeargs.kotlin'
 }
 
 android {
@@ -14,6 +15,7 @@ android {
         targetSdk 33
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         manifestPlaceholders = [redirectSchemeName: "quavergd06", redirectHostName: "auth"]
 
@@ -38,6 +40,15 @@ android {
         enable = true
     }
 
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
+
+    packagingOptions {
+        exclude 'META-INF/versions/**'
+        exclude 'META-INF/**'
+    }
+
 }
 
 ext {
@@ -55,9 +66,24 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.9.3'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 
+
     testImplementation 'junit:junit:4.13.2'
+    testImplementation "org.mockito:mockito-core:3.11.2"
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation("androidx.test:runner:1.5.1")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation 'org.mockito:mockito-android:3.11.2'
+    testImplementation 'androidx.test.ext:junit-ktx:1.1.2'
+    testImplementation "androidx.test:core:1.4.0"
+    testImplementation "io.mockk:mockk:1.12.2"
+    testImplementation "com.google.truth:truth:1.1"
+    testImplementation "com.squareup.okhttp3:mockwebserver:4.9.3"
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.6.0-alpha02'
+
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.0'
+
+    debugImplementation 'androidx.tracing:tracing:1.1.0'
 
     implementation 'androidx.browser:browser:1.0.0'
     implementation 'com.spotify.android:auth:2.0.1'
@@ -72,8 +98,6 @@ dependencies {
     // Testing Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
 
-    // Jetpack Compose Integration
-    implementation "androidx.navigation:navigation-compose:$nav_version"
 
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
 
@@ -105,4 +129,7 @@ dependencies {
 
     implementation "androidx.preference:preference-ktx:1.1.1"
 
+    implementation 'org.seleniumhq.selenium:selenium-java:3.141.59'
+    implementation 'com.google.guava:listenablefuture:9999.0-empty-to-avoid-conflict-with-guava'
+    implementation 'io.github.bonigarcia:webdrivermanager:5.0.3'
 }
