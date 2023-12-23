@@ -23,8 +23,8 @@ class MomentDetailViewModel(private val repository: MomentsRepository)
         _bottomNavigationViewVisibility.value = visible
     }
 
-    private val _momentDetail = MutableLiveData<Moment>(null)
-    val momentDetail: LiveData<Moment>
+    private val _momentDetail = MutableLiveData<Moment?>(null)
+    val momentDetail: MutableLiveData<Moment?>
         get() = _momentDetail
     var moment : Moment? = null
         set(value) {

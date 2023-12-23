@@ -1,4 +1,5 @@
-package com.spotify.quavergd06
+package com.spotify.quavergd06.view
+
 
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,6 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.spotify.quavergd06.R
-import com.spotify.quavergd06.view.LoginActivity
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
@@ -21,18 +21,18 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class HU02UITest {
+class HU19UITest {
 
     @Rule
     @JvmField
     var mActivityScenarioRule = ActivityScenarioRule(LoginActivity::class.java)
 
     @Test
-    fun hU02UITest() {
-        Thread.sleep(5000)
+    fun hU19UITest() {
+
         val frameLayout = onView(
             allOf(
-                withId(R.id.profileFragment), withContentDescription("Profile"),
+                withId(R.id.statsFragment), withContentDescription("Stats"),
                 withParent(withParent(withId(R.id.bottom_navigation))),
                 isDisplayed()
             )
@@ -47,8 +47,8 @@ class HU02UITest {
                         withId(com.google.android.material.R.id.navigation_bar_item_icon_container),
                         withParent(
                             allOf(
-                                withId(R.id.profileFragment),
-                                withContentDescription("Profile")
+                                withId(R.id.statsFragment),
+                                withContentDescription("Stats")
                             )
                         )
                     )
@@ -60,51 +60,45 @@ class HU02UITest {
 
         val bottomNavigationItemView = onView(
             allOf(
-                withId(R.id.profileFragment), withContentDescription("Profile"),
+                withId(R.id.statsFragment), withContentDescription("Stats"),
                 childAtPosition(
                     childAtPosition(
                         withId(R.id.bottom_navigation),
                         0
                     ),
-                    3
+                    0
                 ),
                 isDisplayed()
             )
         )
         bottomNavigationItemView.perform(click())
 
-        val button = onView(
+        val linearLayout = onView(
             allOf(
-                withId(R.id.unlog_button), withText("CLOSE SESSION"),
-                withParent(
-                    allOf(
-                        withId(R.id.frameLayout),
-                        withParent(withId(R.id.nav_host_fragment))
-                    )
-                ),
+                withContentDescription("Personal"),
+                withParent(withParent(withId(R.id.personal_global_tab_layout))),
                 isDisplayed()
             )
         )
-        button.check(matches(isDisplayed()))
+        linearLayout.check(matches(isDisplayed()))
 
-        val materialButton = onView(
+        val linearLayout2 = onView(
             allOf(
-                withId(R.id.unlog_button), withText("Close session"),
-                childAtPosition(
-                    allOf(
-                        withId(R.id.frameLayout),
-                        childAtPosition(
-                            withId(R.id.nav_host_fragment),
-                            0
-                        )
-                    ),
-                    1
-                ),
+                withContentDescription("Personal"),
+                withParent(withParent(withId(R.id.personal_global_tab_layout))),
                 isDisplayed()
             )
         )
-        materialButton.perform(click())
+        linearLayout2.check(matches(isDisplayed()))
 
+        val recyclerView = onView(
+            allOf(
+                withId(R.id.top_genres_recycler_view),
+                withParent(withParent(withId(R.id.fragmentTopGenres))),
+                isDisplayed()
+            )
+        )
+        recyclerView.check(matches(isDisplayed()))
     }
 
     private fun childAtPosition(
