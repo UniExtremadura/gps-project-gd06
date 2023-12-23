@@ -1,4 +1,4 @@
-package com.spotify.quavergd06
+package com.spotify.quavergd06.view
 
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +10,6 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.spotify.quavergd06.R
-import com.spotify.quavergd06.view.LoginActivity
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
