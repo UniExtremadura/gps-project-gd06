@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.spotify.quavergd06.QuaverApplication
 import com.spotify.quavergd06.api.setKey
 import com.spotify.quavergd06.data.HistoryRepository
@@ -43,9 +42,7 @@ class MomentEditViewModel(private val momentsRepository: MomentsRepository,
         _bottomNavigationViewVisibility.value = visible
     }
 
-    private val _momentDetail = MutableLiveData<Moment>(null)
-    val momentDetail: LiveData<Moment>
-        get() = _momentDetail
+    private val _momentDetail = MutableLiveData<Moment?>(null)
     var moment : Moment? = null
         set(value) {
             field = value
