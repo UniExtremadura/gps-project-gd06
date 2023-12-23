@@ -223,4 +223,37 @@ class SpotifyApiServiceTest {
         }
         mockWebServer.shutdown()
     }
+
+    @Test
+    fun loadHistoryTest(){
+        val historyResponse = HistoryResponse(items = ArrayList<ItemsHistory>().apply {
+            repeat(30) { index ->
+                val itemHistory = ItemsHistory(
+                    track = trackItem.copy(id = (index + 1).toString()),
+                )
+                add(itemHistory)
+            }
+        })
+
+        val mockResponse =
+            MockResponse().addHeader("HistoryResponse", "application/json; charset=utf-8")
+                .setBody("{\"History\": \"$historyResponse\"}")
+
+        mockWebServer.enqueue(mockResponse)
+        mockWebServer.start()
+
+        val baseUrl = mockWebServer.url("/getHistory")
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val client = OkHttpClient.Builder().build()
+            val retrofit = Retrofit.Builder().baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create()).client(client)
+                .build()
+
+            val call = retrofit.create(SpotifyApiService::class.java).loadHistory()
+            assertEquals(historyResponse,call.body())
+
+        }
+        mockWebServer.shutdown()
+    }
 }
