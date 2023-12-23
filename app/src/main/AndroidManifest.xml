@@ -13,12 +13,13 @@
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <application
+        android:name="com.spotify.quavergd06.QuaverApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/quaver"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/quaver"
         android:supportsRtl="true"
         android:theme="@style/Quaver"
         tools:targetApi="31">
@@ -41,7 +42,8 @@
 
         <activity
             android:name=".view.home.HomeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:configChanges="keyboardHidden|keyboard|orientation|screenSize|uiMode"/>
         <activity
             android:name=".view.LoginActivity"
             android:configChanges="keyboardHidden|keyboard|orientation|screenSize"

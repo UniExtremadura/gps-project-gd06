@@ -45,7 +45,7 @@ class NotificationScheduler : BroadcastReceiver() {
 
 
                 // Obtener una nueva hora aleatoria del día
-                val hour = Random.nextInt(26)
+                val hour = Random.nextInt(24)
                 val minute = Random.nextInt(60)
 
                 val calendar = Calendar.getInstance()

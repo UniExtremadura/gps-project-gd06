@@ -26,6 +26,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.spotify.quavergd06.QuaverApplication
 import com.spotify.quavergd06.R
 
 import com.spotify.sdk.android.auth.AuthorizationClient

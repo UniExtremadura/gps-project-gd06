@@ -2,21 +2,15 @@ package com.spotify.quavergd06.view.home
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.room.Index
-import androidx.room.util.appendPlaceholders
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.spotify.quavergd06.R
-import com.spotify.quavergd06.api.APIException
-import com.spotify.quavergd06.api.getNetworkService
-import com.spotify.quavergd06.api.setKey
-import com.spotify.quavergd06.data.api.UserProfileInfoResponse
 import com.spotify.quavergd06.databinding.FragmentProfileBinding
 import com.spotify.quavergd06.view.LoginActivity
 import com.squareup.picasso.Picasso
@@ -27,17 +21,13 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-    private var userInfo: UserProfileInfoResponse = UserProfileInfoResponse()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private val viewModel: ProfileViewModel by viewModels { ProfileViewModel.Factory }
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
@@ -45,6 +35,7 @@ class ProfileFragment : Fragment() {
         logoutButton.setOnClickListener {
             // Borrar el token almacenado
             clearUserToken()
+            viewModel.user.value?.userId?.let { viewModel.deleteUser() }
             // Cerrar el fragmento actual
             requireActivity().finish()
             // Iniciar LoginActivity
@@ -58,22 +49,26 @@ class ProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        lifecycleScope.launch {
-            setKey(obtenerSpotifyApiKey(requireContext())!!)
-            fetchUserInfo()
+
+        homeViewModel.user.observe(viewLifecycleOwner) { user ->
+            viewModel.auxUser = user
+        }
+
+        viewModel.user.observe(viewLifecycleOwner) {
             setupUI()
         }
+
     }
 
     private fun setupUI() {
         with(binding) {
-        try {
-             Picasso.get().load(userInfo?.images?.get(0)?.url).placeholder(R.drawable.user).into(AvatarImageView)
-            }
-            catch (e: Exception){
+            try {
+                Picasso.get().load(viewModel.user.value?.profileImages?.list?.get(0))
+                    .placeholder(R.drawable.user).into(AvatarImageView)
+            } catch (e: Exception) {
                 Picasso.get().load(R.drawable.user).into(AvatarImageView)
             }
-            usernameTextView.text = userInfo.displayName
+            usernameTextView.text = viewModel.user.value?.name
         }
     }
 
@@ -84,16 +79,4 @@ class ProfileFragment : Fragment() {
         sharedPreferences.edit().clear().apply()
     }
 
-    private suspend fun fetchUserInfo() {
-        try {
-            userInfo = getNetworkService().getUserProfile().body() ?: UserProfileInfoResponse()
-        } catch (cause: Throwable) {
-            throw APIException("Unable to fetch data from API", cause)
-        }
-    }
-
-    private fun obtenerSpotifyApiKey(context: Context): String? {
-        val sharedPreferences = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        return sharedPreferences.getString("access_token", null)
-    }
 }

@@ -13,7 +13,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        app:cardBackgroundColor="#FFF"
+        style="?attr/cardViewStyle"
         app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -191,7 +191,6 @@
     <!-- Otros elementos del ConstraintLayout exterior -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 
