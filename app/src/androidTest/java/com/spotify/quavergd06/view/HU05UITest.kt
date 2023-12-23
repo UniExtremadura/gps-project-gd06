@@ -1,4 +1,4 @@
-package com.spotify.quavergd06
+package com.spotify.quavergd06.view
 
 
 import android.app.Activity
@@ -9,11 +9,13 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.*
-import androidx.test.espresso.intent.Intents.intending
-import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.matcher.IntentMatchers
 import androidx.test.espresso.intent.rule.IntentsTestRule
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -25,6 +27,7 @@ import com.spotify.quavergd06.view.home.HomeActivity
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.`is`
 import org.hamcrest.TypeSafeMatcher
 import org.junit.Rule
 import org.junit.Test
@@ -32,7 +35,7 @@ import org.junit.runner.RunWith
 
 @LargeTest
 @RunWith(AndroidJUnit4::class)
-class HU03UITest {
+class HU05UITest {
 
     @Rule
     @JvmField
@@ -40,16 +43,16 @@ class HU03UITest {
 
     @Rule
     @JvmField
-    var mGrantPermissionRule: GrantPermissionRule =
+    var mGrantPermissionRule =
         GrantPermissionRule.grant(
             "android.permission.ACCESS_FINE_LOCATION",
             "android.permission.CAMERA"
         )
 
     @Test
-    fun hU03UITest() {
+    fun hU05UITest() {
         val imgCaptureResult = createImageCaptureActivityResultStub()
-        intending(hasAction(MediaStore.ACTION_IMAGE_CAPTURE)).respondWith(imgCaptureResult)
+        Intents.intending(IntentMatchers.hasAction(MediaStore.ACTION_IMAGE_CAPTURE)).respondWith(imgCaptureResult)
         val bottomNavigationItemView = onView(
             allOf(
                 withId(R.id.momentEditFragment), withContentDescription("Add Moment"),
@@ -64,20 +67,6 @@ class HU03UITest {
             )
         )
         bottomNavigationItemView.perform(click())
-        val constraintLayout = onView(
-            allOf(
-                withId(R.id.cameraOverlay),
-                childAtPosition(
-                    childAtPosition(
-                        withId(R.id.cardView),
-                        0
-                    ),
-                    1
-                ),
-                isDisplayed()
-            )
-        )
-        constraintLayout.perform(click())
 
         val materialAutoCompleteTextView = onView(
             allOf(
@@ -93,7 +82,6 @@ class HU03UITest {
             )
         )
         materialAutoCompleteTextView.perform(replaceText("Las 12"), closeSoftKeyboard())
-
 
         val appCompatEditText = onView(
             allOf(
@@ -125,6 +113,21 @@ class HU03UITest {
         )
         appCompatEditText2.perform(closeSoftKeyboard())
 
+        val constraintLayout = onView(
+            allOf(
+                withId(R.id.cameraOverlay),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.cardView),
+                        0
+                    ),
+                    1
+                ),
+                isDisplayed()
+            )
+        )
+        constraintLayout.perform(click())
+
         val floatingActionButton = onView(
             allOf(
                 withId(R.id.buttonSave),
@@ -140,16 +143,59 @@ class HU03UITest {
         )
         floatingActionButton.perform(click())
 
-        val textView = onView(
+        val recyclerView = onView(
             allOf(
-                withId(R.id.moment_title), withText("Title test"),
-                withParent(withParent(withId(R.id.fragment_item))),
+                withId(R.id.moment_show_grid),
+                childAtPosition(
+                    withClassName(`is`("androidx.constraintlayout.widget.ConstraintLayout")),
+                    1
+                )
+            )
+        )
+        recyclerView.perform(actionOnItemAtPosition<ViewHolder>(0, click()))
+
+        val floatingActionButton2 = onView(
+            allOf(
+                withId(R.id.buttonDelete),
+                childAtPosition(
+                    childAtPosition(
+                        withId(R.id.cardView),
+                        0
+                    ),
+                    10
+                ),
                 isDisplayed()
             )
         )
-        textView.check(matches(withText("Title test")))
-    }
+        floatingActionButton2.perform(click())
 
+        val materialButton = onView(
+            allOf(
+                withId(android.R.id.button1), withText("Sí"),
+                childAtPosition(
+                    childAtPosition(
+                        withClassName(`is`("android.widget.ScrollView")),
+                        0
+                    ),
+                    3
+                )
+            )
+        )
+        materialButton.perform(scrollTo(), click())
+
+        val viewGroup = onView(
+            allOf(
+                withParent(
+                    allOf(
+                        withId(R.id.fragment_item),
+                        withParent(withId(R.id.cl_item))
+                    )
+                ),
+                isDisplayed()
+            )
+        )
+        viewGroup.check(doesNotExist())
+    }
 
     private fun childAtPosition(
         parentMatcher: Matcher<View>, position: Int
